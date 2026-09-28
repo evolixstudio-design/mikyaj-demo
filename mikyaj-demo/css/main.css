@@ -549,6 +549,9 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 .empty-state h3 { font-family: var(--font-display); font-size: 24px; margin-bottom: 0.5rem; }
 .empty-state p { color: var(--on-surface-variant); max-width: 400px; }
 
+/* ─── Mobile Utilities ────────────────────────────────────── */
+.mobile-only { display: none; }
+
 /* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .container { padding: 0 2rem; }
@@ -652,4 +655,26 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   
   /* Ensure images never break layout */
   img { max-width: 100%; height: auto; }
+
+  /* Mobile Filters Collapse */
+  .mobile-only { display: inline-block; }
+  .mobile-filters-collapse { display: none !important; }
+  .mobile-filters-collapse.expanded { 
+    display: flex !important; 
+    flex-direction: column;
+    animation: fadeIn 0.3s ease-out;
+    margin-top: 1rem;
+  }
+
+  /* Hide messy icons from nav bar on mobile */
+  .theme-toggle-btn,
+  a[title="Admin Panel"],
+  a[href="wishlist.html"] {
+    display: none !important;
+  }
+  
+  /* Align remaining cart icon to the right */
+  header .flex.gap-md {
+    justify-content: flex-end !important;
+  }
 }

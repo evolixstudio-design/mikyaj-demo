@@ -48,10 +48,14 @@
     <!-- SIDEBAR FILTERS -->
     <aside>
       <div class="flex-between" style="margin-bottom:1.5rem">
-        <h3 class="text-headline-sm flex gap-xs" style="align-items:center"><span class="material-symbols-outlined" style="font-size:20px">tune</span>Refine Edit</h3>
+        <h3 class="text-headline-sm flex gap-xs" style="align-items:center;cursor:pointer" onclick="document.getElementById('mobileFilters').classList.toggle('expanded')">
+          <span class="material-symbols-outlined" style="font-size:20px">tune</span>Refine Edit
+          <span class="material-symbols-outlined mobile-only" style="font-size:18px">expand_more</span>
+        </h3>
         <button class="text-label-caps" style="color:var(--secondary);cursor:pointer" onclick="resetFilters()">Reset</button>
       </div>
-      <!-- Active filters -->
+      <div id="mobileFilters" class="mobile-filters-collapse">
+        <!-- Active filters -->
       <div id="activeFilters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem"></div>
       <!-- Category -->
       <div class="card" style="margin-bottom:1rem;padding:1rem">
@@ -77,6 +81,7 @@
           <input type="number" id="priceMax" placeholder="Max" class="form-input" style="width:80px;padding:6px" step="0.500" value="50"/>
         </div>
         <button class="btn btn-outline btn-sm" style="width:100%;margin-top:0.75rem" onclick="applyFilters()">Apply Selection / تطبيق</button>
+      </div>
       </div>
     </aside>
 
