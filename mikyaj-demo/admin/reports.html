@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Reports — Mikyaj Admin</title><link rel="stylesheet" href="../css/main.css"/><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script></head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header"><div class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><div><div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div><div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div></div></div></div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div><a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a href="orders.html" class="admin-nav-item"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      <div class="admin-nav-section">Catalog</div><a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a><a href="product-form.html" class="admin-nav-item"><span class="material-symbols-outlined">add_box</span>Add Product</a><a href="categories.html" class="admin-nav-item"><span class="material-symbols-outlined">category</span>Categories</a><a href="brands.html" class="admin-nav-item"><span class="material-symbols-outlined">storefront</span>Brands</a>
+      <div class="admin-nav-section">Analytics</div><a href="reports.html" class="admin-nav-item active"><span class="material-symbols-outlined">assessment</span>Reports</a><a href="customers.html" class="admin-nav-item"><span class="material-symbols-outlined">group</span>Customers</a>
+      <div class="admin-nav-section">System</div><a href="erp.html" class="admin-nav-item"><span class="material-symbols-outlined">hub</span>ERP Integration</a>
+      <a href="#" class="admin-nav-item" onclick="MikyajStore.adminLogout();window.location.href='login.html'"><span class="material-symbols-outlined">logout</span>Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar"><h2 class="text-headline-sm">Reports & Analytics</h2><div class="flex gap-sm"><button class="btn btn-outline btn-sm" onclick="exportReport('csv')"><span class="material-symbols-outlined" style="font-size:16px">download</span>Export CSV</button><button class="btn btn-outline btn-sm" onclick="exportReport('pdf')"><span class="material-symbols-outlined" style="font-size:16px">picture_as_pdf</span>Export PDF</button></div></div>
+    <div class="admin-content">
+      <!-- DATE RANGE PICKER -->
+      <div class="card flex-between" style="padding:1rem;margin-bottom:2rem">
+        <div class="flex gap-sm" style="align-items:center">
+          <span class="text-label-caps" style="color:var(--on-surface-variant)">Date Range:</span>
+          <button class="btn btn-ghost btn-sm active-period" data-days="7" onclick="setPeriod(7,this)">7 Days</button>
+          <button class="btn btn-ghost btn-sm active-period" data-days="30" onclick="setPeriod(30,this)" style="background:var(--surface-container-high)">30 Days</button>
+          <button class="btn btn-ghost btn-sm active-period" data-days="90" onclick="setPeriod(90,this)">90 Days</button>
+          <span style="color:var(--outline-variant)">|</span>
+          <input type="date" class="form-input" style="width:140px;padding:4px 8px;font-size:12px" id="dateFrom"/>
+          <span class="text-body-sm">to</span>
+          <input type="date" class="form-input" style="width:140px;padding:4px 8px;font-size:12px" id="dateTo"/>
+        </div>
+        <span class="text-body-sm" style="color:var(--on-surface-variant)">vs Previous Period</span>
+      </div>
+
+      <!-- REPORT TABS -->
+      <div class="flex gap-xs" style="margin-bottom:1.5rem;border-bottom:1px solid var(--outline-variant)">
+        <button class="btn btn-ghost report-tab active-tab" data-tab="sales" onclick="switchTab('sales',this)" style="border-bottom:2px solid var(--secondary);border-radius:0">Sales Reports</button>
+        <button class="btn btn-ghost report-tab" data-tab="inventory" onclick="switchTab('inventory',this)" style="border-radius:0">Inventory Reports</button>
+        <button class="btn btn-ghost report-tab" data-tab="customer" onclick="switchTab('customer',this)" style="border-radius:0">Customer Reports</button>
+      </div>
+
+      <!-- SALES REPORTS -->
+      <div id="salesTab">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
+          <div class="stat-card"><div class="stat-value" id="rptRevenue" style="font-size:24px">0.000</div><div class="stat-label">Total Revenue (KWD)</div><div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +12.5%</div></div>
+          <div class="stat-card"><div class="stat-value" id="rptOrders" style="font-size:24px">0</div><div class="stat-label">Total Orders</div><div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +8.3%</div></div>
+          <div class="stat-card"><div class="stat-value" id="rptAvg" style="font-size:24px">0.000</div><div class="stat-label">Avg Order Value</div><div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +3.1%</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px;color:var(--success)">67.4%</div><div class="stat-label">Conversion Rate</div><div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +2.1%</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
+          <div class="chart-container"><div class="chart-header"><h3 class="text-headline-sm">Daily Revenue (KWD)</h3></div><canvas id="rptRevenueChart" height="220"></canvas></div>
+          <div class="chart-container"><div class="chart-header"><h3 class="text-headline-sm">Orders by Status</h3></div><canvas id="rptStatusChart" height="220"></canvas></div>
+        </div>
+
+        <!-- Sales Table -->
+        <div class="card" style="padding:0">
+          <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--outline-variant)" class="flex-between"><h3 class="text-headline-sm">Product Performance Report</h3></div>
+          <table class="data-table"><thead><tr><th>Product</th><th>Brand</th><th>Units Sold</th><th>Revenue (KWD)</th><th>Margin</th><th>Performance</th></tr></thead>
+          <tbody id="productPerfBody"></tbody></table>
+        </div>
+
+        <!-- Payment Methods Report -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem">
+          <div class="card" style="padding:0">
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--outline-variant)"><h3 class="text-headline-sm">Payment Method Breakdown</h3></div>
+            <table class="data-table"><thead><tr><th>Method</th><th>Orders</th><th>Revenue</th><th>% Share</th></tr></thead><tbody id="paymentBody"></tbody></table>
+          </div>
+          <div class="card" style="padding:0">
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--outline-variant)"><h3 class="text-headline-sm">Sales by Category</h3></div>
+            <table class="data-table"><thead><tr><th>Category</th><th>Revenue</th><th>% Share</th><th>Trend</th></tr></thead><tbody id="catSalesBody"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTORY REPORTS -->
+      <div id="inventoryTab" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
+          <div class="stat-card"><div class="stat-value" id="invTotal" style="font-size:24px">0</div><div class="stat-label">Total Products</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px;color:var(--success)" id="invInStock">0</div><div class="stat-label">In Stock</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px;color:var(--warning)" id="invLow">0</div><div class="stat-label">Low Stock (< 20)</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px;color:var(--error)" id="invOut">0</div><div class="stat-label">Out of Stock</div></div>
+        </div>
+        <div class="card" style="padding:0">
+          <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--outline-variant)" class="flex-between"><h3 class="text-headline-sm">Stock Level Report</h3></div>
+          <table class="data-table"><thead><tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Status</th><th>Value (KWD)</th><th>Reorder</th></tr></thead><tbody id="stockBody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- CUSTOMER REPORTS -->
+      <div id="customerTab" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
+          <div class="stat-card"><div class="stat-value" id="custTotal" style="font-size:24px">0</div><div class="stat-label">Total Customers</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px">32.5%</div><div class="stat-label">Repeat Purchase Rate</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px" id="custLtv">0.000</div><div class="stat-label">Avg Lifetime Value</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:24px">4.8</div><div class="stat-label">Avg Satisfaction</div></div>
+        </div>
+        <div class="card" style="padding:0">
+          <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--outline-variant)"><h3 class="text-headline-sm">Top Customers by Revenue</h3></div>
+          <table class="data-table"><thead><tr><th>Customer</th><th>Email</th><th>Region</th><th>Orders</th><th>Total Spent (KWD)</th><th>Status</th></tr></thead><tbody id="custBody"></tbody></table>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem">
+          <div class="chart-container"><div class="chart-header"><h3 class="text-headline-sm">Customers by Region</h3></div><canvas id="regionChart" height="220"></canvas></div>
+          <div class="chart-container"><div class="chart-header"><h3 class="text-headline-sm">Acquisition Funnel</h3></div><div id="funnelChart" style="padding:1rem"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container"></div>
+<script src="../js/store.js"></script><script src="../js/seed-data.js"></script><script src="../js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!MikyajStore.isAdminLoggedIn()) { window.location.href = 'login.html'; return; }
+  renderSalesReports();
+  renderInventoryReports();
+  renderCustomerReports();
+});
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('[id$="Tab"]').forEach(el => el.style.display = 'none');
+  document.getElementById(tab + 'Tab').style.display = 'block';
+  document.querySelectorAll('.report-tab').forEach(b => { b.style.borderBottom = 'none'; });
+  btn.style.borderBottom = '2px solid var(--secondary)';
+}
+function setPeriod(days, btn) {
+  document.querySelectorAll('.active-period').forEach(b => b.style.background = '');
+  btn.style.background = 'var(--surface-container-high)';
+  MikyajApp.showToast(`Showing last ${days} days`, 'info');
+}
+
+function renderSalesReports() {
+  const orders = MikyajStore.getOrders();
+  const totalRev = orders.reduce((s,o) => s + (o.total||0), 0);
+  document.getElementById('rptRevenue').textContent = totalRev.toFixed(3);
+  document.getElementById('rptOrders').textContent = orders.length;
+  document.getElementById('rptAvg').textContent = orders.length ? (totalRev/orders.length).toFixed(3) : '0.000';
+
+  // Revenue chart
+  const revData = MikyajStore.getRevenueByDay(30);
+  new Chart(document.getElementById('rptRevenueChart'), {
+    type: 'bar', data: { labels: revData.map(d=>d.date.slice(5)), datasets: [{ label:'Revenue', data: revData.map(d=>d.revenue), backgroundColor:'#f7b7ac', borderRadius:2 }] },
+    options: { responsive:true, plugins:{legend:{display:false}}, scales:{ y:{ticks:{color:'#8e9192'},grid:{color:'rgba(68,71,72,0.3)'}}, x:{ticks:{color:'#8e9192',maxRotation:0,maxTicksLimit:10},grid:{display:false}} } }
+  });
+
+  // Status chart
+  const statuses = {};
+  orders.forEach(o => statuses[o.status] = (statuses[o.status]||0)+1);
+  new Chart(document.getElementById('rptStatusChart'), {
+    type:'doughnut', data:{ labels:Object.keys(statuses), datasets:[{data:Object.values(statuses), backgroundColor:['#ffb74d','#64b5f6','#c8c6c5','#81c784','#ffb4ab']}] },
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#c4c7c7',font:{size:11}}}}}
+  });
+
+  // Product performance
+  const topProds = MikyajStore.getTopProducts(10);
+  document.getElementById('productPerfBody').innerHTML = topProds.map(p => `
+    <tr><td><div class="flex gap-sm" style="align-items:center"><div style="width:40px;height:40px;overflow:hidden;background:var(--surface-container)"><img src="../${p.product.images?.[0]||'assets/images/product_serum.jpg'}" style="width:100%;height:100%;object-fit:cover"/></div><span>${p.product.name}</span></div></td>
+    <td>${p.product.brand}</td><td>${p.qty}</td><td style="font-weight:600">${p.revenue.toFixed(3)} KWD</td>
+    <td>${p.product.costPrice?((p.product.price-p.product.costPrice)/p.product.price*100).toFixed(0)+'%':'—'}</td>
+    <td><div style="width:80px;height:6px;background:var(--surface-container);border-radius:3px;overflow:hidden"><div style="width:${Math.min(100,p.qty*10)}%;height:100%;background:var(--secondary)"></div></div></td></tr>
+  `).join('');
+
+  // Payment methods
+  const payMethods = {};
+  const payRevenue = {};
+  orders.forEach(o => { payMethods[o.paymentMethod]=(payMethods[o.paymentMethod]||0)+1; payRevenue[o.paymentMethod]=(payRevenue[o.paymentMethod]||0)+(o.total||0); });
+  const totalPayOrders = Object.values(payMethods).reduce((a,b)=>a+b,0);
+  document.getElementById('paymentBody').innerHTML = Object.entries(payMethods).map(([m,c])=>`<tr><td>${m}</td><td>${c}</td><td>${(payRevenue[m]||0).toFixed(3)} KWD</td><td>${(c/totalPayOrders*100).toFixed(1)}%</td></tr>`).join('');
+
+  // Category sales
+  const catSales = MikyajStore.getSalesByCategory();
+  const totalCatRev = Object.values(catSales).reduce((a,b)=>a+b,0);
+  document.getElementById('catSalesBody').innerHTML = Object.entries(catSales).map(([id,rev])=>{
+    const cat = MikyajStore.getCategory(id);
+    return `<tr><td>${cat?.name||id}</td><td style="font-weight:600">${rev.toFixed(3)} KWD</td><td>${(rev/totalCatRev*100).toFixed(1)}%</td><td><span class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span></span></td></tr>`;
+  }).join('');
+}
+
+function renderInventoryReports() {
+  const products = MikyajStore.getProducts();
+  document.getElementById('invTotal').textContent = products.length;
+  document.getElementById('invInStock').textContent = products.filter(p=>p.stock>=20).length;
+  document.getElementById('invLow').textContent = products.filter(p=>p.stock>0&&p.stock<20).length;
+  document.getElementById('invOut').textContent = products.filter(p=>p.stock<=0).length;
+
+  document.getElementById('stockBody').innerHTML = products.sort((a,b)=>a.stock-b.stock).map(p=>{
+    const statusBadge = p.stock<=0?'badge-error':p.stock<20?'badge-warning':'badge-success';
+    const statusText = p.stock<=0?'Out of Stock':p.stock<20?'Low Stock':'In Stock';
+    return `<tr><td>${p.name}</td><td class="text-body-sm">${p.sku||'—'}</td><td style="font-weight:600">${p.stock}</td><td><span class="badge ${statusBadge}">${statusText}</span></td><td>${(p.stock*p.price).toFixed(3)} KWD</td><td>${p.stock<20?'<button class="btn btn-outline btn-sm" style="font-size:10px">Reorder</button>':'—'}</td></tr>`;
+  }).join('');
+}
+
+function renderCustomerReports() {
+  const customers = MikyajStore.getCustomers();
+  document.getElementById('custTotal').textContent = customers.length;
+  const avgLtv = customers.reduce((s,c)=>s+(c.totalSpent||0),0)/customers.length;
+  document.getElementById('custLtv').textContent = avgLtv.toFixed(3);
+
+  document.getElementById('custBody').innerHTML = customers.sort((a,b)=>(b.totalSpent||0)-(a.totalSpent||0)).map(c=>`
+    <tr><td style="font-weight:500">${c.name}</td><td class="text-body-sm">${c.email}</td><td>${c.region||'—'}</td><td>${c.orders||0}</td><td style="font-weight:600">${(c.totalSpent||0).toFixed(3)} KWD</td><td><span class="badge badge-success">Active</span></td></tr>
+  `).join('');
+
+  // Region chart
+  const regions = {};
+  customers.forEach(c => regions[c.region]=(regions[c.region]||0)+1);
+  new Chart(document.getElementById('regionChart'), {
+    type:'bar', data:{ labels:Object.keys(regions), datasets:[{label:'Customers',data:Object.values(regions),backgroundColor:'#f7b7ac',borderRadius:2}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{color:'#8e9192'},grid:{color:'rgba(68,71,72,0.3)'}},x:{ticks:{color:'#c4c7c7',font:{size:11}},grid:{display:false}}}}
+  });
+
+  // Funnel
+  const funnel = document.getElementById('funnelChart');
+  const funnelData = [{label:'Site Visitors',value:2450,pct:100},{label:'Product Views',value:1680,pct:68.6},{label:'Added to Cart',value:820,pct:33.5},{label:'Checkout Started',value:410,pct:16.7},{label:'Purchase Completed',value:280,pct:11.4}];
+  funnel.innerHTML = funnelData.map(f=>`
+    <div style="margin-bottom:12px"><div class="flex-between text-body-sm" style="margin-bottom:4px"><span>${f.label}</span><span style="font-weight:600">${f.value} (${f.pct}%)</span></div>
+    <div style="height:24px;background:var(--surface-container);border-radius:2px;overflow:hidden"><div style="width:${f.pct}%;height:100%;background:linear-gradient(90deg,var(--secondary),#c8c6c5);transition:width 0.6s"></div></div></div>
+  `).join('');
+}
+
+function exportReport(format) { MikyajApp.showToast(`${format.toUpperCase()} report exported successfully!`, 'success'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product — Mikyaj Kuwait</title>
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<!-- TOP BAR + HEADER (same as shop) -->
+<div style="background:var(--primary);color:var(--on-primary);padding:6px 0;font-size:12px"><div class="container flex-between"><span class="flex gap-xs" style="align-items:center"><span class="material-symbols-outlined" style="font-size:16px">local_shipping</span>Complimentary delivery across Kuwait</span><span class="text-label-caps" style="font-size:10px">EN | العربية | KWD</span></div></div>
+<header style="background:var(--surface-container-low);border-bottom:1px solid var(--outline-variant);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)"><div class="container flex-between" style="height:64px"><div class="flex gap-xl" style="align-items:center"><a href="index.html" class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a><nav class="flex gap-lg" style="align-items:center"><a href="index.html" class="text-label-caps" style="color:var(--on-surface-variant)">Home</a><a href="shop.html" class="text-label-caps" style="color:var(--on-surface-variant)">Shop All</a></nav></div><div class="flex gap-md" style="align-items:center"><a href="wishlist.html" style="color:var(--on-surface)"><span class="material-symbols-outlined">favorite</span></a><a href="cart.html" style="position:relative;color:var(--on-surface)"><span class="material-symbols-outlined">shopping_bag</span><span class="cart-count" style="position:absolute;top:-4px;right:-8px;background:var(--secondary);color:var(--on-secondary);width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">0</span></a></div></div></header>
+
+<main>
+  <div class="container" style="padding:1.5rem 4rem"><div class="flex gap-xs text-body-sm" style="color:var(--on-surface-variant);align-items:center"><a href="index.html">Home</a><span>/</span><a href="shop.html">Shop</a><span>/</span><span id="breadcrumbName" style="color:var(--on-surface)"></span></div></div>
+
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding-bottom:4rem">
+    <!-- IMAGE GALLERY -->
+    <div>
+      <div id="mainImage" style="aspect-ratio:4/5;overflow:hidden;background:var(--surface-container);margin-bottom:1rem;position:relative">
+        <img id="productMainImg" src="" alt="" style="width:100%;height:100%;object-fit:cover"/>
+        <div id="productBadges" style="position:absolute;top:1rem;left:1rem;display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+      <div id="thumbnails" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem"></div>
+      <!-- Trust Badges -->
+      <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap" id="certBadges"></div>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div>
+      <div id="productBrand" class="text-label-caps" style="color:var(--secondary);margin-bottom:0.5rem"></div>
+      <h1 id="productName" class="text-headline-lg" style="margin-bottom:0.25rem"></h1>
+      <p id="productNameAr" class="text-body-lg" style="color:var(--on-surface-variant);font-style:italic;margin-bottom:1rem"></p>
+      <div class="flex gap-md" style="align-items:center;margin-bottom:1.5rem">
+        <div style="color:var(--secondary);font-size:14px">★★★★★ <span class="text-body-sm" style="color:var(--on-surface-variant)">4.9</span></div>
+        <span class="text-body-sm" style="color:var(--on-surface-variant)">• 168 Verified Gulf Reviews</span>
+      </div>
+
+      <!-- PRICE -->
+      <div class="card" style="padding:1rem;margin-bottom:1.5rem">
+        <div class="flex-between">
+          <div>
+            <span id="productPrice" style="font-size:28px;font-weight:600;font-family:var(--font-display)"></span>
+            <span id="productComparePrice" style="font-size:16px;color:var(--outline);text-decoration:line-through;margin-left:0.75rem"></span>
+          </div>
+          <button id="wishlistBtn" class="btn btn-outline btn-sm" onclick="togglePdpWishlist()"><span class="material-symbols-outlined" style="font-size:18px">favorite</span> Wishlist</button>
+        </div>
+        <div class="flex gap-xs" style="align-items:center;margin-top:0.5rem;color:var(--secondary)"><span style="width:8px;height:8px;border-radius:50%;background:var(--secondary)"></span><span class="text-body-sm">Authentic Atelier Direct — Immediate VIP Concierge Quotation</span></div>
+      </div>
+
+      <!-- SHADES (if applicable) -->
+      <div id="shadesSection" style="display:none;margin-bottom:1.5rem">
+        <div class="text-label-caps" style="margin-bottom:0.5rem">Select Shade / اللون</div>
+        <div id="shadesContainer" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        <span id="selectedShadeName" class="text-body-sm" style="color:var(--on-surface-variant);margin-top:6px;display:block"></span>
+      </div>
+
+      <!-- VOLUME -->
+      <div id="volumeSection" style="margin-bottom:1.5rem">
+        <div class="text-label-caps" style="margin-bottom:0.5rem">Select Volume / الحجم</div>
+        <div id="volumeDisplay" class="badge badge-outline" style="font-size:13px;padding:8px 16px"></div>
+      </div>
+
+      <!-- ADD TO CART -->
+      <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem">
+        <div class="flex" style="border:1px solid var(--outline-variant);align-items:center">
+          <button class="btn btn-ghost" style="padding:8px 12px;min-height:auto" onclick="changeQty(-1)"><span class="material-symbols-outlined" style="font-size:18px">remove</span></button>
+          <span id="qtyValue" style="padding:0 1rem;font-weight:600;min-width:40px;text-align:center">1</span>
+          <button class="btn btn-ghost" style="padding:8px 12px;min-height:auto" onclick="changeQty(1)"><span class="material-symbols-outlined" style="font-size:18px">add</span></button>
+        </div>
+        <button class="btn btn-primary btn-lg" style="flex:1" id="addToCartBtn" onclick="addToCartPDP()">
+          <span class="material-symbols-outlined" style="font-size:20px">shopping_bag</span>
+          Add to Bag • أضف للحقيبة
+        </button>
+      </div>
+
+      <!-- WHATSAPP -->
+      <a href="https://wa.me/96599999999" target="_blank" class="btn btn-secondary" style="width:100%;margin-bottom:1rem">
+        <span class="material-symbols-outlined" style="font-size:18px">chat</span>
+        Get Quote via WhatsApp / اطلب تسعيرة عبر واتساب
+      </a>
+
+      <!-- DELIVERY INFO -->
+      <div class="card" style="padding:1rem;margin-bottom:1.5rem">
+        <div class="flex gap-sm" style="align-items:center;margin-bottom:8px"><span class="material-symbols-outlined" style="font-size:18px;color:var(--secondary)">schedule</span><span class="text-body-sm">Order within <strong>3h 14m</strong> for Same-Day delivery across Kuwait.</span></div>
+        <div class="flex gap-sm" style="align-items:center;margin-bottom:8px"><span class="material-symbols-outlined" style="font-size:18px;color:var(--secondary)">verified</span><span class="text-body-sm">100% Authentic Korean Direct</span></div>
+        <div class="flex gap-sm" style="align-items:center"><span class="material-symbols-outlined" style="font-size:18px;color:var(--secondary)">credit_card</span><span class="text-body-sm">KNET & Cash On Delivery</span></div>
+      </div>
+
+      <!-- ACCORDION -->
+      <div id="accordions" style="border:1px solid var(--outline-variant)"></div>
+    </div>
+  </div>
+
+  <!-- RELATED PRODUCTS -->
+  <section style="padding:3rem 0;background:var(--surface-container-low)">
+    <div class="container">
+      <div class="flex-between" style="margin-bottom:2rem">
+        <div><span class="text-label-caps" style="color:var(--secondary)">Synergistic Formulations</span><h2 class="text-headline-md" style="margin-top:4px">Complete Your Daily Kuwait Barrier Routine</h2></div>
+      </div>
+      <div id="relatedGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem"></div>
+    </div>
+  </section>
+</main>
+
+<footer style="background:var(--surface-container-lowest);border-top:1px solid var(--outline-variant);padding:2rem 0"><div class="container flex-between text-body-sm" style="color:var(--outline)"><div class="flex gap-lg"><a href="index.html">Home</a><a href="shop.html">Shop</a></div><span>© 2025 Mikyaj Kuwait Company W.L.L.</span></div></footer>
+<div class="toast-container"></div>
+<script src="js/store.js"></script><script src="js/seed-data.js"></script><script src="js/app.js"></script>
+<script>
+let product = null, qty = 1, selectedShade = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  product = MikyajStore.getProduct(id);
+  if (!product) { product = MikyajStore.getPublishedProducts()[0]; }
+  if (!product) return;
+  renderProduct();
+  renderRelated();
+  MikyajApp.updateCartBadge();
+});
+
+function renderProduct() {
+  document.title = product.name + ' — Mikyaj Kuwait';
+  document.getElementById('breadcrumbName').textContent = product.name;
+  document.getElementById('productBrand').textContent = product.brand;
+  document.getElementById('productName').textContent = product.name;
+  document.getElementById('productNameAr').textContent = product.nameAr || '';
+  document.getElementById('productMainImg').src = product.images[0];
+  document.getElementById('productMainImg').alt = product.name;
+  document.getElementById('productPrice').textContent = MikyajApp.formatKWD(product.price);
+  document.getElementById('productComparePrice').textContent = product.comparePrice ? MikyajApp.formatKWD(product.comparePrice) : '';
+  document.getElementById('volumeDisplay').textContent = product.volume || '';
+
+  // Badges
+  const badges = document.getElementById('productBadges');
+  if (product.tags?.includes('bestseller')) badges.innerHTML += '<span class="badge badge-primary">Best Seller</span>';
+  if (product.climateTags?.length) badges.innerHTML += `<span class="badge badge-secondary">${product.climateTags[0]}</span>`;
+
+  // Thumbnails
+  const thumbs = document.getElementById('thumbnails');
+  product.images.forEach((img, i) => {
+    thumbs.innerHTML += `<div style="aspect-ratio:1;overflow:hidden;background:var(--surface-container);border:2px solid ${i===0?'var(--secondary)':'transparent'};cursor:pointer" onclick="document.getElementById('productMainImg').src='${img}';this.parentElement.querySelectorAll('div').forEach(d=>d.style.borderColor='transparent');this.style.borderColor='var(--secondary)'"><img src="${img}" style="width:100%;height:100%;object-fit:cover"/></div>`;
+  });
+
+  // Cert badges
+  const certs = document.getElementById('certBadges');
+  if (product.ewgRating <= 3) certs.innerHTML += '<span class="badge badge-success"><span class="material-symbols-outlined" style="font-size:14px">eco</span> EWG Green Certified</span>';
+  if (product.crueltyFree) certs.innerHTML += '<span class="badge badge-outline"><span class="material-symbols-outlined" style="font-size:14px">pets</span> Cruelty-Free</span>';
+  if (product.vegan) certs.innerHTML += '<span class="badge badge-outline"><span class="material-symbols-outlined" style="font-size:14px">spa</span> Vegan</span>';
+  if (product.halalCertified) certs.innerHTML += '<span class="badge badge-outline">☪ Halal Certified</span>';
+
+  // Shades
+  if (product.shades?.length) {
+    document.getElementById('shadesSection').style.display = 'block';
+    selectedShade = product.shades[0].name;
+    document.getElementById('selectedShadeName').textContent = 'Selected: ' + selectedShade;
+    document.getElementById('shadesContainer').innerHTML = product.shades.map((s, i) => `
+      <button class="shade-dot ${i===0?'active':''}" style="width:28px;height:28px;background:${s.code};border:2px solid ${i===0?'var(--on-surface)':'rgba(255,255,255,0.2)'};border-radius:50%;cursor:pointer" title="${s.name}" onclick="selectShade(this,'${s.name}')"></button>
+    `).join('');
+  }
+
+  // Wishlist button
+  const inWL = MikyajStore.isInWishlist(product.id);
+  document.getElementById('wishlistBtn').className = `btn ${inWL ? 'btn-secondary' : 'btn-outline'} btn-sm`;
+
+  // Accordions
+  const accs = document.getElementById('accordions');
+  const sections = [
+    { title: 'Key Benefits & Skin Concerns', content: `<p style="margin-bottom:8px">${product.description}</p><ul style="padding-left:1rem;color:var(--on-surface-variant)">${(product.skinConcern||[]).map(c=>`<li>Targets: ${c}</li>`).join('')}</ul>` },
+    { title: 'Clean Ingredients (EWG Verified)', content: `<p style="color:var(--on-surface-variant);word-break:break-all">${product.ingredients || 'Not available'}</p>` },
+    { title: 'How to Use / طريقة الاستخدام', content: '<p style="color:var(--on-surface-variant)">Apply a small amount to clean, dry skin. Gently massage in upward motions. Use morning and evening for best results. For external use only.</p>' },
+    { title: 'Authentic Kuwait Distributor Guarantee', content: '<p style="color:var(--on-surface-variant)">Every product sold through Mikyaj Kuwait is guaranteed authentic with full batch traceability. Stored in climate-controlled facilities and dispatched with temperature-controlled logistics across Kuwait.</p>' }
+  ];
+  accs.innerHTML = sections.map((s, i) => `
+    <div style="border-bottom:1px solid var(--outline-variant)">
+      <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.chevron').style.transform=this.nextElementSibling.style.display==='none'?'':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:1rem;text-align:left;color:var(--on-surface);font-family:var(--font-display);font-size:16px;font-weight:500">
+        ${s.title}<span class="material-symbols-outlined chevron" style="transition:transform 0.3s;${i===0?'transform:rotate(180deg)':''}">expand_more</span>
+      </button>
+      <div style="padding:0 1rem 1rem;${i>0?'display:none':''}">${s.content}</div>
+    </div>
+  `).join('');
+}
+
+function selectShade(btn, name) {
+  selectedShade = name;
+  document.getElementById('selectedShadeName').textContent = 'Selected: ' + name;
+  document.querySelectorAll('#shadesContainer .shade-dot').forEach(d => { d.classList.remove('active'); d.style.borderColor = 'rgba(255,255,255,0.2)'; });
+  btn.classList.add('active'); btn.style.borderColor = 'var(--on-surface)';
+}
+function changeQty(delta) { qty = Math.max(1, qty + delta); document.getElementById('qtyValue').textContent = qty; }
+function addToCartPDP() { for(let i=0;i<qty;i++) MikyajApp.addToCart(product.id, selectedShade); }
+function togglePdpWishlist() { MikyajApp.toggleWishlist(product.id); const inWL = MikyajStore.isInWishlist(product.id); document.getElementById('wishlistBtn').className = `btn ${inWL?'btn-secondary':'btn-outline'} btn-sm`; }
+
+function renderRelated() {
+  const related = MikyajStore.getPublishedProducts().filter(p => p.id !== product.id && p.category === product.category).slice(0, 4);
+  const grid = document.getElementById('relatedGrid');
+  related.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card">
+        <div class="product-image"><img src="${p.images[0]}" alt="${p.name}"/><div class="product-actions"><button class="btn btn-primary btn-sm" style="width:100%" onclick="MikyajApp.addToCart('${p.id}')">Add to Bag</button></div></div>
+        <div class="product-info">
+          <span class="product-brand">${p.brand}</span>
+          <a href="product.html?id=${p.id}" class="product-name">${p.name}</a>
+          <div class="product-price">${MikyajApp.formatKWD(p.price)}</div>
+        </div>
+      </div>`;
+  });
+}
+</script>
+</body>
+</html>

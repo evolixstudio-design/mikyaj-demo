@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>ERP Integration — Mikyaj Admin</title><link rel="stylesheet" href="../css/main.css"/></head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header"><div class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><div><div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div><div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div></div></div></div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div><a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a href="orders.html" class="admin-nav-item"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      <div class="admin-nav-section">Catalog</div><a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a><a href="product-form.html" class="admin-nav-item"><span class="material-symbols-outlined">add_box</span>Add Product</a><a href="categories.html" class="admin-nav-item"><span class="material-symbols-outlined">category</span>Categories</a><a href="brands.html" class="admin-nav-item"><span class="material-symbols-outlined">storefront</span>Brands</a>
+      <div class="admin-nav-section">Analytics</div><a href="reports.html" class="admin-nav-item"><span class="material-symbols-outlined">assessment</span>Reports</a><a href="customers.html" class="admin-nav-item"><span class="material-symbols-outlined">group</span>Customers</a>
+      <div class="admin-nav-section">System</div><a href="erp.html" class="admin-nav-item active"><span class="material-symbols-outlined">hub</span>ERP Integration</a>
+      <a href="#" class="admin-nav-item" onclick="MikyajStore.adminLogout();window.location.href='login.html'"><span class="material-symbols-outlined">logout</span>Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h2 class="text-headline-sm">ERP & WMS Integration</h2>
+      <div class="flex gap-sm"><span class="status-dot online"></span><span class="text-body-sm">System Healthy</span></div>
+    </div>
+    <div class="admin-content">
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:2rem">
+        <div>
+          <!-- Sync Status -->
+          <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Synchronization Status</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div style="padding:1rem;border:1px solid var(--outline-variant);background:var(--surface-container)">
+                <div class="flex-between" style="margin-bottom:8px">
+                  <div class="flex gap-xs" style="align-items:center"><span class="material-symbols-outlined" style="color:var(--success)">inventory_2</span><span style="font-weight:600">Inventory Sync</span></div>
+                  <span class="badge badge-success">Active</span>
+                </div>
+                <div class="text-body-sm" style="color:var(--on-surface-variant)">Last synced: 2 mins ago</div>
+                <button class="btn btn-outline btn-sm" style="width:100%;margin-top:12px" onclick="MikyajApp.showToast('Manual sync triggered','info')">Force Sync</button>
+              </div>
+              <div style="padding:1rem;border:1px solid var(--outline-variant);background:var(--surface-container)">
+                <div class="flex-between" style="margin-bottom:8px">
+                  <div class="flex gap-xs" style="align-items:center"><span class="material-symbols-outlined" style="color:var(--success)">receipt_long</span><span style="font-weight:600">Order Push</span></div>
+                  <span class="badge badge-success">Active</span>
+                </div>
+                <div class="text-body-sm" style="color:var(--on-surface-variant)">Last pushed: 14 mins ago</div>
+                <button class="btn btn-outline btn-sm" style="width:100%;margin-top:12px" onclick="MikyajApp.showToast('Push triggered','info')">Force Push</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integration Settings -->
+          <div class="card" style="padding:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">API Configuration</h3>
+            <div class="form-group"><label class="form-label">ERP Provider</label><select class="form-select"><option>Microsoft Dynamics 365</option><option>SAP Business One</option><option>Oracle NetSuite</option><option>Odoo (Kuwait Edition)</option></select></div>
+            <div class="form-group"><label class="form-label">API Endpoint URL</label><input type="text" class="form-input" value="https://api.mikyaj-kuwait.erp.local/v2/sync"/></div>
+            <div class="form-group"><label class="form-label">API Key / Bearer Token</label><input type="password" class="form-input" value="****************************************"/></div>
+            <button class="btn btn-primary" onclick="MikyajApp.showToast('Configuration saved','success')">Save Settings</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Logistics Partners (WMS)</h3>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="flex-between" style="padding-bottom:12px;border-bottom:1px solid var(--outline-variant)">
+                <div><div style="font-weight:600">Aramex Kuwait</div><div class="text-body-sm" style="color:var(--on-surface-variant)">Express Courier</div></div>
+                <label class="form-toggle"><input type="checkbox" checked/><span class="form-toggle-slider"></span></label>
+              </div>
+              <div class="flex-between" style="padding-bottom:12px;border-bottom:1px solid var(--outline-variant)">
+                <div><div style="font-weight:600">Posta Plus</div><div class="text-body-sm" style="color:var(--on-surface-variant)">Local Delivery</div></div>
+                <label class="form-toggle"><input type="checkbox" checked/><span class="form-toggle-slider"></span></label>
+              </div>
+              <div class="flex-between">
+                <div><div style="font-weight:600">Mikyaj Cold-Chain</div><div class="text-body-sm" style="color:var(--on-surface-variant)">Internal VIP Fleet</div></div>
+                <label class="form-toggle"><input type="checkbox" checked/><span class="form-toggle-slider"></span></label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card" style="padding:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Sync Logs</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:11px;font-family:monospace;background:var(--surface-container-highest);padding:1rem;height:200px;overflow-y:auto;color:var(--on-surface-variant)">
+              <div>[18:32:01] 200 OK - INVENTORY_PULL (12 items)</div>
+              <div>[18:24:14] 201 CREATED - ORDER_PUSH (#ORD-109283)</div>
+              <div>[18:15:00] 200 OK - INVENTORY_PULL (0 items)</div>
+              <div>[18:02:45] 200 OK - PRODUCT_SYNC (1 updated)</div>
+              <div style="color:var(--warning)">[17:45:12] 429 TOO_MANY_REQUESTS - RETRYING</div>
+              <div>[17:45:10] 201 CREATED - ORDER_PUSH (#ORD-109282)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container"></div>
+<script src="../js/store.js"></script><script src="../js/seed-data.js"></script><script src="../js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!MikyajStore.isAdminLoggedIn()) { window.location.href = 'login.html'; return; }
+});
+</script>
+</body>
+</html>

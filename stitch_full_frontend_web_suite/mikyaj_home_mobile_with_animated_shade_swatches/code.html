@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html class="light dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {secondary: "#f7b7ac", primary: "#c8c6c5", "on-primary-container": "#7e7d7d", "on-primary-fixed-variant": "#474646", "secondary-container": "#683a33", "surface-container": "#1f201e", "on-tertiary": "#3b2d26", "primary-fixed": "#e5e2e1", "surface-tint": "#c8c6c5", "on-secondary": "#4d251e", background: "#131412", "on-error-container": "#ffdad6", "surface-dim": "#131412", outline: "#8e9192", "on-surface": "#e4e2df", "primary-container": "#121212", "on-tertiary-fixed-variant": "#53443b", "tertiary-fixed": "#f5ded3", "on-primary-fixed": "#1c1b1b", "on-secondary-container": "#e4a69b", "surface-bright": "#393938", "on-error": "#690005", "on-background": "#e4e2df", "inverse-primary": "#5f5e5e", "primary-fixed-dim": "#c8c6c5", "secondary-fixed-dim": "#f7b7ac", "tertiary-container": "#1b100a", "on-secondary-fixed": "#33110b", "error-container": "#93000a", error: "#ffb4ab", "secondary-fixed": "#ffdad4", "tertiary-fixed-dim": "#d8c2b7", "outline-variant": "#444748", "on-tertiary-container": "#8d7a70", "inverse-surface": "#e4e2df", "surface-container-low": "#1b1c1a", "on-surface-variant": "#c4c7c7", "surface-container-highest": "#343533", tertiary: "#d8c2b7", "on-tertiary-fixed": "#251912", "on-secondary-fixed-variant": "#683a33", "surface-container-high": "#2a2a28", surface: "#131412", "on-primary": "#313030", "inverse-on-surface": "#30312f", "surface-container-lowest": "#0e0e0d", "surface-variant": "#343533"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"gutter-desktop": "2rem", "margin-desktop": "4rem", "space-md": "1rem", "space-4xl": "6rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-3xl": "4.5rem", "container-max-desktop": "1440px", "space-2xs": "0.25rem", "space-xs": "0.5rem", "space-2xl": "3rem", "space-sm": "0.75rem"}, fontFamily: {"price-fraction": ["DM Sans"], "body-md": ["DM Sans"], "price-primary": ["DM Sans"], "headline-md": ["Bodoni Moda"], "display-hero-mobile": ["Bodoni Moda"], "headline-lg": ["Bodoni Moda"], "title-editorial": ["Bodoni Moda"], "headline-sm": ["Bodoni Moda"], "label-badge": ["DM Sans"], "body-sm": ["DM Sans"], "label-caps": ["DM Sans"], "body-lg": ["DM Sans"], "display-hero": ["Bodoni Moda"], "headline-lg-mobile": ["Bodoni Moda"], headline: ["Bodoni Moda"], display: ["Bodoni Moda"], body: ["DM Sans"], label: ["DM Sans"]}, fontSize: {"price-fraction": ["12px", {lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "400"}], "body-md": ["14px", {lineHeight: "22px", letterSpacing: "0.01em", fontWeight: "400"}], "price-primary": ["15px", {lineHeight: "20px", letterSpacing: "0.03em", fontWeight: "500"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "0", fontWeight: "400"}], "display-hero-mobile": ["36px", {lineHeight: "44px", letterSpacing: "-0.01em", fontWeight: "400"}], "headline-lg": ["38px", {lineHeight: "46px", letterSpacing: "-0.01em", fontWeight: "400"}], "title-editorial": ["18px", {lineHeight: "26px", letterSpacing: "0.02em", fontWeight: "500"}], "headline-sm": ["20px", {lineHeight: "28px", letterSpacing: "0", fontWeight: "500"}], "label-badge": ["10px", {lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "500"}], "body-sm": ["12px", {lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "400"}], "label-caps": ["11px", {lineHeight: "14px", letterSpacing: "0.12em", fontWeight: "600"}], "body-lg": ["16px", {lineHeight: "26px", letterSpacing: "0.01em", fontWeight: "400"}], "display-hero": ["56px", {lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "400"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", letterSpacing: "0", fontWeight: "400"}]}}}};</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background font-body-md text-body-md text-on-surface antialiased flex flex-col"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="h-28 flex flex-col justify-between"><div class="h-9 px-4 bg-primary text-on-primary flex items-center justify-between text-center select-none"><span class="font-label-badge text-label-badge tracking-widest uppercase font-medium">FREE KUWAIT DELIVERY OVER 20 KD</span><div class="flex items-center gap-1 font-label-badge text-label-badge uppercase tracking-wider text-on-primary/80"><button class="hover:text-on-primary transition-colors">العربية</button><span class="opacity-40">/</span><button class="text-on-primary font-semibold">EN</button></div></div><div class="h-[76px] px-space-md flex items-center justify-between"><div class="flex items-center gap-space-xs"><img alt="Elegant minimalist typography wordmark and luxury beauty emblem for MIKYAJ Kuwait. Modern serif and clean sans-serif pairing with refined luxury beauty aesthetic, black on transparent.. Brand logo. - Primary color: #121212
+- Font: bodoniModa
+- Mode: light
+- Roundness: rounded-lg
+" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN0M80nH8_95zWYiHtyxOWp5T2NR5tsjyJWOf0PpIovpExGj4P3_O7DeRbpZ2rYm45C7R_EsZ84p_Byr6_e-yKTkgNLZ1oO3yj1IYY7kbnZxRTg2-Py7FNTxaouCedOk1HSb19FgqYY8VqafaO3g7E8FEE7-sVZNJRR3uw7XaYDXpM7Pfx1dPR2taOBIbUQxB0HaOh6qsLiHd4K94Csj1IPdPcwh8-saska2ENPiJvWtgIQmhmU6MH"/><span class="font-title-editorial text-title-editorial tracking-wider uppercase text-on-surface">MIKYAJ</span></div><div class="flex items-center gap-1"><button aria-label="Search" class="w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors"><span class="material-symbols-outlined text-[22px]">search</span></button><button aria-label="Shopping Bag" class="relative w-11 h-11 flex items-center justify-center text-on-surface hover:text-secondary transition-colors"><span class="material-symbols-outlined text-[22px]">shopping_bag</span><span class="absolute top-2 right-2 min-w-[15px] h-[15px] px-[3px] bg-secondary text-on-secondary rounded-full flex items-center justify-center font-label-badge text-label-badge leading-none font-medium">2</span></button><div class="w-8 h-8 ml-1 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="flex flex-col relative w-full pt-28 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Search Bar & Instant Filter Section -->
+<div class="px-space-md pt-2 pb-space-sm">
+<div class="relative flex items-center w-full bg-surface-container-low rounded-full px-4 py-2.5 shadow-sm transition-all duration-300 focus-within:bg-surface-container-lowest focus-within:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] mr-2">search</span>
+<input class="w-full bg-transparent text-on-surface font-body-sm text-body-sm placeholder:text-outline focus:outline-none" placeholder="Search formulations, actives, brands..." type="text"/>
+<div class="flex items-center space-x-2">
+<button aria-label="Voice Search" class="w-7 h-7 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" title="Voice Search">
+<span class="material-symbols-outlined text-[19px]">mic</span>
+</button>
+<button aria-label="Filters" class="w-7 h-7 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" title="Filter Selection">
+<span class="material-symbols-outlined text-[19px]">tune</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Editorial Hero Container -->
+<div class="px-space-md mb-space-lg">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low p-5 shadow-sm">
+<!-- Ambient Glow Texture -->
+<div class="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none"></div>
+<!-- Top Badge / Volume Label -->
+<div class="flex items-center justify-between mb-3">
+<span class="inline-flex items-center gap-1.5 font-label-badge text-label-badge tracking-widest uppercase text-secondary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+          • KUWAIT EXCLUSIVE • إصدارات حصرية • VOL. 04
+        </span>
+<span class="font-label-badge text-label-badge uppercase tracking-wider text-on-surface-variant/70">AUTUMN / WINTER 24</span>
+</div>
+<!-- Editorial Headline -->
+<div class="space-y-1 mb-4">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-normal leading-tight">
+          Clean Formulations, <br/><span class="italic font-normal text-secondary">Refined Beauty.</span>
+</h1>
+<p class="font-title-editorial text-body-sm text-on-surface-variant leading-relaxed">
+          عناية راقية واستثنائية لكويت الفخامة
+        </p>
+</div>
+<!-- Featured Spotlight Product Micro-Card -->
+<div class="relative rounded-lg bg-surface-container-lowest p-3 shadow-sm mb-4">
+<div class="flex items-center gap-3">
+<div class="relative w-20 h-24 rounded-md overflow-hidden bg-surface-container shrink-0">
+<img class="w-full h-full object-cover" data-alt="Editorial close-up still-life of Dr. Althea 345 Relief Balancing Elixir luxury glass serum bottle with dropper pipette, softly sunlit on polished Italian marble plinth with natural delicate morning shadows, minimalist warm cream tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCyICmdP8N9TqDhtIl_t85hsu_y6-mmz-9HMelN_ocoSNXZAIP79xFpzuzw_onj83UKNxlLKH6SJdxuMuoRZW1PJOvx28y6KY0rfyl8lqnprtRtKh-VRhVFzmpw6dEKUH59W4spajHA3upNv1Vf6Cm7E4Cs_ZRE25s0ikUcKQNhOhIVgHZt9oT1ht34b5zAkem4t5E5EjBEgEDpjx5IUXoQkKXP4qdKp4G5E3SCCJf6aLdLT2CQaLR"/>
+<span class="absolute top-1 left-1 bg-secondary text-on-secondary font-label-badge text-[9px] px-1.5 py-0.5 rounded-sm uppercase tracking-wider font-semibold">Icon</span>
+</div>
+<div class="flex flex-col justify-between flex-1 min-w-0 py-0.5">
+<div>
+<span class="font-label-caps text-[10px] tracking-widest text-on-surface-variant uppercase block">Dr. Althea Atelier</span>
+<h3 class="font-title-editorial text-body-md text-on-surface truncate font-medium">345 Relief Balancing Elixir</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Squalane &amp; Resveratrol Matrix</p>
+</div>
+<div class="mt-2 pt-1"><button class="w-full py-2 px-3 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center justify-center gap-1.5 hover:bg-secondary" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[15px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+</div>
+<!-- Primary Action CTAs -->
+<div class="flex flex-col gap-2">
+<button class="w-full py-3.5 bg-primary text-on-primary rounded font-label-caps text-label-caps tracking-widest uppercase text-center shadow-sm hover:bg-surface-container-highest hover:text-on-surface transition-all duration-200">
+          SHOP NEW ARRIVALS • تسوقي الجديد
+        </button>
+<button class="w-full py-2.5 bg-surface-container text-on-surface rounded font-label-caps text-label-caps tracking-widest uppercase text-center transition-all duration-200 hover:bg-surface-container-high">
+          EXPLORE SKINCARE GALLERY
+        </button>
+</div>
+<!-- Kuwait Privilege Trust Highlights -->
+<div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-none">
+<div class="flex flex-col items-center text-center p-1.5 bg-surface-container-lowest/60 rounded">
+<span class="material-symbols-outlined text-secondary text-[18px] mb-0.5">verified</span>
+<span class="font-label-caps text-[9px] uppercase tracking-wider text-on-surface font-semibold leading-tight">100% Atelier</span>
+<span class="font-body-sm text-[8px] text-on-surface-variant">Direct Origin</span>
+</div>
+<div class="flex flex-col items-center text-center p-1.5 bg-surface-container-lowest/60 rounded">
+<span class="material-symbols-outlined text-secondary text-[18px] mb-0.5">local_shipping</span>
+<span class="font-label-caps text-[9px] uppercase tracking-wider text-on-surface font-semibold leading-tight">4-Hr Fleet</span>
+<span class="font-body-sm text-[8px] text-on-surface-variant">Kuwait City &amp; Suburbs</span>
+</div>
+<div class="flex flex-col items-center text-center p-1.5 bg-surface-container-lowest/60 rounded">
+<span class="material-symbols-outlined text-secondary text-[18px] mb-0.5">credit_card</span>
+<span class="font-label-caps text-[9px] uppercase tracking-wider text-on-surface font-semibold leading-tight">Instant KNET</span>
+<span class="font-body-sm text-[8px] text-on-surface-variant">Zero Delay Gateway</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro Trust Carousel Pills -->
+<div class="w-full overflow-x-auto no-scrollbar px-space-md mb-space-lg">
+<div class="flex items-center gap-2 min-w-max pb-1">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-badge text-label-badge uppercase tracking-wider">
+<span class="material-symbols-outlined text-[15px] text-secondary">workspace_premium</span>
+<span class="">Provenance Guarantee • موثوق المصدر</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-badge text-label-badge uppercase tracking-wider">
+<span class="material-symbols-outlined text-[15px] text-secondary">bolt</span>
+<span class="">Same-Day Dispatch Kuwait • توصيل اليوم</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-on-surface font-label-badge text-label-badge uppercase tracking-wider">
+<span class="material-symbols-outlined text-[15px] text-secondary">temp_preferences_custom</span>
+<span class="">Cold-Chain Beauty Vaults • تخزين مبرد</span>
+</div>
+</div>
+</div>
+<!-- Circular Category Navigation -->
+<div class="px-space-md mb-space-lg">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">Curated Universes</span>
+<span class="font-title-editorial text-body-sm text-secondary font-medium cursor-pointer">View All</span>
+</div>
+<div class="flex items-start justify-between overflow-x-auto no-scrollbar gap-3 pb-1">
+<!-- Skincare -->
+<button class="flex flex-col items-center group min-w-[64px]">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container-high p-0.5 transition-transform duration-200 group-active:scale-95 shadow-sm">
+<img class="w-full h-full object-cover rounded-full" data-alt="Minimalist luxury skincare serum droplet and frosted glass pipette in soft ivory warm ambient light, high editorial aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpbciQHtRMmTe3zUhfYuFNVxWIvXg8v1kMPlnVjRklLhfLk0YVPE-4BgKpW0nIjgb4uYi-W3o0Sk8gsyNhPYAKOfPnonuqaPhC4B_M6OnYEKwrZ983dvyWXrRbbR7QupDNzbg0ZmHm_75gTDsDs2JQywk5HmmuRMWl3MBCEdLinLrLwlNrP2I3rmFHl9tC4NU3cWZnd6tQP6ubRSjR462sL0s-QgG0oU_yjaGGmt-GTSbH2V0MrRUR"/>
+</div>
+<span class="font-label-caps text-[11px] mt-1.5 text-on-surface font-semibold tracking-wide">Skincare</span>
+<span class="font-title-editorial text-[10px] text-on-surface-variant">العناية بالبشرة</span>
+</button>
+<!-- Makeup -->
+<button class="flex flex-col items-center group min-w-[64px]">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container-high p-0.5 transition-transform duration-200 group-active:scale-95 shadow-sm">
+<img class="w-full h-full object-cover rounded-full" data-alt="Editorial gold fluted lipstick bullet opened revealing rich velvet crimson pigment, elegant cream background with warm directional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ22Keji3sBnBiLfCi2RGhBytGT0XJAYHW2YrqRZvnyCLI_7CUGNwGp9Hn2e3HaWnDGUGj-6rkYim1T9SxDeYzJNW9dLeTSqMLW3VtxlEW9oB4NS_tUplXUma7rFUXVTMc3RGwhWWTTvPEytBm5o2JYNNSl9X0BfsHEMDPQzVMza-dzoF7mOZDcxMJZ5n5acU0RMC6SGtt0rml84GsaiTet3wMy0dNYROqxOuB4q50z-1V-1ierWfx"/>
+</div>
+<span class="font-label-caps text-[11px] mt-1.5 text-on-surface font-semibold tracking-wide">Makeup</span>
+<span class="font-title-editorial text-[10px] text-on-surface-variant">المكياج</span>
+</button>
+<!-- Hair Care -->
+<button class="flex flex-col items-center group min-w-[64px]">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container-high p-0.5 transition-transform duration-200 group-active:scale-95 shadow-sm">
+<img class="w-full h-full object-cover rounded-full" data-alt="Sleek glass bottle with golden botanical hair elixir, natural light glinting through translucent oil on sandstone shelf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO7XDNBoHLOrV3F3Hpwg2MmOvqq2CGIQxllVbwDcncPWyfXEgwlmD4DS-Sw9nsh2SqBu4xwU35YZNHpWtM0VmAmYFtXioA0F02Sw_D8SycLJS106fYjR_QmnjK5yUGmuKzxaMI-f6xGwKnD0Sxx9vjy8R8UR_35nteHJ8Q9IVzdHuDmqxuNLxcDBGDWUXvyhN6eGeMLOJ1Pzvy67n-qUMSw3gHpZm_-XKPxfJYqNOz52PLAVv0MdSI"/>
+</div>
+<span class="font-label-caps text-[11px] mt-1.5 text-on-surface font-semibold tracking-wide">Hair Care</span>
+<span class="font-title-editorial text-[10px] text-on-surface-variant">العناية بالشعر</span>
+</button>
+<!-- Body Care -->
+<button class="flex flex-col items-center group min-w-[64px]">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container-high p-0.5 transition-transform duration-200 group-active:scale-95 shadow-sm">
+<img class="w-full h-full object-cover rounded-full" data-alt="Sculptural minimalist ceramic jar with rich whip cream balm texture on travertine block, soft organic aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSpysuIll0JQRHZs23Wnu4tHe3-x3ZrH28YIPOfVy_CplQBGBN25A4dwFfW1dF4WDJddedmaTww7l-Y9niWCCGBVTezvmKzD6HcOiaAPct1Wxk03ZY_XuqpNTWb4TW5mxQ4udVgNXsCiRcuH05grkhDrQwOU_i4u13ZbQoSLJFQJtIuYRzoySSjH05JcPSleqjtnp-GljebgAaWbXAUnhpBQSYLalmagJr5RbJ1WT9zO0_ph2Cx9K8"/>
+</div>
+<span class="font-label-caps text-[11px] mt-1.5 text-on-surface font-semibold tracking-wide">Body Care</span>
+<span class="font-title-editorial text-[10px] text-on-surface-variant">العناية بالجسم</span>
+</button>
+<!-- Sets & Tools -->
+<button class="flex flex-col items-center group min-w-[64px]">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container-high p-0.5 transition-transform duration-200 group-active:scale-95 shadow-sm">
+<img class="w-full h-full object-cover rounded-full" data-alt="Polished luxury rose quartz facial gua sha sculpting tool beside gilded dual-fiber makeup brush on neutral backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkjaBn9zrPMEzWJ2eRNvsem9iQ6iXnPqB-Hqf0rwnJfOtFL4M_ozhv9OpZUhA3cW_wQwPqNi6XCO1KBKgsly9Kd1npZQFSxsWMVr0aNADTD1lUjV7fz9UK1bIejlM2YoRY1VYYbcHIiy13TPLJdArYgO6K3gCg90zVFMVM1EvWox9WrXuy4XkFhD0aRmIRqnCoF_yfuyQL73av5GNqd0iQqdBL042MNooA1nsQnr-rntVl03f4Z4MW"/>
+</div>
+<span class="font-label-caps text-[11px] mt-1.5 text-on-surface font-semibold tracking-wide">Tools</span>
+<span class="font-title-editorial text-[10px] text-on-surface-variant">الأدوات الفاخرة</span>
+</button>
+</div>
+</div>
+<!-- Section: Most Coveted Best-Sellers with Shade Swatch Selectors -->
+<div class="px-space-md mb-space-2xl">
+<div class="flex items-end justify-between mb-4">
+<div>
+<div class="flex items-center gap-2 mb-0.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase text-secondary">Iconic Selections</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-snug">Most Coveted</h2>
+<p class="font-title-editorial text-body-sm text-on-surface-variant">الأكثر طلباً وتفضيلاً في الكويت</p>
+</div>
+<a class="font-label-caps text-label-caps uppercase tracking-wider text-primary border-b border-primary pb-0.5 hover:text-secondary hover:border-secondary transition-colors" href="#">
+        Full Edit
+      </a>
+</div>
+<!-- Product Grid: 2 Columns -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Card 1: Clarins Paris Foundation with Interactive Swatches -->
+<div class="relative flex flex-col rounded-lg bg-surface-container-lowest p-2.5 shadow-sm transition-all duration-300 group">
+<!-- Wishlist Button -->
+<button aria-label="Wishlist" class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-surface/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary active:scale-125 transition-transform" onclick="toggleWishlist(this)">
+<span class="material-symbols-outlined text-[16px]">favorite_border</span>
+</button>
+<!-- Product Image Container -->
+<div class="relative w-full aspect-[4/5] rounded-md overflow-hidden bg-surface-container-low mb-2.5">
+<img class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Clarins Paris Skin Illusion natural hydrating foundation luxurious square glass bottle with gold pump cap standing on smooth warm marble" id="clarins-fdn-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdMWNOKkHAw5Hae3psEBmSN4jczFICfGl7I6u6_Ev_rEZx91HHJffvGpChcDR8vPhsOwspUw-BgC272z0vLTezekNm0LvVt2cq49n0wm25JXJ2pK6mayCzbgBVqAF4Dz6TOfeQGQ-AAaymPD-elNQ9t6qM6AZFhYgypv9DWqqyqx3yIfWE-9SfcY9Yu1Xn3PSgxhyIWjsW433LRECLPJG93qRy17KIM-OYqUYYR0dZjYu4seoxh2Rb"/>
+<span class="absolute bottom-2 left-2 bg-primary/80 backdrop-blur-sm text-on-primary font-label-badge text-[9px] px-1.5 py-0.5 rounded tracking-widest uppercase font-medium">Bestseller</span>
+</div>
+<!-- Meta -->
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-surface-variant">Clarins Paris</span>
+<h3 class="font-title-editorial text-body-md text-on-surface font-medium leading-tight line-clamp-1 mb-0.5">Skin Illusion Foundation</h3>
+<!-- Interactive Shade Selector Component -->
+<div class="my-1.5 bg-surface-container-low/60 p-1.5 rounded">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase tracking-wider">Shade:</span>
+<span class="font-label-caps text-[9px] text-secondary font-semibold uppercase truncate" id="clarins-shade-name">103 Ivory</span>
+</div>
+<div class="flex items-center gap-1.5 justify-start">
+<!-- Swatch 1 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 transform scale-110 shadow-sm relative" onclick="selectShade('clarins-shade-name', '103 Ivory', this)" style="background-color: #f7e6d2;" title="103 Ivory" type="button">
+<span class="swatch-indicator absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+<!-- Swatch 2 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 relative" onclick="selectShade('clarins-shade-name', '105 Nude', this)" style="background-color: #ebd0b6;" title="105 Nude" type="button">
+<span class="swatch-indicator hidden absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+<!-- Swatch 3 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 relative" onclick="selectShade('clarins-shade-name', '108 Sand', this)" style="background-color: #dfba98;" title="108 Sand" type="button">
+<span class="swatch-indicator hidden absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+<!-- Swatch 4 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 relative" onclick="selectShade('clarins-shade-name', '110 Honey', this)" style="background-color: #cca47f;" title="110 Honey" type="button">
+<span class="swatch-indicator hidden absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+</div>
+</div>
+<!-- Price & Quick Add -->
+<div class="mt-auto pt-2"><button aria-label="Add to bag" class="w-full py-2 px-2 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all duration-200 hover:bg-secondary active:scale-95" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+<!-- Card 2: Clarins Paris Lipstick with Interactive Swatches -->
+<div class="relative flex flex-col rounded-lg bg-surface-container-lowest p-2.5 shadow-sm transition-all duration-300 group">
+<!-- Wishlist Button -->
+<button aria-label="Wishlist" class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-surface/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary active:scale-125 transition-transform" onclick="toggleWishlist(this)">
+<span class="material-symbols-outlined text-[16px]">favorite_border</span>
+</button>
+<!-- Product Image Container -->
+<div class="relative w-full aspect-[4/5] rounded-md overflow-hidden bg-surface-container-low mb-2.5">
+<img class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Clarins Paris Joli Rouge Velvet Lipstick golden fluted metal case standing open showing sophisticated berry-crimson bullet pigment" id="clarins-lipstick-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhAwQtWqNHvTtIRq3kjh4AC2gBEHOkBAKsrKynEuSQyuQT2hf6KarY9JmM0_xmMsOr3gaCvSswSaj7o_uUNPJs6ErGQoygiVA2rhNUMPD-15ezN5Fqyk_ZF0N-spYN-owg1HTMNbbYjSKsELxUGYwUUN3TWL4ZDUit2KAngpr9Q2VyqS2e2cFgRY5zSwDZTGtClQT4_-ECKwHI8ulO3pt5etS9DUj7HiIGWB_rbvGfomUzdPIhG9b6"/>
+<span class="absolute bottom-2 left-2 bg-secondary text-on-secondary font-label-badge text-[9px] px-1.5 py-0.5 rounded tracking-widest uppercase font-medium">Trending</span>
+</div>
+<!-- Meta -->
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-surface-variant">Clarins Paris</span>
+<h3 class="font-title-editorial text-body-md text-on-surface font-medium leading-tight line-clamp-1 mb-0.5">Joli Rouge Velvet</h3>
+<!-- Interactive Shade Selector Component -->
+<div class="my-1.5 bg-surface-container-low/60 p-1.5 rounded">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase tracking-wider">Shade:</span>
+<span class="font-label-caps text-[9px] text-secondary font-semibold uppercase truncate" id="lipstick-shade-name">705 Soft Berry</span>
+</div>
+<div class="flex items-center gap-1.5 justify-start">
+<!-- Swatch 1 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 transform scale-110 shadow-sm relative" onclick="selectShade('lipstick-shade-name', '705 Soft Berry', this)" style="background-color: #9d4e57;" title="705 Soft Berry" type="button">
+<span class="swatch-indicator absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+<!-- Swatch 2 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 relative" onclick="selectShade('lipstick-shade-name', '742 Joli Rouge', this)" style="background-color: #ba1628;" title="742 Joli Rouge" type="button">
+<span class="swatch-indicator hidden absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+<!-- Swatch 3 -->
+<button class="shade-swatch w-4 h-4 rounded-full transition-all duration-200 relative" onclick="selectShade('lipstick-shade-name', '732 Grenadine', this)" style="background-color: #b74f46;" title="732 Grenadine" type="button">
+<span class="swatch-indicator hidden absolute inset-0 rounded-full ring-2 ring-primary ring-offset-1"></span>
+</button>
+</div>
+</div>
+<!-- Price & Quick Add -->
+<div class="mt-auto pt-2"><button aria-label="Add to bag" class="w-full py-2 px-2 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all duration-200 hover:bg-secondary active:scale-95" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+<!-- Card 3: Dr. Althea 345 Relief Cream -->
+<div class="relative flex flex-col rounded-lg bg-surface-container-lowest p-2.5 shadow-sm transition-all duration-300 group">
+<button aria-label="Wishlist" class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-surface/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary active:scale-125 transition-transform" onclick="toggleWishlist(this)">
+<span class="material-symbols-outlined text-[16px]">favorite_border</span>
+</button>
+<div class="relative w-full aspect-[4/5] rounded-md overflow-hidden bg-surface-container-low mb-2.5">
+<img class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Dr. Althea 345 Relief Intensive Soothing Cream 50ml clean white and clinical amber cosmetic tube set gracefully on textured ivory stone pedestal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhtdDlsLpNK6aF_lRx97RTgerg3bKW_aFK9qkIdvYUVgAOtzAs-LbPyD4WZoMSLfYwf28mSdWgNHdyjqb82W-JFXmao40IeExGJ7_i73gaTeNqdblOhGE8gh90mRE3EaeZvPaIzYTw79onC6yYWd_XeNKmETDtzowybcWMWLmammDC1fM65qWfDe0MLJcPHdPoh8sNvH_eTiemgvxZfe4jCPQp8CSevthvtiS4k4SXvgJy2NlFBTdz"/>
+<span class="absolute top-2 left-2 bg-error text-on-error font-label-badge text-[9px] px-1.5 py-0.5 rounded tracking-widest uppercase font-bold">-19%</span>
+<span class="absolute bottom-2 left-2 bg-surface-container-highest text-on-surface font-label-badge text-[8px] px-1.5 py-0.5 rounded tracking-wider uppercase font-semibold">Fast Moving</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-surface-variant">Dr. Althea</span>
+<h3 class="font-title-editorial text-body-md text-on-surface font-medium leading-tight line-clamp-1 mb-0.5">345 Relief Intensive Cream</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mb-2">50ml • Post-Acne Barrier</p>
+<div class="mt-auto pt-2"><button aria-label="Add to bag" class="w-full py-2 px-2 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all duration-200 hover:bg-secondary active:scale-95" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+<!-- Card 4: ACM Paris Sebionex Bar -->
+<div class="relative flex flex-col rounded-lg bg-surface-container-lowest p-2.5 shadow-sm transition-all duration-300 group">
+<button aria-label="Wishlist" class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-surface/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary active:scale-125 transition-transform" onclick="toggleWishlist(this)">
+<span class="material-symbols-outlined text-[16px]">favorite_border</span>
+</button>
+<div class="relative w-full aspect-[4/5] rounded-md overflow-hidden bg-surface-container-low mb-2.5">
+<img class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="ACM Paris Sebionex Dermatological Cleansing Bar packaged in chic minimalist French pharmacy box resting on raw slate block with soft water droplets" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSGAmUoKcoR3PmDDCOoqq-kFZfmXKtDmzJEkjGNz-frOzL9Gevz5yuLpT-XCowccxI4SQUzlZgLQIFaUylPGAFsDCWv56MPXgWsm9mn1UAm_Dfv22S8gxZf81PLhPcdAXO6Lqf9EjVlswrk0EQGDtvGa-ljCF7tW4_UjeTM6r6vpQdc19vK8fAwsTEAB_3UPZSvl6QiWXR8R2MJBuceXaGCF80DPQPECsv9Oe22Z2WJCM6H6P4gx8h"/>
+<span class="absolute bottom-2 left-2 bg-surface-container-highest text-on-surface font-label-badge text-[8px] px-1.5 py-0.5 rounded tracking-wider uppercase font-semibold">In Stock</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-surface-variant">ACM Paris</span>
+<h3 class="font-title-editorial text-body-md text-on-surface font-medium leading-tight line-clamp-1 mb-0.5">Sebionex Dermatological Bar</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mb-2">Gentle Sebo-Regulating Wash</p>
+<div class="mt-auto pt-2"><button aria-label="Add to bag" class="w-full py-2 px-2 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all duration-200 hover:bg-secondary active:scale-95" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+<!-- Card 5: Anua Heartleaf Toner -->
+<div class="relative flex flex-col rounded-lg bg-surface-container-lowest p-2.5 shadow-sm transition-all duration-300 group">
+<button aria-label="Wishlist" class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-surface/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary active:scale-125 transition-transform" onclick="toggleWishlist(this)">
+<span class="material-symbols-outlined text-[16px]">favorite_border</span>
+</button>
+<div class="relative w-full aspect-[4/5] rounded-md overflow-hidden bg-surface-container-low mb-2.5">
+<img class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Anua Heartleaf 77% Soothing Clear Toner 250ml clear minimal bottle showing fresh pure tonic formulation with green botanical leaf reflection" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY_QTBghqAey4x4KOZMavshdks8F96Sjn6eX_JTWUkNI6Ftie2MhMv8qImDYCyYFbH0ETxT64BIMbl08Yzw3NXyPP3S_wVwJQGZrjwgzLcqoY3ZZW_aBq0ANlpix46SjCop4jRGxx6HbJyPd70IUM68TtDQ5HMdUhbP2c8xJQljArB3VpyeK4r-NuZEt_Wd_XhEhiEXEskJojYFeMxm34hOeh-uXgCk2AK5_L-ffDxxcvAGysh3Q8a"/>
+<span class="absolute bottom-2 left-2 bg-secondary text-on-secondary font-label-badge text-[9px] px-1.5 py-0.5 rounded tracking-widest uppercase font-medium">Viral</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-surface-variant">Anua Korea</span>
+<h3 class="font-title-editorial text-body-md text-on-surface font-medium leading-tight line-clamp-1 mb-0.5">Heartleaf 77% Toner</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mb-2">250ml • Soothing Complex</p>
+<div class="mt-auto pt-2"><button aria-label="Add to bag" class="w-full py-2 px-2 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all duration-200 hover:bg-secondary active:scale-95" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+<!-- Card 6: Skin1004 Madagascar Centella -->
+<div class="relative flex flex-col rounded-lg bg-surface-container-lowest p-2.5 shadow-sm transition-all duration-300 group">
+<button aria-label="Wishlist" class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-surface/80 backdrop-blur-md flex items-center justify-center text-on-surface hover:text-secondary active:scale-125 transition-transform" onclick="toggleWishlist(this)">
+<span class="material-symbols-outlined text-[16px]">favorite_border</span>
+</button>
+<div class="relative w-full aspect-[4/5] rounded-md overflow-hidden bg-surface-container-low mb-2.5">
+<img class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" data-alt="Skin1004 Madagascar Centella 100% Pure Ampoule luminous golden glass bottle on serene sun-drenched architectural plinth with pure golden reflections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDYtS6wZpTYR2ihS-uEeKzX9yPW8ESL0IhjJtMYfl7g1mYU2j9cmLzNpGPiNApLo8wgPZVZsVxPoYd73H_9k0XBjsxGE60y9Pg-ycij6HZFtmTH__UCsmaWTs9bYuRvJjcKEG0thfpIKl3wNYi3iouO0cMC__h2dpuKjNYFKM5eYYvYT9R8B0gXs_CGrdFYWylgiLnbzFYXt2l9O5DeSZfLMCo0ZsNnCV1ueAYyC9Oj2roMqndOaL1"/>
+<span class="absolute bottom-2 left-2 bg-primary/80 backdrop-blur-sm text-on-primary font-label-badge text-[9px] px-1.5 py-0.5 rounded tracking-widest uppercase font-medium">Pure 100%</span>
+</div>
+<div class="flex flex-col flex-1">
+<span class="font-label-caps text-[10px] tracking-widest uppercase text-on-surface-variant">Skin1004</span>
+<h3 class="font-title-editorial text-body-md text-on-surface font-medium leading-tight line-clamp-1 mb-0.5">Madagascar Centella Ampoule</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mb-2">100ml • Barrier Rescue</p>
+<div class="mt-auto pt-2"><button aria-label="Add to bag" class="w-full py-2 px-2 bg-primary text-on-primary rounded font-label-caps text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all duration-200 hover:bg-secondary active:scale-95" onclick="triggerQuickCartFeedback(this)"><span class="material-symbols-outlined text-[14px]">shopping_bag</span><span class="">Add to Bag · أضف للحقيبة</span></button></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Curated Partner Brand Directory -->
+<div class="px-space-md mb-space-2xl">
+<div class="flex items-center justify-between mb-3">
+<div>
+<span class="font-label-caps text-label-caps tracking-widest uppercase text-on-surface-variant">Authenticated Partners</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Curated Houses</h3>
+</div>
+<span class="font-label-caps text-[10px] uppercase text-secondary font-semibold">64 Global Brands</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low text-center shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="font-title-editorial text-body-md font-medium text-on-surface group-hover:text-secondary transition-colors">Beauty of Joseon</span>
+<span class="font-label-badge text-[9px] text-on-surface-variant uppercase tracking-wider mt-0.5">Seoul Atelier</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low text-center shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="font-title-editorial text-body-md font-medium text-on-surface group-hover:text-secondary transition-colors">COSRX</span>
+<span class="font-label-badge text-[9px] text-on-surface-variant uppercase tracking-wider mt-0.5">Clinical Derm</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low text-center shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="font-title-editorial text-body-md font-medium text-on-surface group-hover:text-secondary transition-colors">Clarins</span>
+<span class="font-label-badge text-[9px] text-on-surface-variant uppercase tracking-wider mt-0.5">Paris Haute</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low text-center shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="font-title-editorial text-body-md font-medium text-on-surface group-hover:text-secondary transition-colors">Laneige</span>
+<span class="font-label-badge text-[9px] text-on-surface-variant uppercase tracking-wider mt-0.5">Hydration Lab</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low text-center shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="font-title-editorial text-body-md font-medium text-on-surface group-hover:text-secondary transition-colors">Skin1004</span>
+<span class="font-label-badge text-[9px] text-on-surface-variant uppercase tracking-wider mt-0.5">Centella Origin</span>
+</div>
+<div class="flex flex-col items-center justify-center p-3 rounded-lg bg-surface-container-low text-center shadow-sm hover:bg-surface-container transition-colors cursor-pointer group">
+<span class="font-title-editorial text-body-md font-medium text-on-surface group-hover:text-secondary transition-colors">Dr. Althea</span>
+<span class="font-label-badge text-[9px] text-on-surface-variant uppercase tracking-wider mt-0.5">Derma Relief</span>
+</div>
+</div>
+</div>
+<!-- The Science of Efficacy: Botanical & Clinical Fusion -->
+<div class="px-space-md mb-space-2xl">
+<div class="rounded-xl bg-surface-container p-5 shadow-sm">
+<div class="max-w-xs mb-4">
+<span class="font-label-caps text-label-caps uppercase tracking-widest text-secondary font-semibold">Formulation Philosophy</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-tight mt-1">The Science of Efficacy</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Korean botanical heritage engineered with European clinical dermatological rigor for Gulf climate resilience.</p>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Tile 1 -->
+<div class="p-3 bg-surface-container-lowest rounded-lg shadow-sm">
+<div class="w-7 h-7 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[16px]">eco</span>
+</div>
+<h4 class="font-title-editorial text-body-md font-semibold text-on-surface">Centella Asiatica</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">Soothes extreme thermal stress and re-fortifies lipid walls.</p>
+</div>
+<!-- Tile 2 -->
+<div class="p-3 bg-surface-container-lowest rounded-lg shadow-sm">
+<div class="w-7 h-7 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[16px]">science</span>
+</div>
+<h4 class="font-title-editorial text-body-md font-semibold text-on-surface">Niacinamide 10%</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">Clarifies micro-texture and balances sebum production.</p>
+</div>
+<!-- Tile 3 -->
+<div class="p-3 bg-surface-container-lowest rounded-lg shadow-sm">
+<div class="w-7 h-7 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[16px]">water_drop</span>
+</div>
+<h4 class="font-title-editorial text-body-md font-semibold text-on-surface">Hyaluronic Matrix</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">Multi-weight hydration reservoir resilient to dry desert air.</p>
+</div>
+<!-- Tile 4 -->
+<div class="p-3 bg-surface-container-lowest rounded-lg shadow-sm">
+<div class="w-7 h-7 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[16px]">grain</span>
+</div>
+<h4 class="font-title-editorial text-body-md font-semibold text-on-surface">Fermented Rice</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">Restores luminous glass-skin reflection and natural glow.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Mikyaj Privilege Concierge Card -->
+<div class="px-space-md mb-space-lg">
+<div class="relative overflow-hidden rounded-xl bg-primary text-on-primary p-5 shadow-xl">
+<!-- Decorative Gold Ring Gradient Glow -->
+<div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-secondary/30 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase text-secondary-container">Private Client Desk</span>
+</div>
+<span class="material-symbols-outlined text-secondary-container text-[20px]">diamond</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-primary leading-tight font-normal">Mikyaj Privilege Concierge</h3>
+<p class="font-title-editorial text-body-sm text-on-primary-container mt-1">
+            خدمة الاستشارة والطلب الفوري المباشر عبر واتساب الكويت
+          </p>
+<p class="font-body-sm text-body-sm text-on-primary-container/80 mt-1">
+            Direct skin analysis, personalized shade curation, and VIP same-day express delivery booking.
+          </p>
+</div>
+<form class="space-y-2.5 pt-2" onsubmit="event.preventDefault(); triggerConciergeConfirmation(this);">
+<div class="relative flex items-center bg-primary-container rounded px-3 py-2">
+<span class="font-price-primary text-body-sm text-secondary-container mr-2 font-medium">+965</span>
+<input class="w-full bg-transparent text-on-primary font-body-sm text-body-sm placeholder:text-outline focus:outline-none" placeholder="Kuwait Mobile (e.g. 9988 7766)" required="" type="tel"/>
+<span class="material-symbols-outlined text-[18px] text-outline">phone_iphone</span>
+</div>
+<button class="w-full py-3 bg-secondary-container text-on-secondary-container rounded font-label-caps text-label-caps tracking-widest uppercase font-semibold transition-all duration-200 hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+<span class="">SUBSCRIBE • اشترك فوري</span>
+</button>
+</form>
+<div class="hidden text-center py-2 bg-secondary/30 rounded text-on-primary font-body-sm text-body-sm animate-fade-in" id="concierge-success-msg">
+          ✓ Request logged. Our Kuwait Beauty Concierge will message you shortly.
+        </div>
+</div>
+</div>
+</div>
+<!-- Toast Notification Pill for Shade & Bag Interactions -->
+<div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300" id="mikyaj-toast">
+<div class="bg-primary text-on-primary px-4 py-2 rounded-full shadow-2xl flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary-container">check_circle</span>
+<span class="font-label-caps text-[11px] uppercase tracking-wider font-medium" id="toast-text">Added to Bag</span>
+</div>
+</div>
+</div>
+<script>
+  function selectShade(labelId, shadeName, buttonEl) {
+    // Update active label text
+    const label = document.getElementById(labelId);
+    if (label) {
+      label.textContent = shadeName;
+    }
+
+    // Update sibling swatch visual selection states
+    const parentContainer = buttonEl.parentElement;
+    if (parentContainer) {
+      const allSwatches = parentContainer.querySelectorAll('.shade-swatch');
+      allSwatches.forEach(swatch => {
+        swatch.classList.remove('scale-110');
+        const ind = swatch.querySelector('.swatch-indicator');
+        if (ind) ind.classList.add('hidden');
+      });
+
+      buttonEl.classList.add('scale-110');
+      const activeIndicator = buttonEl.querySelector('.swatch-indicator');
+      if (activeIndicator) activeIndicator.classList.remove('hidden');
+    }
+
+    // Micro toast trigger
+    showToast('Shade selected: ' + shadeName);
+  }
+
+  function toggleWishlist(btn) {
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (!icon) return;
+
+    if (icon.textContent === 'favorite_border') {
+      icon.textContent = 'favorite';
+      icon.style.fontVariationSettings = "'FILL' 1";
+      icon.classList.add('text-secondary');
+      showToast('Saved to Kuwait Wishlist');
+    } else {
+      icon.textContent = 'favorite_border';
+      icon.style.fontVariationSettings = "'FILL' 0";
+      icon.classList.remove('text-secondary');
+      showToast('Removed from Wishlist');
+    }
+  }
+
+  function triggerQuickCartFeedback(btn) {
+    btn.classList.add('scale-90');
+    setTimeout(() => {
+      btn.classList.remove('scale-90');
+    }, 150);
+    showToast('Added to Luxury Bag • تم الإضافة للسلة');
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('mikyaj-toast');
+    const toastText = document.getElementById('toast-text');
+    if (!toast || !toastText) return;
+
+    toastText.textContent = message;
+    toast.classList.remove('opacity-0', 'translate-y-4');
+    toast.classList.add('opacity-100', 'translate-y-0');
+
+    clearTimeout(window._toastTimeout);
+    window._toastTimeout = setTimeout(() => {
+      toast.classList.remove('opacity-100', 'translate-y-0');
+      toast.classList.add('opacity-0', 'translate-y-4');
+    }, 2200);
+  }
+
+  function triggerConciergeConfirmation(form) {
+    const success = document.getElementById('concierge-success-msg');
+    if (success) {
+      success.classList.remove('hidden');
+      form.querySelector('button[type="submit"]').disabled = true;
+      form.querySelector('button[type="submit"]').classList.add('opacity-50');
+    }
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.03)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] h-14 gap-1 transition-colors text-primary font-semibold" data-path="home" href="#"><span class="material-symbols-outlined text-[20px]">home</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Home</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-14 gap-1 text-on-surface-variant transition-colors" data-path="shop-catalog" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Shop</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-14 gap-1 text-on-surface-variant transition-colors" data-path="curated-brands" href="#"><span class="material-symbols-outlined text-[20px]">hotel_class</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Brands</span></a><a class="relative flex flex-col items-center justify-center min-w-[56px] h-14 gap-1 text-on-surface-variant transition-colors" data-path="shopping-bag" href="#"><div class="relative"><span class="material-symbols-outlined text-[20px]">shopping_bag</span><span class="absolute -top-1 -right-2 min-w-[14px] h-[14px] px-[2px] bg-secondary text-on-secondary rounded-full flex items-center justify-center font-label-badge text-label-badge leading-none font-medium">2</span></div><span class="font-label-caps text-label-caps uppercase tracking-wider">Bag</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-14 gap-1 text-on-surface-variant transition-colors" data-path="client-account" href="#"><span class="material-symbols-outlined text-[20px]">account_circle</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Account</span></a></div></nav>
+</body></html>

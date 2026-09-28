@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Shopping Bag — Mikyaj Kuwait</title><link rel="stylesheet" href="css/main.css"/></head>
+<body>
+<div style="background:var(--primary);color:var(--on-primary);padding:6px 0;font-size:12px"><div class="container flex-between"><span class="flex gap-xs" style="align-items:center"><span class="material-symbols-outlined" style="font-size:16px">local_shipping</span>Complimentary bespoke delivery across Kuwait</span><span class="text-label-caps" style="font-size:10px">EN | العربية | KWD</span></div></div>
+<header style="background:var(--surface-container-low);border-bottom:1px solid var(--outline-variant);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)"><div class="container flex-between" style="height:64px"><div class="flex gap-xl" style="align-items:center"><a href="index.html" class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a></div><div class="flex gap-md" style="align-items:center"><a href="shop.html" class="text-label-caps" style="color:var(--on-surface-variant)">Continue Shopping</a></div></div></header>
+
+<main>
+  <div class="container" style="padding:2rem 4rem 4rem">
+    <div class="flex-between" style="margin-bottom:2rem">
+      <div><span class="text-label-caps" style="color:var(--secondary)">Your Selection</span><h1 class="text-headline-lg" style="margin-top:4px">Shopping Bag (<span id="cartItemCount">0</span>)</h1></div>
+    </div>
+
+    <div id="cartEmpty" class="empty-state" style="display:none">
+      <span class="material-symbols-outlined">shopping_bag</span>
+      <h3>Your bag is empty</h3>
+      <p>Explore our curated collection of luxury cosmetics and add items to your bag.</p>
+      <a href="shop.html" class="btn btn-primary" style="margin-top:1.5rem">Start Shopping • تسوقي الآن</a>
+    </div>
+
+    <div id="cartContent" style="display:grid;grid-template-columns:1fr 380px;gap:2rem">
+      <!-- CART ITEMS -->
+      <div>
+        <div style="border:1px solid var(--outline-variant)">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 80px;padding:0.75rem 1rem;background:var(--surface-container);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--on-surface-variant)">
+            <span>Formulation & Atelier</span><span>Price</span><span>Quantity</span><span></span>
+          </div>
+          <div id="cartItemsList"></div>
+        </div>
+
+        <!-- Dispatch Info -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem">
+          <div class="card" style="padding:1.25rem">
+            <div class="flex gap-sm" style="align-items:center;margin-bottom:0.75rem"><span class="material-symbols-outlined" style="font-size:22px;color:var(--secondary)">location_on</span><h3 class="text-headline-sm">Kuwait Dispatch</h3></div>
+            <p class="text-body-sm" style="color:var(--on-surface-variant)">Include specific villa gates, PACI address code, apartment buzzer details, or preferred call timings for express couriers.</p>
+            <input type="text" placeholder="e.g. Block 4, Street 12, Villa 8A..." class="form-input" style="margin-top:0.75rem;font-size:12px"/>
+            <span class="text-label-badge" style="color:var(--outline);margin-top:4px;display:block">PACI SUPPORTED</span>
+          </div>
+          <div class="card" style="padding:1.25rem">
+            <div class="flex gap-sm" style="align-items:center;margin-bottom:0.75rem"><span class="material-symbols-outlined" style="font-size:22px;color:var(--secondary)">card_giftcard</span><h3 class="text-headline-sm">Signature Gift Atelier</h3></div>
+            <p class="text-body-sm" style="color:var(--on-surface-variant)">Encased in Mikyaj Kuwait ivory textured box with wax stamp seal and customized parchment calligraphy card.</p>
+            <label class="form-checkbox text-body-sm" style="margin-top:0.75rem"><input type="checkbox"/> Add Bespoke Mikyaj Box & Card <span class="badge badge-success" style="margin-left:8px">Complimentary</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div>
+        <div class="card" style="padding:1.5rem;position:sticky;top:80px">
+          <h3 class="text-headline-sm" style="margin-bottom:1.25rem">Order Inquiry Summary <span style="font-size:13px;color:var(--on-surface-variant);font-weight:400">/ ملخص الطلب</span></h3>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1rem">
+            <div class="flex-between text-body-sm"><span style="color:var(--on-surface-variant)">Selection Subtotal</span><span id="subtotal">0.000 KWD</span></div>
+            <div class="flex-between text-body-sm"><span style="color:var(--on-surface-variant)">Kuwait Express Dispatch</span><span class="badge badge-success">FREE</span></div>
+            <div class="flex-between text-body-sm"><span style="color:var(--on-surface-variant)">VIP Delivery across Kuwait</span><span class="badge badge-success">FREE</span></div>
+          </div>
+          <div style="border-top:1px solid var(--outline-variant);padding-top:1rem;margin-bottom:1.5rem">
+            <div class="flex-between"><span class="text-headline-sm">Total</span><span id="total" class="text-headline-sm" style="color:var(--secondary)">0.000 KWD</span></div>
+          </div>
+
+          <!-- Promo Code -->
+          <div style="margin-bottom:1.25rem">
+            <div class="text-label-caps" style="margin-bottom:6px">Promo Code</div>
+            <div class="flex gap-xs"><input type="text" placeholder="Enter code..." class="form-input" style="flex:1;padding:8px;font-size:12px"/><button class="btn btn-outline btn-sm">Apply</button></div>
+          </div>
+
+          <button class="btn btn-secondary btn-lg" style="width:100%;margin-bottom:0.75rem" onclick="requestQuote()">
+            <span class="material-symbols-outlined" style="font-size:18px">chat</span>
+            Request Quote via WhatsApp
+          </button>
+          <button class="btn btn-primary btn-lg" style="width:100%" onclick="proceedCheckout()">
+            Proceed to Checkout • إتمام الطلب
+          </button>
+
+          <div class="card" style="margin-top:1rem;padding:0.75rem;background:var(--surface-container)">
+            <div class="flex gap-sm" style="align-items:start"><span class="material-symbols-outlined" style="font-size:18px;color:var(--secondary)">ac_unit</span><div><div class="text-label-caps" style="margin-bottom:4px;font-size:9px">Mikyaj Cold Chain Protocol</div><p class="text-body-sm" style="color:var(--on-surface-variant)">Every active formula is dispatched via climate-regulated vans across Kuwait.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer style="background:var(--surface-container-lowest);border-top:1px solid var(--outline-variant);padding:2rem 0"><div class="container flex-between text-body-sm" style="color:var(--outline)"><div class="flex gap-lg"><a href="index.html">Home</a><a href="shop.html">Shop</a></div><span>© 2025 Mikyaj Kuwait Company W.L.L.</span></div></footer>
+<div class="toast-container"></div>
+<script src="js/store.js"></script><script src="js/seed-data.js"></script><script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', renderCart);
+
+function renderCart() {
+  const cart = MikyajStore.getCart();
+  const empty = document.getElementById('cartEmpty');
+  const content = document.getElementById('cartContent');
+  document.getElementById('cartItemCount').textContent = cart.length;
+  MikyajApp.updateCartBadge();
+
+  if (cart.length === 0) { empty.style.display = 'flex'; content.style.display = 'none'; return; }
+  empty.style.display = 'none'; content.style.display = 'grid';
+
+  const list = document.getElementById('cartItemsList');
+  list.innerHTML = '';
+  let total = 0;
+
+  cart.forEach(item => {
+    const product = MikyajStore.getProduct(item.productId);
+    if (!product) return;
+    const itemTotal = product.price * item.qty;
+    total += itemTotal;
+
+    list.innerHTML += `
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 80px;padding:1rem;border-bottom:1px solid var(--outline-variant);align-items:center">
+        <div class="flex gap-md" style="align-items:center">
+          <div style="width:80px;height:80px;overflow:hidden;background:var(--surface-container);flex-shrink:0"><img src="${product.images[0]}" style="width:100%;height:100%;object-fit:cover"/></div>
+          <div>
+            <div class="text-label-caps" style="color:var(--secondary);font-size:9px;margin-bottom:2px">${product.brand}</div>
+            <a href="product.html?id=${product.id}" class="text-headline-sm" style="font-size:15px">${product.name}</a>
+            <div class="text-body-sm" style="color:var(--on-surface-variant);margin-top:2px">${product.volume || ''}${item.variant ? ' • Shade: ' + item.variant : ''}</div>
+            <div style="margin-top:6px">
+              <button class="text-body-sm" style="color:var(--error);cursor:pointer" onclick="removeItem('${item.productId}','${item.variant||''}')"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">delete</span> Remove</button>
+            </div>
+          </div>
+        </div>
+        <span class="text-price">${MikyajApp.formatKWD(product.price)}</span>
+        <div class="flex" style="border:1px solid var(--outline-variant);align-items:center;width:fit-content">
+          <button style="padding:4px 8px;color:var(--on-surface-variant)" onclick="updateQty('${item.productId}','${item.variant||''}',${item.qty-1})">−</button>
+          <span style="padding:0 12px;font-weight:600">${item.qty}</span>
+          <button style="padding:4px 8px;color:var(--on-surface-variant)" onclick="updateQty('${item.productId}','${item.variant||''}',${item.qty+1})">+</button>
+        </div>
+        <span class="text-price" style="text-align:right">${MikyajApp.formatKWD(itemTotal)}</span>
+      </div>`;
+  });
+
+  document.getElementById('subtotal').textContent = MikyajApp.formatKWD(total);
+  document.getElementById('total').textContent = MikyajApp.formatKWD(total);
+}
+
+function removeItem(id, variant) { MikyajStore.removeFromCart(id, variant || null); renderCart(); MikyajApp.showToast('Item removed from bag', 'info'); }
+function updateQty(id, variant, qty) { if (qty < 1) return removeItem(id, variant); MikyajStore.updateCartQty(id, qty, variant || null); renderCart(); }
+function requestQuote() { MikyajApp.showToast('WhatsApp quotation request sent!', 'success'); }
+function proceedCheckout() {
+  const cart = MikyajStore.getCart();
+  const items = cart.map(item => { const p = MikyajStore.getProduct(item.productId); return { productId: item.productId, name: p?.name, qty: item.qty, price: p?.price, image: p?.images[0] }; });
+  MikyajStore.addOrder({ customer: 'Guest Customer', items, total: MikyajStore.getCartTotal(), status: 'pending', paymentMethod: 'KNET' });
+  MikyajStore.clearCart();
+  MikyajApp.showToast('Order placed successfully! 🎉', 'success');
+  setTimeout(renderCart, 500);
+}
+</script>
+</body>
+</html>

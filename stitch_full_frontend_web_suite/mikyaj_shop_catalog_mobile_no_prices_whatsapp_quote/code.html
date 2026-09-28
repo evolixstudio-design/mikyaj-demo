@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-[#fbf9f6] dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Mikyaj — Shop Catalog (Mobile)</title>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Bodoni Moda & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;700&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script data-purpose="tailwind-config">tailwind.config = {theme: {extend: {fontFamily: {serif: ["\"Bodoni Moda\"", "serif"], sans: ["\"Plus Jakarta Sans\"", "sans-serif"], headline: ["Bodoni Moda"], display: ["Bodoni Moda"], body: ["DM Sans"], label: ["DM Sans"]}, colors: {brand: {charcoal: "#121212", cream: "#fbf9f6", surface: "#f5f3f0", border: "#e8e5df", gold: "#c59d5f", wa: "#25D366", waDark: "#128C7E", waLight: "#eefbf3"}, surface: "#131412", "on-tertiary": "#3b2d26", "surface-dim": "#131412", "surface-container": "#1f201e", "outline-variant": "#444748", "on-tertiary-container": "#8d7a70", "surface-container-highest": "#343533", "surface-tint": "#c8c6c5", "on-secondary-fixed-variant": "#683a33", "on-primary": "#313030", "secondary-container": "#683a33", "error-container": "#93000a", "on-error-container": "#ffdad6", primary: "#c8c6c5", "tertiary-fixed": "#f5ded3", "surface-container-lowest": "#0e0e0d", "secondary-fixed-dim": "#f7b7ac", tertiary: "#d8c2b7", "on-primary-fixed-variant": "#474646", "primary-fixed": "#e5e2e1", "on-secondary-container": "#e4a69b", "secondary-fixed": "#ffdad4", "on-primary-container": "#7e7d7d", "on-background": "#e4e2df", "inverse-on-surface": "#30312f", "on-tertiary-fixed-variant": "#53443b", "surface-container-high": "#2a2a28", "inverse-surface": "#e4e2df", "surface-variant": "#343533", "surface-bright": "#393938", "tertiary-container": "#1b100a", "surface-container-low": "#1b1c1a", "on-secondary-fixed": "#33110b", "on-tertiary-fixed": "#251912", "tertiary-fixed-dim": "#d8c2b7", "on-secondary": "#4d251e", background: "#131412", "on-error": "#690005", "primary-container": "#121212", outline: "#8e9192", "on-primary-fixed": "#1c1b1b", "inverse-primary": "#5f5e5e", error: "#ffb4ab", "on-surface": "#e4e2df", secondary: "#f7b7ac", "primary-fixed-dim": "#c8c6c5", "on-surface-variant": "#c4c7c7"}, fontSize: {}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}}}};</script>
+<style data-purpose="custom-enhancements">
+    /* Custom scrollbar suppression for smooth horizontal scrolling */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .tap-highlight-transparent {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-sans text-brand-charcoal bg-[#fbf9f6] antialiased selection:bg-brand-charcoal selection:text-white pb-24">
+<!-- BEGIN: AnnouncementBar -->
+<aside class="bg-[#121212] text-[#fbf9f6] text-[10px] tracking-wider uppercase font-medium px-4 py-1.5 flex items-center justify-between border-b border-white/10" data-purpose="vip-notice">
+<div class="flex items-center gap-1.5 truncate">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="truncate">Kuwait Same-Day Direct VIP Delivery</span>
+</div>
+<div class="flex items-center gap-2 pl-2 shrink-0 font-sans">
+<span class="hover:underline cursor-pointer">EN</span>
+<span class="text-white/40">|</span>
+<span class="hover:underline cursor-pointer font-serif">العربية</span>
+</div>
+</aside>
+<!-- END: AnnouncementBar -->
+<!-- BEGIN: MobileHeader -->
+<header class="sticky top-0 z-40 bg-[#fbf9f6]/95 backdrop-blur-md border-b border-brand-border px-4 py-2.5 flex items-center justify-between transition-all shadow-sm">
+<!-- Brand Logo and Identifier -->
+<a class="flex items-center gap-2.5 tap-highlight-transparent" href="#">
+<img alt="Mikyaj Logo" class="w-10 h-10 rounded-full object-cover shadow-sm border border-brand-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Ix34grqgJk2szKhk6B6bkBbo8RjReuL_1tje9PbJ37bI0DvnlyTrws8lumhL060GCzQGP7yHIMeFBYY6iPqDF0DetiBaPzyeHAICCAwCk_Z07CQJjGXu9AOqHC2Ndp0P4nWYjEgu_7y34WEnaQHPdEx8a_eY8rnz81UHxoWCpbsyZGB11i_hKB8B6GTU3i__PEh5dXnVZKr1Ll1MTbC3S_1uBKaaOundqJ9iNrEQtyRp8FYXdadj"/>
+<div class="flex flex-col">
+<span class="font-serif text-lg tracking-widest font-semibold uppercase leading-none">Mikyaj</span>
+<span class="text-[9px] tracking-[0.25em] text-brand-charcoal/60 uppercase mt-0.5">Kuwait • ميتاج</span>
+</div>
+</a>
+<!-- Header Actions (Wishlist & Concierge Quote Tray) -->
+<div class="flex items-center gap-3">
+<!-- Heart Wishlist -->
+<button aria-label="Wishlist" class="w-9 h-9 rounded-full bg-white border border-brand-border flex items-center justify-center text-brand-charcoal/80 active:scale-95 transition-transform tap-highlight-transparent">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path>
+</svg>
+</button>
+<!-- WhatsApp Direct Inquiry Tray -->
+<a aria-label="Quote Bag" class="relative w-9 h-9 rounded-full bg-white border border-brand-border flex items-center justify-center text-brand-charcoal active:scale-95 transition-transform shadow-xs" href="#"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-charcoal text-[9px] font-medium text-white flex items-center justify-center">2</span></a>
+</div>
+</header>
+<!-- END: MobileHeader -->
+<!-- BEGIN: PageIntroduction -->
+<section class="px-4 pt-4 pb-2">
+<div class="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-brand-charcoal/60 mb-1">
+<a class="hover:underline tap-highlight-transparent" href="#">Home</a>
+<span class="">/</span>
+<a class="hover:underline font-medium text-brand-charcoal tap-highlight-transparent" href="#">Shop Catalog</a>
+<span class="bg-brand-surface px-1.5 py-0.5 rounded text-[9px] ml-1 font-semibold text-brand-charcoal/80">412 FORMULAS</span>
+</div>
+<div class="flex items-baseline justify-between">
+<h1 class="font-serif text-2xl font-normal text-brand-charcoal tracking-tight">The Prestige Collection</h1>
+<span class="text-[11px] font-serif italic text-brand-charcoal/60">مجموعة النخبة</span>
+</div>
+<p class="text-xs text-brand-charcoal/70 font-light mt-1 leading-relaxed">
+      Curated Korean skincare actives and Gulf pigments. Climate-controlled preservation dispatched promptly across Kuwait.
+    </p>
+<!-- Climate Alert Banner -->
+<div class="mt-2.5 bg-brand-surface/80 border border-brand-border rounded-md px-2.5 py-1.5 flex items-center justify-between text-[11px] text-brand-charcoal/80">
+<span class="flex items-center gap-1.5">
+<span class="text-amber-700">❄</span>
+<span class="">Refrigerated cold-chain delivery within 4h</span>
+</span>
+<span class="text-[10px] font-medium text-brand-charcoal/60 uppercase">Kuwait Dispatch</span>
+</div>
+</section>
+<!-- END: PageIntroduction -->
+<!-- BEGIN: SearchAndFilters -->
+<section class="sticky top-[57px] z-30 bg-[#fbf9f6] pt-2 pb-2 px-4 border-b border-brand-border/60 shadow-xs">
+<!-- Search Bar -->
+<div class="relative flex items-center">
+<svg class="w-4 h-4 text-brand-charcoal/40 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<input class="w-full pl-9 pr-20 py-2 text-xs bg-white border border-brand-border rounded-full placeholder-brand-charcoal/40 focus:outline-none focus:border-brand-charcoal transition-all" placeholder="Search formulations, scents, actives..." type="text"/>
+<div class="absolute right-2 flex items-center gap-1">
+<button aria-label="Voice Search" class="p-1 text-brand-charcoal/50 hover:text-brand-charcoal tap-highlight-transparent" type="button">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Quick Tool Controls (Refine Drawer Trigger, Active Counter & Sort) -->
+<div class="flex items-center justify-between mt-2.5 pt-1 text-xs">
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-charcoal text-white rounded-full text-[11px] font-medium tracking-wide active:bg-black tap-highlight-transparent">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="">Refine</span>
+<span class="w-4 h-4 rounded-full bg-white/20 text-[9px] flex items-center justify-center">3</span>
+</button>
+<span class="text-[11px] text-brand-charcoal/60">Showing 24 of 412</span>
+</div>
+<div class="flex items-center gap-2">
+<select class="text-[11px] py-1 pl-2 pr-6 bg-transparent border-0 font-medium text-brand-charcoal focus:ring-0 cursor-pointer">
+<option>Editor's Picks</option>
+<option>Most Demanded (Kuwait)</option>
+<option>Newest Arrivals</option>
+<option>Alphabetical</option>
+</select>
+<!-- Grid layout toggle -->
+<button aria-label="Toggle Layout" class="p-1 text-brand-charcoal/70 tap-highlight-transparent">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20">
+<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Active filter badges carousel -->
+<div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 pb-0.5">
+<span class="inline-flex items-center gap-1 bg-brand-surface border border-brand-border rounded-full px-2.5 py-0.5 text-[10px] font-medium text-brand-charcoal shrink-0">
+        Serums
+        <button class="text-brand-charcoal/50 hover:text-brand-charcoal tap-highlight-transparent">×</button>
+</span>
+<span class="inline-flex items-center gap-1 bg-brand-surface border border-brand-border rounded-full px-2.5 py-0.5 text-[10px] font-medium text-brand-charcoal shrink-0">
+        Beauty of Joseon
+        <button class="text-brand-charcoal/50 hover:text-brand-charcoal tap-highlight-transparent">×</button>
+</span>
+<span class="inline-flex items-center gap-1 bg-brand-surface border border-brand-border rounded-full px-2.5 py-0.5 text-[10px] font-medium text-brand-charcoal shrink-0">
+        In Stock
+        <button class="text-brand-charcoal/50 hover:text-brand-charcoal tap-highlight-transparent">×</button>
+</span>
+<button class="text-[10px] text-amber-900 underline shrink-0 px-1 font-medium tap-highlight-transparent">Reset All</button>
+</div>
+</section>
+<!-- END: SearchAndFilters -->
+<!-- BEGIN: CategoryPills -->
+<section class="px-4 py-2.5 overflow-x-auto no-scrollbar flex items-center gap-2 border-b border-brand-border/40">
+<button class="shrink-0 px-3 py-1 rounded-full text-xs font-semibold bg-brand-charcoal text-white tap-highlight-transparent">All (412)</button>
+<button class="shrink-0 px-3 py-1 rounded-full text-xs font-medium bg-white border border-brand-border text-brand-charcoal/80 tap-highlight-transparent">Active Serums (92)</button>
+<button class="shrink-0 px-3 py-1 rounded-full text-xs font-medium bg-white border border-brand-border text-brand-charcoal/80 tap-highlight-transparent">Cleansers &amp; Balms</button>
+<button class="shrink-0 px-3 py-1 rounded-full text-xs font-medium bg-white border border-brand-border text-brand-charcoal/80 tap-highlight-transparent">Moisturizers</button>
+<button class="shrink-0 px-3 py-1 rounded-full text-xs font-medium bg-white border border-brand-border text-brand-charcoal/80 tap-highlight-transparent">Sunscreen SPF50+</button>
+</section>
+<!-- END: CategoryPills -->
+<!-- BEGIN: ProductCatalogGrid -->
+<main class="px-3 pt-3">
+<!-- Notice regarding quotes -->
+<div class="mb-3 px-3 py-2 bg-brand-surface border border-brand-border rounded-lg flex items-center justify-between text-[11px] text-brand-charcoal"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-charcoal"></span><span class="font-medium">Add items to VIP Bag for WhatsApp Quotation</span></div><span class="text-[10px] uppercase font-semibold text-brand-charcoal/60">Kuwait Dispatch</span></div>
+<!-- 2-Column Catalog Grid -->
+<div class="grid grid-cols-2 gap-3" data-purpose="product-list">
+<!-- Product 1 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-brand-charcoal text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">Bestseller</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Beauty of Joseon Ginseng + Snail Mucin Serum" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4imk90UQ5318g_r3xfCXI-ooserRXog5TQKC3MQiy1MCuxE9MVAwNjINuiVTm6CwlWeBt5uRqFzz3O8eMQGpMGRZ-Xf1su5_PG41BDzOFL5N1rctxDHWJHVqaoVvZVfJH0YT-dtdgaqZSOrgiPHOCvZecA-xovyh3ras8VwJVx_Xb_p6vYpVsUAQopBVG3iO71ZqtWW2gS0wVddut3360BUQfdQARbJcLItMyzI9xn8qC5_kL9r9Q"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Beauty of Joseon</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">Ginseng + Snail Mucin Serum</h2>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-0.5">سيروم تجديد البشرة بالجنسنغ</p>
+<div class="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-800 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="">In Stock • Kuwait City Hub</span>
+</div>
+</div>
+<!-- WhatsApp Quote CTA strictly with no prices -->
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 2 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-[#c59d5f] text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">Iconic</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="COSRX Advanced Snail 96 Mucin Power Essence" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArA-ULZvLoNpftWvxiqIT713Vilm8nrZhqDw-e9qeBMqZhbh7KmNqjFZbLLBANp12cbBHlYCigMwNl32oaDLCFylD9GLL0sDiLVr5rD5DkcAvXNOBRBUfN3kQi-6yaP4AF5qVMliI-NLFK64N7f_LbrS6vBoVUTYQzPHyuYBfw6HnxFgC6pIbNcqYN0z8Je_EoJDyqRjUVdWWncRk9QMRw8b5x1be2yIR1wRshx7WkyqN74e-Ig8yx"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">COSRX</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">Advanced Snail 96 Essence</h2>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-0.5">خلاصة الحلزون 96 المرطبة</p>
+<div class="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-800 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="">In Stock • 100ml</span>
+</div>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 3 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-rose-800 text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">Trending</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Anua Heartleaf 77% Soothing Toner" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaWSz5OYwnSsbiD_0_tjkXe8muemnYLv2sw6Eo5L9K9VM1j_H8obzQZIHkGLELSEGeoWH-a6KQ3ANNBHAJLhTEhjn0zkUBPieGUwE9ujjbzzD23kmmt8SNt4L2Mba-lZUV9l7chZ6dbMh9Drl-Zn_mVB40NQp0ngiteg2JINHqi8iQ9vlYTSQQdjK7BmnCYoIfcS_48OCX3VZL6imaFWkqRhz5JMy7FhWhUBEuRZkmX9riCOlmpvA5"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Anua Heartleaf</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">77% Soothing Toner</h2>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-0.5">تونر أنوا المهدئ بنبتة الهارت ليف</p>
+<div class="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-800 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="">In Stock • 250ml</span>
+</div>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 4 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-[#8c6d48] text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">Shades</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Clarins Paris Skin Illusion Serum Foundation" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh-Bc-V5-w_y1VE2Zpd_vUHopF7nh53vmOMJPFZY9WXDF5Jd80pjis9nvCOd_vf1lUYyBKYd1E2td0PXmHYukrAH6qHsotXvh4c9OLOvK1Dw9K1R3txM27xF7a65QJrd-Y7Hs1Q8EpHSBuPRYqgew4xcfRiYSDFpEGjQUNILmCx9110AhFMmEoFxFFj4aQ1-RHl5kLSAfGbB7a7vQYS6GlD5nUynHlaugrFXJ52Lz6z7k_RXnd0LWw"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Clarins Paris</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">Skin Illusion Serum Foundation</h2>
+<!-- Shade Dots Selector Preview -->
+<div class="flex items-center gap-1.5 mt-1.5">
+<span class="w-3 h-3 rounded-full bg-[#f3d3b4] border border-black/10"></span>
+<span class="w-3 h-3 rounded-full bg-[#e3ba93] border border-black/10"></span>
+<span class="w-3 h-3 rounded-full bg-[#c99569] border border-black/10"></span>
+<span class="text-[8px] text-brand-charcoal/60">+8 shades</span>
+</div>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-1">كريم أساس كلارنس المخملي</p>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 5 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-amber-900 text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">SPF 50+</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Skin1004 Centella Hyalu Cica Sun Serum" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGD7qH4bYW7YSjRyAcVootu4K2Jri8xRu8VxJMWyv0b4lV_a-PHUTt5LLwBT3g8KXMtmlRO-NVezW923NXPGmB4RhetMaEnzhaywXxVqSSwB5FKASu4b76qCjWHICV2pwEpGjp_Yt7souDpYfLlnUv_E3ZWD49KJdmJorZvDtF4yf2f29PwArpPxnG7Na3FqAQFgFb6_7zcBWrxZ4GhJx_35TFWSGNXCfn38msME8U4zKCiyS9pUVr"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Skin1004 Centella</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">Hyalu Cica Water-Fit Sun Serum</h2>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-0.5">واقي شمس مائي مرطب</p>
+<div class="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-800 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="">In Stock • 50ml</span>
+</div>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 6 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-pink-700 text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">Viral Edit</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Laneige Lip Sleeping Mask Berry" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiVKVZhqtugDxk70tcYemB-48FP0rHMxMGcm2ZICTiraqBiU39lsqygiBuXIqKShp0gB_XzMeMgh4N69veJ3ys4t56Wk9YYUSiOp4_yVQPZIQjF9MfXDHj-Z6RYBXWTUAFJBN1KiiwI59pVjf_4Q5ey_4Y0Kf8HNf_tJQ-iJgR8oDCEmoXQVkWzAFLtIqb307bZbgX0krJpfwDHwOMzAnw7mPsItIzW2M4lL1wNZc5brvjoXamRhc7"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Laneige</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">Lip Sleeping Mask (Berry)</h2>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-0.5">ماسك الشفاه الليلي المكثف</p>
+<div class="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-800 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="">In Stock • 20g</span>
+</div>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 7 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Some By Mi AHA BHA PHA 30 Days Miracle Toner" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTqck_f3V0wG7MGGLBwgf3__w2bIQTt_XXyQ2Q40OO-SNtqmX-uidZnZM8fb-eKwAg9zoJ2mobk0O2cdg96ketVS8blTQU_xa7z_IH5Jllu3qD-C46V6tmdGJORmsapNZlb0HP7O9wPZ_KV9Mm7gEQizv_AhcWOJXjIjyQIa6CURdSnkn7Fb4oadq0UhJLnXeilLPcoIrpVITbNBzOVyDWeRy1YXS-n1j_nySIOgbAeCmQomheIJg-"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Some By Mi</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">AHA-BHA-PHA Miracle Toner</h2>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-0.5">تونر المعجزة لتنقية البشرة</p>
+<div class="mt-2 flex items-center gap-1.5 text-[9px] text-emerald-800 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="">In Stock • Clarifying</span>
+</div>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+<!-- Product 8 -->
+<article class="bg-white rounded-xl border border-brand-border overflow-hidden flex flex-col justify-between shadow-xs transition-shadow">
+<div class="relative bg-brand-surface/40 aspect-[4/5] flex items-center justify-center p-3">
+<span class="absolute top-2 left-2 bg-purple-900 text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-sm z-10">12 Shades</span>
+<button aria-label="Favorite" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-brand-charcoal/60 z-10 tap-highlight-transparent">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg>
+</button>
+<img alt="Clarins Paris Joli Rouge Velvet Lipstick" class="w-full h-full object-contain mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA93wi0YY0XJMW8CXs-H2_3CuvupUx2SQy21X0pDaHbb9Qtc4uNpbNV1Uegxtj2gpLd4TMHwiMkFoRRUhvD11clXBPseOeDzBuQNiIdpyAkY9zwY4K62rtGotsDH36awqXxM0Xg05nOVTb2l9YQesg3sq1HI6DZ9t6WfbnIe2yvVbsLtEnke8eGDxJ7b9vrxEzdsChfJm2nQxV6dzXIn47pMkpJKBZZsLGXvoTGhuruQtJEQGs33kR7"/>
+</div>
+<div class="p-2.5 flex flex-col flex-1 justify-between">
+<div>
+<span class="text-[9px] uppercase tracking-widest text-brand-charcoal/50 font-semibold block">Clarins Paris</span>
+<h2 class="font-serif text-xs font-medium leading-snug mt-0.5 text-brand-charcoal line-clamp-2">Joli Rouge Velvet Lipstick</h2>
+<!-- Lipstick Swatches -->
+<div class="flex items-center gap-1.5 mt-1.5">
+<span class="w-3 h-3 rounded-full bg-[#961c28] border border-black/10"></span>
+<span class="w-3 h-3 rounded-full bg-[#b83b48] border border-black/10"></span>
+<span class="w-3 h-3 rounded-full bg-[#7a1827] border border-black/10"></span>
+<span class="text-[8px] text-brand-charcoal/60">+6</span>
+</div>
+<p class="text-[9px] text-brand-charcoal/60 font-serif italic mt-1">أحمر شفاه جوليروج ساتان</p>
+</div>
+<div class="mt-3 flex items-center gap-1.5"><div class="flex items-center justify-between bg-brand-surface border border-brand-border rounded-md px-1.5 py-1 h-8 shrink-0"><button aria-label="Decrease" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">−</button><span class="px-1.5 text-xs font-semibold text-brand-charcoal select-none">1</span><button aria-label="Increase" class="w-5 h-5 flex items-center justify-center text-xs font-bold text-brand-charcoal/70 hover:text-brand-charcoal active:scale-90" type="button">+</button></div><button class="flex-1 h-8 bg-[#121212] hover:bg-black active:scale-[0.98] text-white rounded-md text-[10px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all shadow-xs" type="button"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg><span class="">Add to Bag • أضف</span></button></div>
+</div>
+</article>
+</div>
+<!-- Load More formulations -->
+<div class="mt-6 flex flex-col items-center justify-center">
+<button class="px-6 py-2.5 bg-white border border-brand-charcoal text-brand-charcoal text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-brand-charcoal hover:text-white transition-all active:scale-95 shadow-xs tap-highlight-transparent">
+        Load More Formulations
+      </button>
+<span class="text-[10px] text-brand-charcoal/50 mt-2">Showing 8 of 412 curated items</span>
+</div>
+</main>
+<!-- END: ProductCatalogGrid -->
+<!-- BEGIN: ConciergeAssistanceCard -->
+<section class="mx-3 mt-6 p-4 rounded-xl bg-gradient-to-br from-[#f5f3f0] to-[#eae6df] border border-brand-border text-brand-charcoal">
+<div class="flex items-center gap-2 mb-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-600"></span>
+<span class="text-[10px] uppercase font-bold tracking-widest text-brand-charcoal/70">Complimentary Gulf Concierge</span>
+</div>
+<h3 class="font-serif text-base font-semibold">Unsure about your formulation or shade?</h3>
+<p class="text-xs text-brand-charcoal/70 mt-1 leading-relaxed">
+      Connect with our Kuwait beauty consultants for immediate WhatsApp shade-matching and clinical skin analysis tailored to Kuwait weather.
+    </p>
+<a class="mt-3 inline-flex w-full items-center justify-center gap-2 bg-[#121212] text-white py-2.5 px-4 rounded-lg text-xs font-semibold tracking-wide uppercase shadow-sm active:scale-[0.99] transition-transform tap-highlight-transparent" href="https://wa.me/96500000000?text=Salam,%20I%20need%20assistance%20choosing%20the%20right%20skincare%20formulation" rel="noopener" target="_blank">
+<svg class="w-4 h-4 text-[#25D366]" fill="currentColor" viewbox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>
+<span class="">Chat with Specialist • محادثة خبير</span>
+<span class="text-xs ml-1">→</span>
+</a>
+</section>
+<!-- END: ConciergeAssistanceCard -->
+<!-- BEGIN: MobileFooterNotice -->
+<footer class="mt-8 px-4 py-6 text-center border-t border-brand-border bg-white">
+<img alt="Mikyaj Kuwait Logo" class="w-12 h-12 rounded-full mx-auto mb-2 object-cover border border-brand-border shadow-xs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuAL5E4bT96jGIUizPaGGPO1kj7LK3MNvTW5gd_SpbnQ-7oWVVdTusrGUIsulO8M_Lg_9AEkp3MRZdM7COQ7F-VxQ5a4zyykjVSrv1e1j8q6huzcyhzp8Gc8cQfpJXAbXOPb79sEP7m-ZULv5Uq7CO9PBkAw8MXbrnjen5t7XkLZZJGWj_KiDn6pH8pi_vTwm1j7TmB3aBEM6Y2YebqUyztVhYnFp9OELmr0nTFNZBIMp9ts1Gzp67"/>
+<span class="font-serif text-sm font-semibold tracking-widest uppercase block">Mikyaj Kuwait</span>
+<p class="text-[11px] text-brand-charcoal/60 mt-1 max-w-xs mx-auto">
+      The epicenter of luxury Gulf cosmetics and prestigious sensory formulations.
+    </p>
+<div class="flex items-center justify-center gap-3 text-[10px] text-brand-charcoal/50 mt-3 uppercase tracking-wider">
+<span class="">Capital</span>
+<span class="">•</span>
+<span class="">Hawalli</span>
+<span class="">•</span>
+<span class="">Salmiya</span>
+<span class="">•</span>
+<span class="">Ahmadi</span>
+</div>
+<div class="text-[10px] text-brand-charcoal/40 mt-4 border-t border-brand-border/60 pt-3">
+      © 2025 Mikyaj Kuwait Company W.L.L. All Rights Reserved.
+    </div>
+</footer>
+<!-- END: MobileFooterNotice -->
+<!-- BEGIN: BottomNavigationBar (iOS style) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-brand-border px-3 py-1.5 flex items-center justify-around shadow-lg">
+<!-- Tab 1: Home -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-brand-charcoal/50 hover:text-brand-charcoal active:scale-95 transition-transform tap-highlight-transparent" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path>
+</svg>
+<span class="text-[9px] font-medium tracking-tight mt-0.5">Home</span>
+</a>
+<!-- Tab 2: Catalog (Active) -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-brand-charcoal font-semibold active:scale-95 transition-transform tap-highlight-transparent" href="#">
+<svg class="w-5 h-5 text-brand-charcoal" fill="currentColor" viewbox="0 0 20 20">
+<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+</svg>
+<span class="text-[9px] tracking-tight mt-0.5">Catalog</span>
+</a>
+<!-- Tab 3: Brands -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-brand-charcoal/50 hover:text-brand-charcoal active:scale-95 transition-transform tap-highlight-transparent" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path>
+</svg>
+<span class="text-[9px] font-medium tracking-tight mt-0.5">Brands</span>
+</a>
+<!-- Tab 4: Quotes / Inquiries -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-brand-charcoal/70 hover:text-brand-charcoal font-medium relative active:scale-95 transition-transform" href="#"><div class="relative"><svg class="w-5 h-5 text-brand-charcoal" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg><span class="absolute -top-1 -right-1.5 w-3.5 h-3.5 rounded-full bg-brand-charcoal text-[8px] font-bold text-white flex items-center justify-center">2</span></div><span class="text-[9px] tracking-tight mt-0.5">Quote Bag</span></a>
+<!-- Tab 5: Concierge / Profile -->
+<a class="flex flex-col items-center justify-center py-1 px-2 text-brand-charcoal/50 hover:text-brand-charcoal active:scale-95 transition-transform tap-highlight-transparent" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path>
+</svg>
+<span class="text-[9px] font-medium tracking-tight mt-0.5">Concierge</span>
+</a>
+</nav>
+<!-- END: BottomNavigationBar -->
+<!-- BEGIN: FilterModalDrawer (Lightweight Script for UX) -->
+<script data-purpose="event-handlers">
+    // Subtle tap response for mobile buttons
+    document.querySelectorAll('button, a').forEach(el => {
+      el.classList.add('tap-highlight-transparent');
+    });
+  </script>
+<!-- END: FilterModalDrawer -->
+</body></html>

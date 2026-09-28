@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>
+@layer base {
+  html, body { margin: 0; padding: 0; }
+  body { overscroll-behavior: none; }
+  main > :first-child { margin-top: 0 !important; }
+  main > :last-child { margin-bottom: 0 !important; }
+}
+::-webkit-scrollbar { display: none; }
+
+/* Micro-animations and interaction styles */
+@keyframes shimmerWave {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.shimmer-active {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%);
+  animation: shimmerWave 2.4s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(131, 81, 73, 0); }
+  50% { box-shadow: 0 0 12px rgba(131, 81, 73, 0.35); }
+}
+.pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.45); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+.animate-heart {
+  animation: heartPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes subtleBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+}
+.btn-press:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+.toast-slide {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"inverse-primary": "#5f5e5e", "primary-fixed-dim": "#c8c6c5", "on-background": "#e4e2df", "on-surface-variant": "#c4c7c7", "on-secondary": "#4d251e", "surface-container-low": "#1b1c1a", "on-secondary-fixed": "#33110b", "secondary-fixed": "#ffdad4", "tertiary-fixed-dim": "#d8c2b7", "inverse-surface": "#e4e2df", "on-surface": "#e4e2df", "outline-variant": "#444748", "primary-fixed": "#e5e2e1", "on-tertiary-fixed": "#251912", outline: "#8e9192", "surface-container": "#1f201e", "surface-container-lowest": "#0e0e0d", "on-tertiary-fixed-variant": "#53443b", error: "#ffb4ab", "secondary-fixed-dim": "#f7b7ac", "secondary-container": "#683a33", "on-error-container": "#ffdad6", "surface-tint": "#c8c6c5", tertiary: "#d8c2b7", "on-primary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#474646", "surface-variant": "#343533", "tertiary-container": "#1b100a", primary: "#c8c6c5", "surface-container-highest": "#343533", "on-tertiary-container": "#8d7a70", "surface-bright": "#393938", "on-secondary-fixed-variant": "#683a33", "inverse-on-surface": "#30312f", surface: "#131412", "on-error": "#690005", "on-primary-container": "#7e7d7d", "on-tertiary": "#3b2d26", "error-container": "#93000a", "on-secondary-container": "#e4a69b", "on-primary": "#313030", "tertiary-fixed": "#f5ded3", "surface-container-high": "#2a2a28", "primary-container": "#121212", background: "#131412", "surface-dim": "#131412", secondary: "#f7b7ac"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"margin-desktop": "4rem", "space-4xl": "6rem", "space-xl": "2rem", "space-3xl": "4.5rem", "container-max-desktop": "1440px", "space-xs": "0.5rem", "space-2xs": "0.25rem", "space-2xl": "3rem", "space-lg": "1.5rem", "gutter-desktop": "2rem", "space-sm": "0.75rem", "space-md": "1rem"}, fontFamily: {"label-caps": ["DM Sans"], "display-hero": ["Bodoni Moda"], "headline-md": ["Bodoni Moda"], "body-md": ["DM Sans"], "headline-lg": ["Bodoni Moda"], "price-fraction": ["DM Sans"], "headline-sm": ["Bodoni Moda"], "body-lg": ["DM Sans"], "display-hero-mobile": ["Bodoni Moda"], "body-sm": ["DM Sans"], "price-primary": ["DM Sans"], "title-editorial": ["Bodoni Moda"], "label-badge": ["DM Sans"], "headline-lg-mobile": ["Bodoni Moda"], headline: ["Bodoni Moda"], display: ["Bodoni Moda"], body: ["DM Sans"], label: ["DM Sans"]}, fontSize: {"label-caps": ["11px", {lineHeight: "14px", letterSpacing: "0.12em", fontWeight: "600"}], "display-hero": ["56px", {lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "400"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "0", fontWeight: "400"}], "body-md": ["14px", {lineHeight: "22px", letterSpacing: "0.01em", fontWeight: "400"}], "headline-lg": ["38px", {lineHeight: "46px", letterSpacing: "-0.01em", fontWeight: "400"}], "price-fraction": ["12px", {lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "400"}], "headline-sm": ["20px", {lineHeight: "28px", letterSpacing: "0", fontWeight: "500"}], "body-lg": ["16px", {lineHeight: "26px", letterSpacing: "0.01em", fontWeight: "400"}], "display-hero-mobile": ["36px", {lineHeight: "44px", letterSpacing: "-0.01em", fontWeight: "400"}], "body-sm": ["12px", {lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "400"}], "price-primary": ["15px", {lineHeight: "20px", letterSpacing: "0.03em", fontWeight: "500"}], "title-editorial": ["18px", {lineHeight: "26px", letterSpacing: "0.02em", fontWeight: "500"}], "label-badge": ["10px", {lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "500"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", letterSpacing: "0", fontWeight: "400"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased relative selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Floating Toast Notification System -->
+<div class="fixed bottom-6 right-6 z-[90] flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 flex flex-col justify-between"><div class="w-full bg-primary text-on-primary py-space-2xs px-margin-desktop"><div class="max-w-[1440px] mx-auto flex items-center justify-between font-label-caps text-label-caps uppercase"><span class="flex items-center gap-space-xs font-body-sm text-body-sm normal-case"><span class="material-symbols-outlined text-[16px] text-surface-container-high animate-pulse">local_shipping</span><span>Complimentary bespoke delivery across Kuwait • خدمة التوصيل والاستشارة الفاخرة لجميع مناطق الكويت</span></span><div class="flex items-center gap-space-md font-label-caps text-label-caps"><span class="text-on-primary cursor-pointer hover:text-outline-variant transition-colors">EN</span><span class="text-outline">|</span><span class="text-outline-variant hover:text-on-primary transition-colors cursor-pointer">العربية</span><span class="text-outline ml-space-xs">|</span><span class="text-on-primary ml-space-xs tracking-wider font-semibold">KUWAIT</span></div></div></div><div class="w-full max-w-[1440px] mx-auto px-margin-desktop flex items-center justify-between h-full"><div class="flex items-center gap-space-xl"><a class="flex items-center gap-space-sm group" data-path="home" href="#"><img alt="Mikyaj Kuwait Official Logo" class="h-14 w-auto object-contain rounded-full transition-transform duration-300 group-hover:scale-105 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUDC3RdyoGQo-aYI18txSJeR0p7MaP3ZAiyle9ZDJk5mVN4JRz3isk47nRkJMc-jBePfr7qbP6PiL7ULieJpnz_rywaNAh8S5ZwZ87-nH7sl5XSncPER3rQZ2nxUma1QruusSGOGca_gtpFTY_8qQD0PoaSZUA1oaGgzYvANzIvtszKPXsS9OSMbKSUHJNNCWP9p0XayNqlrHf1HzMkfDEFRgRfuipTwxAwLWKVvghyx-Fb_NKs4rz13uY72r3xRXJ5g"/><div class="flex flex-col"><span class="font-title-editorial text-[20px] tracking-wider text-on-surface font-semibold leading-none">MIKYAJ</span><span class="font-label-caps text-[10px] text-secondary tracking-widest uppercase">Kuwait Cosmetics</span></div></a><nav class="hidden xl:flex items-center gap-space-lg font-label-caps text-label-caps uppercase tracking-widest" data-active-classes="text-primary font-bold"><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="home" href="#"><img alt="Mikyaj Kuwait Official Logo" class="h-14 w-auto object-contain rounded-full transition-transform duration-300 group-hover:scale-105 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUDC3RdyoGQo-aYI18txSJeR0p7MaP3ZAiyle9ZDJk5mVN4JRz3isk47nRkJMc-jBePfr7qbP6PiL7ULieJpnz_rywaNAh8S5ZwZ87-nH7sl5XSncPER3rQZ2nxUma1QruusSGOGca_gtpFTY_8qQD0PoaSZUA1oaGgzYvANzIvtszKPXsS9OSMbKSUHJNNCWP9p0XayNqlrHf1HzMkfDEFRgRfuipTwxAwLWKVvghyx-Fb_NKs4rz13uY72r3xRXJ5g"/><div class="flex flex-col"><span class="font-title-editorial text-[20px] tracking-wider text-on-surface font-semibold leading-none">MIKYAJ</span><span class="font-label-caps text-[10px] text-secondary tracking-widest uppercase">Kuwait Cosmetics</span></div></a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="shop-all" href="#">Shop All</a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="skincare" href="#">Skincare</a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="makeup" href="#">Makeup</a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="hair-care" href="#">Hair Care</a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="body-care" href="#">Body Care</a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="brands" href="#">Brands</a><a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200" data-path="contact" href="#">Contact</a></nav></div><div class="flex items-center gap-space-md"><div class="relative hidden lg:flex items-center w-64 bg-surface-container-low px-space-sm py-space-2xs rounded-full border border-transparent focus-within:border-secondary/30 focus-within:bg-surface-container transition-all duration-300"><span class="material-symbols-outlined text-outline text-[18px]">search</span><input class="w-full bg-transparent px-space-xs font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search formulations, scents..." type="text"/></div><button aria-label="Search" class="lg:hidden flex items-center text-on-surface hover:text-secondary transition-colors"><span class="material-symbols-outlined text-[22px]">search</span></button><a aria-label="Wishlist" class="relative flex items-center text-on-surface hover:text-secondary transition-colors group" data-path="wishlist" href="#"><span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform">favorite</span><span class="absolute -top-1 -right-2 bg-secondary text-on-secondary font-label-badge text-label-badge w-4 h-4 rounded-full flex items-center justify-center opacity-0 scale-50 transition-all duration-300" id="wishlist-badge">1</span></a><a aria-label="Cart" class="relative flex items-center text-on-surface hover:text-secondary transition-colors group" data-path="cart" href="#"><span class="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform">shopping_bag</span><span class="absolute -top-1 -right-2 bg-primary text-on-primary font-label-badge text-label-badge w-4 h-4 rounded-full flex items-center justify-center transition-transform" id="header-cart-badge">2</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs cursor-pointer hover:opacity-90 transition-opacity"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="w-full pt-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Free Delivery Progress Bar with Pulse & Shimmer -->
+<div class="w-full bg-surface-container-low border-b border-surface-container-highest/60 py-space-sm px-margin-desktop transition-colors duration-300"><div class="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface"><span class="material-symbols-outlined text-secondary text-[20px]">chat</span><span>Direct WhatsApp concierge service available 24/7 across Kuwait</span><span class="text-outline-variant hidden sm:inline">•</span><span class="text-on-surface-variant hidden sm:inline font-sans">خدمة التسعير الفوري والاستشارة عبر واتساب</span></div><div class="flex items-center gap-space-sm font-label-caps text-label-caps text-secondary font-semibold uppercase tracking-wider"><span class="material-symbols-outlined text-[18px]">verified</span><span>VIP Inquiry Concierge</span></div></div></div>
+<div class="w-full max-w-[1440px] mx-auto px-margin-desktop py-space-2xl">
+<div class="flex flex-col lg:flex-row items-start justify-between gap-space-2xl">
+<div class="flex-1 w-full space-y-space-xl">
+<div class="flex items-baseline justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest block mb-space-2xs">Your Selection</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface" id="bag-main-heading">Shopping Bag (<span id="cart-item-count-heading">2</span>)</h1>
+</div>
+<button class="flex items-center gap-space-2xs text-secondary hover:text-on-surface transition-colors font-label-caps text-label-caps uppercase tracking-wider group px-3 py-1.5 rounded-full hover:bg-surface-container transition-all" id="open-slideover-trigger">
+<span class="material-symbols-outlined text-[18px] group-hover:rotate-12 transition-transform duration-300">view_sidebar</span>
+<span>View Quick Drawer</span>
+</button>
+</div>
+<!-- Cart Items Container -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/30">
+<div class="hidden sm:grid grid-cols-12 pb-space-sm text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider border-b border-surface-container"><div class="col-span-6">Formulation &amp; Atelier</div><div class="col-span-3 text-center">Pricing Model</div><div class="col-span-3 text-right">Direct Action</div></div>
+<div class="space-y-space-md pt-space-sm" id="cart-items-wrapper">
+<!-- Cart Item 1 -->
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-space-md items-center bg-surface-container-low/40 hover:bg-surface-container-low p-space-md rounded-lg transition-all duration-300 border border-transparent hover:border-surface-container-high" id="cart-item-1"><div class="sm:col-span-6 flex items-center gap-space-md"><div class="w-20 h-24 bg-surface-container rounded-md overflow-hidden shrink-0 relative group"><img alt="Dr. Althea 345 Relief Cream" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA08VmInV3oBNLldB3nCdB7GKTEfJf9kAENoLCCoshrKxp7UzHxoZATpOPWMG00NUmbDwdaRAdgtmMlygW0La61PeRhnnn0k0odrIk1q9Um6KKaqEaaIMnP_GsC2Q82FdGaANHMWIkuf02_kdF_mGk_6CBbl0D1nnpZwX1xUXBAaQkUMEXbBfF24KVYBI10W8QWYspPAS-5v1Xa415tE2L4IOZJRmz-yTAGbCdqTOG17mulZ1Ar11I5"/></div><div class="flex flex-col"><span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">DR. ALTHEA</span><span class="font-title-editorial text-title-editorial text-on-surface mt-0.5">345 Relief Cream – 50ml</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">Batch: KR-2024-N9 • Soothing Calming Complex</span><div class="flex items-center gap-space-xs mt-space-xs"><button class="text-on-surface-variant hover:text-error transition-all duration-200 flex items-center gap-1 font-body-sm text-body-sm group/btn" onclick="this.closest('#cart-item-1').remove()"><span class="material-symbols-outlined text-[16px] group-hover/btn:rotate-12 transition-transform">delete</span><span>Remove</span></button><span class="text-outline-variant">•</span><span class="text-secondary font-label-caps text-label-caps uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span> In Selection</span></div></div></div><div class="sm:col-span-3 flex sm:flex-col justify-center sm:items-center"><span class="font-title-editorial text-body-md text-on-surface font-medium">Quote on Request</span><span class="font-body-sm text-body-sm text-secondary font-sans">تسعيرة عند الطلب</span></div><div class="sm:col-span-3 flex sm:justify-end items-center"><a class="bg-surface-container hover:bg-secondary hover:text-on-secondary text-on-surface transition-all duration-200 px-space-sm py-1.5 rounded-full flex items-center gap-1.5 font-label-caps text-label-caps uppercase tracking-wider border border-outline-variant/30 hover:shadow-sm" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20inquire%20about%20the%20price%20for%20Dr.%20Althea%20345%20Relief%20Cream." target="_blank"><span class="material-symbols-outlined text-[16px] text-green-600">chat</span><span>Inquire via WhatsApp</span></a></div></div>
+<!-- Cart Item 2 -->
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-space-md items-center bg-surface-container-low/40 hover:bg-surface-container-low p-space-md rounded-lg transition-all duration-300 border border-transparent hover:border-surface-container-high" id="cart-item-2"><div class="sm:col-span-6 flex items-center gap-space-md"><div class="w-20 h-24 bg-surface-container rounded-md overflow-hidden shrink-0 relative group"><img alt="ACM Sebionex Cleansing Bar" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtUfe-l8NocsVRno2qnU6HCZjQYs7y95HHfO8uqO-xq44aYpFEk6YJ3odv9Owl0L0oANB6xOlT3v4zveTq_TYsllbkAo8XD9I_YunusaKd3oLDXUkoWrnhUJxYYTTIwi762t57mp5B9lgE4ZnzGqG11N-suzJKa06aycYbiXK0TYUqKEBij7lzkodjX6C6kyItdRXD0mPAeKQFkIuRLnSBgWBMy4E6FQnOou4E4KJis2RwZ_MkfTRY"/></div><div class="flex flex-col"><span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">ACM DERMATOLOGIE</span><span class="font-title-editorial text-title-editorial text-on-surface mt-0.5">Sebionex Cleansing Bar 100g</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">Variant: Standard • Dermatologically Tested</span><div class="flex items-center gap-space-xs mt-space-xs"><button class="text-on-surface-variant hover:text-error transition-all duration-200 flex items-center gap-1 font-body-sm text-body-sm group/btn" onclick="this.closest('#cart-item-2').remove()"><span class="material-symbols-outlined text-[16px] group-hover/btn:rotate-12 transition-transform">delete</span><span>Remove</span></button><span class="text-outline-variant">•</span><span class="text-secondary font-label-caps text-label-caps uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span> In Selection</span></div></div></div><div class="sm:col-span-3 flex sm:flex-col justify-center sm:items-center"><span class="font-title-editorial text-body-md text-on-surface font-medium">Quote on Request</span><span class="font-body-sm text-body-sm text-secondary font-sans">تسعيرة عند الطلب</span></div><div class="sm:col-span-3 flex sm:justify-end items-center"><a class="bg-surface-container hover:bg-secondary hover:text-on-secondary text-on-surface transition-all duration-200 px-space-sm py-1.5 rounded-full flex items-center gap-1.5 font-label-caps text-label-caps uppercase tracking-wider border border-outline-variant/30 hover:shadow-sm" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20inquire%20about%20the%20price%20for%20ACM%20Sebionex%20Cleansing%20Bar." target="_blank"><span class="material-symbols-outlined text-[16px] text-green-600">chat</span><span>Inquire via WhatsApp</span></a></div></div>
+</div>
+</div>
+<!-- Dispatch Instructions & Gift Atelier Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/30 space-y-space-md transition-shadow hover:shadow-md">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-secondary text-[20px]">pin_drop</span>
+<h3 class="font-title-editorial text-title-editorial">Kuwait Dispatch Instructions</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Include specific villa gates, PACI address code, apartment buzzer details, or preferred call timings for express couriers.</p>
+<div class="relative">
+<textarea class="w-full bg-surface-container-low rounded-lg p-space-sm font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-all duration-200 resize-none border border-transparent" placeholder="e.g. Block 4, Street 12, Villa 8A. Call upon arrival at gate. رقم آلي / باسي" rows="3"></textarea>
+<span class="absolute bottom-2 right-2 text-[11px] text-outline pointer-events-none font-label-caps uppercase tracking-wider">PACI Supported</span>
+</div>
+</div>
+<!-- Gift Atelier with Interactive Animated Checkbox & Accordion -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/30 space-y-space-md flex flex-col justify-between transition-shadow hover:shadow-md"><div><div class="flex items-center gap-space-xs text-on-surface mb-space-2xs"><span class="material-symbols-outlined text-secondary text-[20px]">redeem</span><h3 class="font-title-editorial text-title-editorial">Signature Gift Atelier</h3></div><p class="font-body-sm text-body-sm text-on-surface-variant">Encased in Mikyaj Kuwait ivory textured box with wax stamp seal and customized parchment calligraphy card.</p><label class="flex items-start gap-space-sm mt-space-md cursor-pointer group select-none p-space-xs rounded-lg hover:bg-surface-container-low/80 transition-colors"><div class="relative flex items-center justify-center mt-0.5"><input class="peer sr-only" id="gift-checkbox" type="checkbox"/><div class="w-5 h-5 border-2 border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary rounded transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-secondary flex items-center justify-center group-hover:scale-105"><span class="material-symbols-outlined text-[16px] text-on-secondary scale-0 peer-checked:scale-100 transition-transform duration-200 font-bold">check</span></div></div><div class="flex flex-col"><span class="font-label-caps text-label-caps uppercase text-on-surface group-hover:text-secondary transition-colors flex items-center gap-1">Add Bespoke Mikyaj Box &amp; Card <span class="text-secondary font-bold">(Complimentary Atelier Packaging)</span></span><span class="font-body-sm text-body-sm text-on-surface-variant font-sans">تغليف فاخر مع بطاقة إهداء مخصصة مجاناً</span></div></label></div><div class="pt-space-sm border-t border-surface-container/80"><span class="font-label-caps text-label-caps uppercase text-on-surface-variant block mb-1">Kuwait Atelier Privilege</span><p class="font-body-sm text-body-sm text-on-surface-variant">Exclusive concierge guidance with sample vials tailored to Kuwait's climate included with every quotation.</p></div></div>
+</div>
+<!-- Curated Pairings with Interactive Quick Add Confirmation -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/30">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[22px] animate-spin-slow">auto_awesome</span>
+<h3 class="font-title-editorial text-title-editorial text-on-surface">Curated Pairings from Kuwait Ateliers</h3>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider hidden sm:inline">Exclusive Additions</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-md"><div class="bg-surface-container-low/60 hover:bg-surface-container-low p-space-sm rounded-lg flex items-center gap-space-sm border border-transparent hover:border-secondary/20 transition-all duration-300 group"><div class="w-14 h-16 bg-surface-container rounded shrink-0 overflow-hidden"><img alt="Royal Oudh Elixir" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjeJRzBGpx49JuVquuRcGbQyFIeiW21XzhdYXnQu34l8zSJb5v4BYKBJZqMC9OkbUHuClJAbjExis8scPaTBra58n9iY54J-NSLEqmcxJzEyp5DsYprTXC2iXri_TQn6vK3n4DwZyFrLBf_HsRSdAJmokDr0QvgQil7FtssAIPKFeZCLyWpeyhf_2XofFvDiDuCx02DhbYeqH8sM4fEiC2zyLrROf---R-ndq7RYxMMl97MVRISz_C"/></div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-badge text-label-badge text-secondary uppercase truncate">Royal Oudh Elixir 10ml</span><span class="font-label-caps text-label-caps text-on-surface mt-0.5">Quote on Request</span><a class="text-secondary hover:text-on-surface font-label-caps text-label-caps uppercase text-left mt-1 flex items-center gap-1 transition-all duration-200" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20inquire%20about%20Royal%20Oudh%20Elixir%2010ml." target="_blank"><span class="material-symbols-outlined text-[14px] text-green-600">chat</span><span>Inquire on WhatsApp</span></a></div></div><div class="bg-surface-container-low/60 hover:bg-surface-container-low p-space-sm rounded-lg flex items-center gap-space-sm border border-transparent hover:border-secondary/20 transition-all duration-300 group"><div class="w-14 h-16 bg-surface-container rounded shrink-0 overflow-hidden"><img alt="Glow Hydration Ampoule" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSfrZojkotCs5ho1b1-wf0PHdxBWT3W48DJshEW6vVETkE1GhaPqdyW2BMqj9Q9L0siimNpStldl9wzQaIHlMtB9HjNiwgfeRQtSBu-RFg63BFgpbfKPZQmrDQdPn3saaeLk8fnrY5FFGNInTbWOAZ6sUK3pjePXuLVvDpS63y9QW4ICqLwifpdEuckupYkohPQ2wgcBWV-Xx4u3aqGArP7dNyU5ybE1dNiVfnfwQSLyWtEgvabZTh"/></div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-badge text-label-badge text-secondary uppercase truncate">Glow Hydration Ampoule</span><span class="font-label-caps text-label-caps text-on-surface mt-0.5">Quote on Request</span><a class="text-secondary hover:text-on-surface font-label-caps text-label-caps uppercase text-left mt-1 flex items-center gap-1 transition-all duration-200" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20inquire%20about%20Glow%20Hydration%20Ampoule." target="_blank"><span class="material-symbols-outlined text-[14px] text-green-600">chat</span><span>Inquire on WhatsApp</span></a></div></div><div class="bg-surface-container-low/60 hover:bg-surface-container-low p-space-sm rounded-lg flex items-center gap-space-sm border border-transparent hover:border-secondary/20 transition-all duration-300 group"><div class="w-14 h-16 bg-surface-container rounded shrink-0 overflow-hidden"><img alt="Sculpting Gua Sha Rose" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAwez9o7LzwH7mB-iOlS15-p2A-p2FNfaKrFCrg0fEBzBi8RPDUtb05V9h1SrrYCWfDRt_Hj1Au0SNKn80iL6VUuMlf4qtnyEg-WmWNdB1zxKqhOAppKWtYtPZ11qXT_0QcrAJg5X2F3h9qQ9D7TX0Depfzle1IF1xXKxnFI749IPwUv3-gFR262A1pX6bcA9rbirgYXD6ID9NEkV77SD9LlkrkUML_7OiWKU_aCUCJ-vZBq54Dvzn"/></div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-badge text-label-badge text-secondary uppercase truncate">Sculpting Gua Sha Rose</span><span class="font-label-caps text-label-caps text-on-surface mt-0.5">Quote on Request</span><a class="text-secondary hover:text-on-surface font-label-caps text-label-caps uppercase text-left mt-1 flex items-center gap-1 transition-all duration-200" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20inquire%20about%20Sculpting%20Gua%20Sha%20Rose." target="_blank"><span class="material-symbols-outlined text-[14px] text-green-600">chat</span><span>Inquire on WhatsApp</span></a></div></div></div>
+</div>
+</div>
+<!-- Order Summary Sticky Card -->
+<div class="w-full lg:w-96 shrink-0 lg:sticky lg:top-32 space-y-space-md">
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-md border border-outline-variant/30 space-y-space-md relative overflow-hidden"><div class="flex items-center justify-between pb-space-xs border-b border-surface-container"><h2 class="font-title-editorial text-title-editorial text-on-surface">Order Inquiry Summary</h2><span class="font-label-caps text-label-caps text-on-surface-variant uppercase font-sans">ملخص الطلب</span></div><div class="space-y-space-sm text-body-md font-body-md text-on-surface"><div class="flex justify-between items-center"><span class="text-on-surface-variant">Selection Subtotal</span><span class="font-title-editorial text-body-md text-on-surface font-medium">Quote on Request</span></div><div class="flex flex-col space-y-space-2xs pt-1"><div class="flex justify-between items-center mb-1"><span class="text-on-surface-variant">Kuwait Express Dispatch</span><span class="font-label-caps text-label-caps text-secondary font-bold tracking-wider">COMPLIMENTARY</span></div><div class="p-2 rounded-lg bg-surface-container-low border border-surface-container text-body-sm font-body-sm flex items-center justify-between"><span class="text-on-surface">VIP Delivery across Kuwait</span><span class="font-label-caps text-label-caps text-secondary font-semibold">FREE</span></div></div><div class="pt-space-sm mt-space-sm bg-surface-container-low -mx-space-xl px-space-xl py-space-sm rounded-b-xl border-t border-surface-container-highest"><div class="flex justify-between items-baseline"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface">Total</span><span class="font-label-badge text-label-badge text-on-surface-variant font-sans">تسعيرة عند الطلب / Personalized Quotation</span></div><div class="text-right"><div class="font-title-editorial text-[18px] text-on-surface font-semibold">Quote on Request</div><div class="font-price-fraction text-price-fraction text-secondary font-label-caps tracking-wider">(تسعيرة عند الطلب)</div></div></div></div></div><a class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-all duration-300 py-space-sm px-space-md flex items-center justify-center gap-space-xs font-label-caps text-label-caps uppercase tracking-widest text-center shadow-lg hover:shadow-xl group btn-press rounded-lg relative overflow-hidden wa-btn-pulse" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20request%20a%20quote%20for%20my%20bag%20items:%20Dr.%20Althea%20345%20Relief%20Cream%20and%20ACM%20Sebionex%20Cleansing%20Bar." target="_blank"><span class="material-symbols-outlined text-[20px] relative z-10">chat</span><span class="relative z-10 font-bold">REQUEST QUOTE VIA WHATSAPP (طلب تسعيرة عبر واتساب)</span></a><div class="bg-surface-container-low p-space-sm rounded-lg space-y-space-2xs text-on-surface-variant font-body-sm text-body-sm border border-surface-container-highest/60"><div class="flex items-center gap-space-xs text-on-surface"><span class="material-symbols-outlined text-secondary text-[16px]">verified_user</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Mikyaj Cold Chain Protocol</span></div><p class="leading-relaxed">Every active formula is dispatched via climate-regulated vans across Kuwait, preserving peptide stability up to 45°C ambient heat. Quotation delivered within minutes.</p></div></div>
+<div class="p-space-sm bg-surface-container rounded-lg text-center border border-surface-container-highest/60 hover:border-secondary/30 transition-colors">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Need shade guidance before placing order? <br/><a class="text-secondary underline font-label-caps text-label-caps uppercase font-bold hover:text-on-surface transition-colors" href="#">Talk to Mikyaj Kuwait Concierge</a></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Slideover Quick Drawer -->
+<div class="fixed inset-0 bg-primary/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300" id="slideover-backdrop">
+<div class="absolute top-0 right-0 bottom-0 w-full max-w-md bg-surface-container-lowest shadow-2xl flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out" id="slideover-panel">
+<div class="p-space-lg flex items-center justify-between bg-surface-container-low border-b border-surface-container">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[22px]">shopping_bag</span>
+<h2 class="font-title-editorial text-title-editorial text-on-surface uppercase tracking-wider">Bag Preview (<span id="drawer-item-count">2</span>)</h2>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:text-secondary hover:bg-surface-container-high transition-all" id="close-slideover-trigger">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="bg-surface-container px-space-lg py-space-xs">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface">Kuwait Free Dispatch Threshold</span>
+<span class="font-label-caps text-label-caps text-secondary font-bold" id="drawer-threshold-label">12.000 / 20.000 KD</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-1 overflow-hidden">
+<div class="bg-secondary h-full transition-all duration-500 rounded-full" id="drawer-progress-fill" style="width: 60%;"></div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-space-lg space-y-space-md" id="drawer-items-list"><div class="flex items-start gap-space-sm bg-surface-container-low/40 p-space-sm rounded-lg border border-transparent hover:border-surface-container"><div class="w-16 h-20 bg-surface-container rounded shrink-0 overflow-hidden"><img alt="Dr Althea 345 Relief Cream" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPMIfPqnbS9WPSMzYxTPcBC-NWbF_YQyJPxJsuz9SUbVnu6Wi3sGEvB3HS_imxpozZ3eQYB23L1tgoiXmaxMgXEO1AHIX-7Bzu67ctPcL5Jx4d_hAIAQuwEIZQPMn7yunB3y_52LSO1hKnEy-6_ywgurNl5odAoOEwX7aQSxYx3bzTSZIC5G79WaU01KQaHtGr17ormbFx5fRb6GzOcRtq04_eJzR2KGAI2X1YDRg7Z1LSAfBQMHkA"/></div><div class="flex-1 min-w-0"><span class="font-label-badge text-label-badge text-secondary uppercase">DR. ALTHEA</span><h4 class="font-title-editorial text-title-editorial text-on-surface truncate">345 Relief Cream 50ml</h4><div class="flex items-center justify-between mt-space-xs"><span class="font-label-caps text-label-caps text-secondary uppercase">Quote on Request</span><span class="font-body-sm text-body-sm text-on-surface-variant">In Bag</span></div></div></div><div class="flex items-start gap-space-sm bg-surface-container-low/40 p-space-sm rounded-lg border border-transparent hover:border-surface-container"><div class="w-16 h-20 bg-surface-container rounded shrink-0 overflow-hidden"><img alt="ACM Sebionex Bar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd2iS3nJvqDJ22hph5XA60T1u0BOaEo4HbPyX61YJ9IKdj3vaW8yVe2-JanOIRRLZFifupKwZMWVvIwWhWSmJmRpr6CkV4PkR2J8Hevvw_JUo0He-3eU-g90HInfINL2qIyDpnlYUqGojXFHxd-H3v7AeuSI40NxDWFu1bkxdFBZSTEEDb95Z89YX31MLBnszyO5SCR2m5gt7v41kDjEgS1WLgWdeYopvE-_RkFFAFMCnDSYUw4QhK"/></div><div class="flex-1 min-w-0"><span class="font-label-badge text-label-badge text-secondary uppercase">ACM DERMATOLOGIE</span><h4 class="font-title-editorial text-title-editorial text-on-surface truncate">Sebionex Bar 100g</h4><div class="flex items-center justify-between mt-space-xs"><span class="font-label-caps text-label-caps text-secondary uppercase">Quote on Request</span><span class="font-body-sm text-body-sm text-on-surface-variant">In Bag</span></div></div></div><div class="bg-surface-container-low p-space-sm rounded-lg border border-surface-container-highest/60"><span class="font-label-caps text-label-caps uppercase text-secondary font-bold block mb-1">WhatsApp Direct Response</span><p class="font-body-sm text-body-sm text-on-surface-variant">Our Kuwait client specialists respond with full quote and complimentary delivery coordination.</p></div></div>
+<div class="p-space-lg bg-surface-container-low border-t border-surface-container space-y-space-sm"><div class="flex justify-between items-baseline font-body-md text-body-md text-on-surface"><span>Bag Status</span><span class="font-title-editorial text-body-md font-semibold text-secondary">Quote on Request (تسعيرة عند الطلب)</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">Kuwait express cold-chain delivery complimentary with quote confirmation.</p><div class="space-y-space-2xs"><a class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors py-space-sm px-space-md flex items-center justify-center gap-space-xs font-label-caps text-label-caps uppercase tracking-widest text-center shadow-md rounded-lg group wa-btn-pulse" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20would%20like%20to%20request%20a%20quote%20for%20my%20bag%20items:%20Dr.%20Althea%20345%20Relief%20Cream%20and%20ACM%20Sebionex%20Cleansing%20Bar." target="_blank"><span class="material-symbols-outlined text-[16px]">chat</span><span>REQUEST QUOTE VIA WHATSAPP</span></a><button class="w-full py-space-xs text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps uppercase tracking-widest text-center transition-colors" onclick="closeDrawer()">Continue Curating Bag</button></div></div>
+</div>
+</div>
+</div>
+<script>
+  // State management
+  let baseSubtotal = 12.000;
+  let currentShipping = 1.500;
+  let giftPackagingCost = 0.000;
+  let discountAmount = 0.000;
+  let totalItemCount = 2;
+  const freeShippingThreshold = 20.000;
+
+  // Show Toast micro-notification
+  function showToast(message, icon = 'check_circle', isHighlight = false) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast-slide flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg border text-sm font-body-sm pointer-events-auto transform translate-y-3 opacity-0 ${
+      isHighlight ? 'bg-primary text-on-primary border-secondary/40' : 'bg-surface-container-lowest text-on-surface border-outline-variant/40'
+    }`;
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-[18px] text-secondary">${icon}</span>
+      <span>${message}</span>
+    `;
+    container.appendChild(toast);
+
+    // Trigger enter animation
+    requestAnimationFrame(() => {
+      toast.classList.remove('translate-y-3', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+    });
+
+    // Remove after 3.2s
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 350);
+    }, 3200);
+  }
+
+  // Recalculate totals and trigger smooth number updates
+  function recalculateCart() {
+    let effectiveShipping = currentShipping;
+    let remaining = freeShippingThreshold - baseSubtotal;
+
+    // Check if free shipping threshold is met
+    const shippingRadioStandard = document.getElementById('radio-standard');
+    const shippingIcon = document.getElementById('shipping-icon');
+
+    if (baseSubtotal >= freeShippingThreshold) {
+      effectiveShipping = 0.000;
+      document.getElementById('free-shipping-text').innerHTML = '<strong class="font-bold text-secondary flex items-center gap-1 inline-flex"><span class="material-symbols-outlined text-[16px]">celebration</span> Free Delivery Unlocked!</strong> You qualify for complimentary dispatch in Kuwait.';
+      document.getElementById('summary-shipping').textContent = 'FREE';
+      document.getElementById('summary-shipping').className = 'font-label-caps text-label-caps text-secondary font-bold tracking-wider';
+      if (shippingIcon) shippingIcon.classList.add('text-secondary', 'animate-bounce');
+    } else {
+      if (shippingIcon) shippingIcon.classList.remove('animate-bounce');
+      document.getElementById('summary-shipping').className = 'font-price-primary text-price-primary text-on-surface tabular-nums';
+      document.getElementById('summary-shipping').textContent = currentShipping === 0 ? 'FREE' : currentShipping.toFixed(3) + ' KD';
+      document.getElementById('free-shipping-text').innerHTML = 'Add <strong class="font-bold text-on-surface">' + remaining.toFixed(3) + ' KD</strong> more to unlock Free Delivery across Kuwait!';
+    }
+
+    let total = baseSubtotal + effectiveShipping + giftPackagingCost - discountAmount;
+    if (total < 0) total = 0;
+
+    // Smooth total pulse
+    const totalEl = document.getElementById('summary-total');
+    totalEl.classList.add('scale-105', 'text-secondary');
+    setTimeout(() => totalEl.classList.remove('scale-105', 'text-secondary'), 250);
+
+    document.getElementById('summary-subtotal').textContent = baseSubtotal.toFixed(3) + ' KD';
+    totalEl.textContent = total.toFixed(3) + ' KD';
+    
+    let fils = Math.round(total * 1000).toLocaleString();
+    document.getElementById('summary-fils').textContent = '(' + fils + ' fils)';
+
+    // Progress Bar Animation
+    let progress = Math.min(100, Math.round((baseSubtotal / freeShippingThreshold) * 100));
+    const progressBar = document.getElementById('progress-bar-fill');
+    const progressLabel = document.getElementById('progress-percentage');
+    
+    progressBar.style.width = progress + '%';
+    progressLabel.textContent = progress + '%';
+    
+    // Drawer updates
+    const drawerSubtotal = document.getElementById('drawer-subtotal');
+    if (drawerSubtotal) drawerSubtotal.textContent = baseSubtotal.toFixed(3) + ' KD';
+    const drawerFill = document.getElementById('drawer-progress-fill');
+    if (drawerFill) drawerFill.style.width = progress + '%';
+    const drawerLabel = document.getElementById('drawer-threshold-label');
+    if (drawerLabel) drawerLabel.textContent = baseSubtotal.toFixed(3) + ' / 20.000 KD';
+  }
+
+  // Interactive Quantity Adjustment with micro-bounce
+  function adjustQty(qtyId, delta, unitPrice, subtotalId, btn) {
+    let elem = document.getElementById(qtyId);
+    let qty = parseInt(elem.textContent, 10) + delta;
+    if (qty < 1) return;
+
+    // Button micro-animation
+    if (btn) {
+      btn.classList.add('scale-75');
+      setTimeout(() => btn.classList.remove('scale-75'), 150);
+    }
+
+    // Number flip bounce
+    elem.classList.add('scale-125', 'text-secondary');
+    setTimeout(() => {
+      elem.textContent = qty;
+      elem.classList.remove('scale-125', 'text-secondary');
+    }, 120);
+
+    let itemSub = (qty * unitPrice).toFixed(3);
+    const subtotalEl = document.getElementById(subtotalId);
+    subtotalEl.classList.add('text-secondary');
+    subtotalEl.textContent = itemSub + ' KD';
+    setTimeout(() => subtotalEl.classList.remove('text-secondary'), 300);
+    
+    baseSubtotal += (delta * unitPrice);
+    totalItemCount += delta;
+    updateBagCounts();
+
+    // Match in drawer if present
+    if (qtyId === 'qty-1') {
+      const d1 = document.getElementById('drawer-qty-1');
+      if (d1) d1.textContent = qty;
+    } else if (qtyId === 'qty-2') {
+      const d2 = document.getElementById('drawer-qty-2');
+      if (d2) d2.textContent = qty;
+    }
+
+    recalculateCart();
+  }
+
+  // Update item counters across screen
+  function updateBagCounts() {
+    document.getElementById('header-cart-badge').textContent = totalItemCount;
+    document.getElementById('cart-item-count-heading').textContent = totalItemCount;
+    document.getElementById('drawer-item-count').textContent = totalItemCount;
+  }
+
+  // Item Removal with smooth collapse
+  function removeItem(itemId, unitPrice, qtyId) {
+    const el = document.getElementById(itemId);
+    if (!el) return;
+
+    const qty = parseInt(document.getElementById(qtyId).textContent, 10);
+    const cost = qty * unitPrice;
+
+    el.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(-30px)';
+    el.style.maxHeight = el.scrollHeight + 'px';
+
+    setTimeout(() => {
+      el.style.maxHeight = '0px';
+      el.style.paddingTop = '0px';
+      el.style.paddingBottom = '0px';
+      el.style.marginBottom = '0px';
+      el.style.overflow = 'hidden';
+    }, 150);
+
+    setTimeout(() => {
+      el.remove();
+      baseSubtotal -= cost;
+      if (baseSubtotal < 0) baseSubtotal = 0;
+      totalItemCount -= qty;
+      updateBagCounts();
+      recalculateCart();
+      showToast('Item removed from Kuwait shopping bag', 'delete');
+    }, 450);
+  }
+
+  // Move to Wishlist Interaction with animated heart & badge update
+  function moveToWishlist(itemId, itemName, unitPrice, qtyId, btn) {
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (icon) {
+      icon.classList.add('animate-heart', 'text-secondary');
+    }
+
+    const wishlistBadge = document.getElementById('wishlist-badge');
+    wishlistBadge.classList.remove('opacity-0', 'scale-50');
+    wishlistBadge.classList.add('opacity-100', 'scale-100');
+
+    showToast(`"${itemName}" moved to your Wishlist`, 'favorite');
+
+    setTimeout(() => {
+      removeItem(itemId, unitPrice, qtyId);
+    }, 500);
+  }
+
+  // Signature Gift Atelier Checkbox & Accordion Note
+  function toggleGiftPackaging(checkbox) {
+    const giftRow = document.getElementById('gift-summary-row');
+    const noteBox = document.getElementById('gift-note-box');
+
+    if (checkbox.checked) {
+      giftPackagingCost = 1.000;
+      giftRow.classList.remove('hidden');
+      giftRow.classList.add('flex');
+      
+      // Expand note input smoothly
+      noteBox.style.maxHeight = '60px';
+      noteBox.style.opacity = '1';
+      showToast('Bespoke Mikyaj Kuwait Gift Atelier added (+1.000 KD)', 'redeem');
+    } else {
+      giftPackagingCost = 0.000;
+      giftRow.classList.add('hidden');
+      giftRow.classList.remove('flex');
+
+      noteBox.style.maxHeight = '0px';
+      noteBox.style.opacity = '0';
+    }
+    recalculateCart();
+  }
+
+  // Interactive Shipping Method Selector
+  function updateShipping(cost, radioElem) {
+    currentShipping = cost;
+    
+    // Style active container
+    const stdContainer = document.getElementById('standard-shipping-container');
+    const pickupContainer = document.getElementById('pickup-shipping-container');
+
+    if (cost > 0) {
+      stdContainer.className = 'delivery-radio-label flex items-center justify-between font-body-sm text-body-sm p-2 rounded-lg cursor-pointer border border-secondary/40 bg-secondary/5 transition-all duration-200 group';
+      pickupContainer.className = 'delivery-radio-label flex items-center justify-between font-body-sm text-body-sm p-2 rounded-lg cursor-pointer border border-transparent bg-surface-container-low hover:bg-surface-container transition-all duration-200 group';
+    } else {
+      pickupContainer.className = 'delivery-radio-label flex items-center justify-between font-body-sm text-body-sm p-2 rounded-lg cursor-pointer border border-secondary/40 bg-secondary/5 transition-all duration-200 group';
+      stdContainer.className = 'delivery-radio-label flex items-center justify-between font-body-sm text-body-sm p-2 rounded-lg cursor-pointer border border-transparent bg-surface-container-low hover:bg-surface-container transition-all duration-200 group';
+    }
+
+    recalculateCart();
+  }
+
+  // Privilege Coupon Apply with feedback and clear state
+  function applyCoupon() {
+    const input = document.getElementById('coupon-input');
+    const feedback = document.getElementById('coupon-feedback');
+    const discountRow = document.getElementById('discount-summary-row');
+    const clearBtn = document.getElementById('clear-coupon-btn');
+    const code = input.value.trim().toUpperCase();
+
+    if (code === 'LUXEKUWAIT') {
+      discountAmount = 1.200;
+      feedback.innerHTML = '<span class="material-symbols-outlined text-[16px]">check_circle</span> <span>Code LUXEKUWAIT applied: 10% Gulf VIP discount (-1.200 KD)</span>';
+      feedback.classList.remove('hidden', 'text-error');
+      feedback.classList.add('text-secondary', 'flex');
+      discountRow.classList.remove('hidden');
+      discountRow.classList.add('flex');
+      clearBtn.classList.remove('hidden');
+      showToast('VIP Voucher applied successfully! Saved 1.200 KD', 'verified');
+      recalculateCart();
+    } else if (code.length > 0) {
+      feedback.innerHTML = '<span class="material-symbols-outlined text-[16px]">error</span> <span>Invalid or expired Kuwait VIP privilege code.</span>';
+      feedback.classList.remove('hidden', 'text-secondary');
+      feedback.classList.add('text-error', 'flex');
+      clearBtn.classList.remove('hidden');
+    }
+  }
+
+  function clearCoupon() {
+    document.getElementById('coupon-input').value = '';
+    document.getElementById('coupon-feedback').classList.add('hidden');
+    document.getElementById('coupon-feedback').classList.remove('flex');
+    document.getElementById('clear-coupon-btn').classList.add('hidden');
+    document.getElementById('discount-summary-row').classList.add('hidden');
+    document.getElementById('discount-summary-row').classList.remove('flex');
+    discountAmount = 0.000;
+    recalculateCart();
+  }
+
+  // Interactive Quick Add on Curated Pairings
+  function addSuggested(name, price, btn) {
+    // Micro-animation button change
+    const label = btn.querySelector('.btn-label');
+    const icon = btn.querySelector('.material-symbols-outlined');
+    
+    btn.classList.add('text-green-700', 'font-bold');
+    btn.disabled = true;
+    if (icon) icon.textContent = 'check';
+    if (label) label.textContent = 'Added ✓';
+
+    baseSubtotal += price;
+    totalItemCount += 1;
+    updateBagCounts();
+
+    // Pulse cart badge in header
+    const headerBadge = document.getElementById('header-cart-badge');
+    headerBadge.classList.add('scale-150', 'bg-secondary');
+    setTimeout(() => headerBadge.classList.remove('scale-150', 'bg-secondary'), 300);
+
+    recalculateCart();
+    showToast(`${name} added to your Kuwait selection! (+${price.toFixed(3)} KD)`, 'shopping_bag');
+
+    // Revert button after 2.5s
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove('text-green-700', 'font-bold');
+      if (icon) icon.textContent = 'add';
+      if (label) label.textContent = 'Add Again';
+    }, 2500);
+  }
+
+  // Quick Drawer Controls
+  const slideoverBackdrop = document.getElementById('slideover-backdrop');
+  const slideoverPanel = document.getElementById('slideover-panel');
+  const openSlideoverTrigger = document.getElementById('open-slideover-trigger');
+  const closeSlideoverTrigger = document.getElementById('close-slideover-trigger');
+  const closeDrawerBottom = document.getElementById('close-drawer-bottom');
+
+  function openDrawer() {
+    slideoverBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+    slideoverBackdrop.classList.add('opacity-100');
+    slideoverPanel.classList.remove('translate-x-full');
+    slideoverPanel.classList.add('translate-x-0');
+  }
+
+  function closeDrawer() {
+    slideoverBackdrop.classList.add('opacity-0', 'pointer-events-none');
+    slideoverBackdrop.classList.remove('opacity-100');
+    slideoverPanel.classList.add('translate-x-full');
+    slideoverPanel.classList.remove('translate-x-0');
+  }
+
+  openSlideoverTrigger.addEventListener('click', openDrawer);
+  closeSlideoverTrigger.addEventListener('click', closeDrawer);
+  closeDrawerBottom.addEventListener('click', closeDrawer);
+  slideoverBackdrop.addEventListener('click', (e) => {
+    if (e.target === slideoverBackdrop) closeDrawer();
+  });
+
+  // Proceed to Checkout Button Click Feedback
+  document.getElementById('checkout-cta-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    showToast('Directing to encrypted KNET / MyFatoorah gateway...', 'lock', true);
+  });
+</script></main><footer class="w-full bg-surface-container-low mt-space-4xl"><div class="max-w-[1440px] mx-auto px-margin-desktop py-space-3xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-2xl pb-space-2xl"><div class="space-y-space-md"><div class="flex items-center gap-space-sm"><img alt="Mikyaj Kuwait Official Logo" class="h-14 w-auto object-contain rounded-full shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRFSWCtCLpxULn8bDEFCdAjHjdCcjGqG_fCR3eBrx4UokWHnR2tcCc2i6RtEYFWQLxMX44JiDdPIV9Oip5YhMQHYXbh5VAZfUm9JAtxpF3fJjA1VUJoDtFbSrui8SZefl8Y6Gu3GSwqQeGGjYdgcVKtrlsCnUWrjM0iP3i-wio6yjkU5dcVryiy6XJSdVmQ-j4gnpezRxl_0F1LzwzMfz7P0nqB8mw4_qvDNFAOBl5-R7lLLlS_4jebXMSrJTJT4OFDg"/><div class="flex flex-col"><span class="font-headline-md text-headline-md tracking-tight uppercase text-on-surface leading-none">MIKYAJ KUWAIT</span><span class="font-label-caps text-[11px] text-secondary tracking-widest uppercase">Cosmetics Atelier</span></div></div><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">The epicenter of luxury Gulf cosmetics and prestigious sensory formulations. Curated meticulously for Kuwait’s elevated lifestyle with express regional dispatch and bespoke WhatsApp consultation.</p><div class="flex items-center gap-space-sm pt-space-2xs"><span class="font-label-caps text-label-caps uppercase text-on-surface-variant">State of Kuwait</span><span class="text-outline">•</span><span class="font-label-caps text-label-caps text-on-surface-variant">مدينة الكويت</span></div></div><div class="space-y-space-sm"><div><div class="flex items-center gap-space-xs text-on-surface mb-space-2xs"><span class="material-symbols-outlined text-secondary text-[20px]">redeem</span><h3 class="font-title-editorial text-title-editorial">Signature Gift Atelier</h3></div><p class="font-body-sm text-body-sm text-on-surface-variant">Encased in Mikyaj Kuwait ivory textured box with wax stamp seal and customized parchment calligraphy card.</p><label class="flex items-start gap-space-sm mt-space-md cursor-pointer group select-none p-space-xs rounded-lg hover:bg-surface-container-low/80 transition-colors"><div class="relative flex items-center justify-center mt-0.5"><input class="peer sr-only" id="gift-checkbox" type="checkbox"/><div class="w-5 h-5 border-2 border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary rounded transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-secondary flex items-center justify-center group-hover:scale-105"><span class="material-symbols-outlined text-[16px] text-on-secondary scale-0 peer-checked:scale-100 transition-transform duration-200 font-bold">check</span></div></div><div class="flex flex-col"><span class="font-label-caps text-label-caps uppercase text-on-surface group-hover:text-secondary transition-colors flex items-center gap-1">Add Bespoke Mikyaj Box &amp; Card <span class="text-secondary font-bold">(Complimentary Atelier Packaging)</span></span><span class="font-body-sm text-body-sm text-on-surface-variant font-sans">تغليف فاخر مع بطاقة إهداء مخصصة مجاناً</span></div></label></div><div class="pt-space-sm border-t border-surface-container/80"><span class="font-label-caps text-label-caps uppercase text-on-surface-variant block mb-1">Kuwait Atelier Privilege</span><p class="font-body-sm text-body-sm text-on-surface-variant">Exclusive concierge guidance with sample vials tailored to Kuwait's climate included with every quotation.</p></div></div><div class="space-y-space-sm"><h4 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface">Kuwait Express Dispatch</h4><ul class="space-y-space-xs font-body-md text-body-md text-on-surface-variant"><li class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">schedule</span><span>Same-day delivery across Capital, Hawalli &amp; Salmiya</span></li><li class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">verified</span><span>Climate-controlled cold chain logistics for luxury formulations</span></li><li class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">shield</span><span>100% Guaranteed authentic batches directly from ateliers</span></li></ul></div><div class="space-y-space-sm"><h4 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface">Payment Methods</h4><p class="font-body-sm text-body-sm text-on-surface-variant">Seamless and encrypted checkout honoring regional banking standards:</p><div class="flex flex-wrap items-center gap-space-xs pt-space-2xs"><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider">KNET / كي نت</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider">MyFatoorah</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider">VISA</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider">Mastercard</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider">Apple Pay</span></div></div></div><div class="pt-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md border-t border-surface-container-highest/60"><div class="flex flex-wrap items-center gap-space-lg font-label-caps text-label-caps uppercase"><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy-policy" href="#">Privacy Policy / سياسة الخصوصية</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="delivery-terms" href="#">Delivery Terms / شروط التوصيل</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="return-policy" href="#">Return &amp; Exchange / سياسة الاسترجاع</a></div><div class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-right">© 2025 Mikyaj Kuwait Company W.L.L. All Rights Reserved.</div></div></div></footer></body></html>

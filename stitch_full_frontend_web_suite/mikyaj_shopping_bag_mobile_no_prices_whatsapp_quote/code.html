@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-surface-variant": "#c4c7c7", "surface-container-high": "#2a2a28", "surface-tint": "#c8c6c5", outline: "#8e9192", "on-tertiary-fixed-variant": "#53443b", "on-tertiary-fixed": "#251912", "on-primary-container": "#7e7d7d", "on-error-container": "#ffdad6", "tertiary-fixed": "#f5ded3", "surface-bright": "#393938", "tertiary-container": "#1b100a", "on-primary": "#313030", "inverse-on-surface": "#30312f", "on-secondary": "#4d251e", "on-secondary-fixed": "#33110b", "on-secondary-fixed-variant": "#683a33", background: "#131412", secondary: "#f7b7ac", error: "#ffb4ab", "surface-container": "#1f201e", primary: "#c8c6c5", "on-secondary-container": "#e4a69b", "on-background": "#e4e2df", "on-tertiary-container": "#8d7a70", "on-tertiary": "#3b2d26", "primary-fixed": "#e5e2e1", "outline-variant": "#444748", "surface-variant": "#343533", "primary-container": "#121212", "inverse-primary": "#5f5e5e", "error-container": "#93000a", "on-primary-fixed-variant": "#474646", "on-error": "#690005", "on-surface": "#e4e2df", "inverse-surface": "#e4e2df", "surface-container-lowest": "#0e0e0d", "secondary-container": "#683a33", tertiary: "#d8c2b7", "secondary-fixed-dim": "#f7b7ac", "surface-container-highest": "#343533", "surface-container-low": "#1b1c1a", "primary-fixed-dim": "#c8c6c5", surface: "#131412", "secondary-fixed": "#ffdad4", "tertiary-fixed-dim": "#d8c2b7", "surface-dim": "#131412", "on-primary-fixed": "#1c1b1b"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"space-3xl": "4.5rem", "space-xs": "0.5rem", "space-sm": "0.75rem", "space-2xl": "3rem", "space-xl": "2rem", "space-2xs": "0.25rem", "space-md": "1rem", "space-4xl": "6rem", "container-max-desktop": "1440px", "space-lg": "1.5rem", "margin-desktop": "4rem", "gutter-desktop": "2rem"}, fontFamily: {"body-lg": ["DM Sans"], "price-fraction": ["DM Sans"], "title-editorial": ["Bodoni Moda"], "body-sm": ["DM Sans"], "display-hero-mobile": ["Bodoni Moda"], "headline-sm": ["Bodoni Moda"], "headline-lg": ["Bodoni Moda"], "body-md": ["DM Sans"], "label-badge": ["DM Sans"], "price-primary": ["DM Sans"], "display-hero": ["Bodoni Moda"], "label-caps": ["DM Sans"], "headline-md": ["Bodoni Moda"], "headline-lg-mobile": ["Bodoni Moda"], headline: ["Bodoni Moda"], display: ["Bodoni Moda"], body: ["DM Sans"], label: ["DM Sans"]}, fontSize: {"body-lg": ["16px", {lineHeight: "26px", letterSpacing: "0.01em", fontWeight: "400"}], "price-fraction": ["12px", {lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "400"}], "title-editorial": ["18px", {lineHeight: "26px", letterSpacing: "0.02em", fontWeight: "500"}], "body-sm": ["12px", {lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "400"}], "display-hero-mobile": ["36px", {lineHeight: "44px", letterSpacing: "-0.01em", fontWeight: "400"}], "headline-sm": ["20px", {lineHeight: "28px", letterSpacing: "0", fontWeight: "500"}], "headline-lg": ["38px", {lineHeight: "46px", letterSpacing: "-0.01em", fontWeight: "400"}], "body-md": ["14px", {lineHeight: "22px", letterSpacing: "0.01em", fontWeight: "400"}], "label-badge": ["10px", {lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "500"}], "price-primary": ["15px", {lineHeight: "20px", letterSpacing: "0.03em", fontWeight: "500"}], "display-hero": ["56px", {lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "400"}], "label-caps": ["11px", {lineHeight: "14px", letterSpacing: "0.12em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "0", fontWeight: "400"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", letterSpacing: "0", fontWeight: "400"}]}}}};</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><button aria-label="Menu" class="w-11 h-11 flex items-center justify-center text-on-surface hover:text-on-surface-variant transition-colors"><span class="material-symbols-outlined text-[22px]">menu</span></button><div class="flex items-center gap-space-xs"><img alt="MIKYAJ Kuwait Logo" class="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-secondary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB95DgnRQSQeSG-c5zzDoQwiQV4WSApBKTEtwTDqKUjfwGpxh7EbbgrP4l_-FKzMvdnwB0Jly8PZYfMsm2AyKrf10bbKmY71TNZ0s59obK9GdpmicgMWinP-4qKb1CCc5hjeUxZl5J8cWPnF3KqGrlrianfLzjdr0ee0kqCapEEnefZNFs96NlExNFKjEMqAer4agAIqOlRRd7OSBJ83nzBjwk7fqumYCNRq4IihnsL3R0B2tgc38s87TdCKYmDxypKvQ"/><div class="flex flex-col"><span class="font-title-editorial text-title-editorial tracking-widest uppercase text-on-surface leading-none">MIKYAJ</span><span class="font-label-badge text-label-badge text-secondary tracking-widest uppercase font-semibold">KUWAIT</span></div></div></div><div class="flex items-center gap-space-xs"><img alt="MIKYAJ Kuwait Logo" class="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-secondary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB95DgnRQSQeSG-c5zzDoQwiQV4WSApBKTEtwTDqKUjfwGpxh7EbbgrP4l_-FKzMvdnwB0Jly8PZYfMsm2AyKrf10bbKmY71TNZ0s59obK9GdpmicgMWinP-4qKb1CCc5hjeUxZl5J8cWPnF3KqGrlrianfLzjdr0ee0kqCapEEnefZNFs96NlExNFKjEMqAer4agAIqOlRRd7OSBJ83nzBjwk7fqumYCNRq4IihnsL3R0B2tgc38s87TdCKYmDxypKvQ"/><div class="flex flex-col"><span class="font-title-editorial text-title-editorial tracking-widest uppercase text-on-surface leading-none">MIKYAJ</span><span class="font-label-badge text-label-badge text-secondary tracking-widest uppercase font-semibold">KUWAIT</span></div></div><div class="flex items-center gap-space-xs"><img alt="MIKYAJ Kuwait Logo" class="h-9 w-9 rounded-full object-cover shadow-sm ring-1 ring-secondary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB95DgnRQSQeSG-c5zzDoQwiQV4WSApBKTEtwTDqKUjfwGpxh7EbbgrP4l_-FKzMvdnwB0Jly8PZYfMsm2AyKrf10bbKmY71TNZ0s59obK9GdpmicgMWinP-4qKb1CCc5hjeUxZl5J8cWPnF3KqGrlrianfLzjdr0ee0kqCapEEnefZNFs96NlExNFKjEMqAer4agAIqOlRRd7OSBJ83nzBjwk7fqumYCNRq4IihnsL3R0B2tgc38s87TdCKYmDxypKvQ"/><div class="flex flex-col"><span class="font-title-editorial text-title-editorial tracking-widest uppercase text-on-surface leading-none">MIKYAJ</span><span class="font-label-badge text-label-badge text-secondary tracking-widest uppercase font-semibold">KUWAIT</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface flex-1"><div class="flex flex-col w-full pb-32">
+<!-- Cart Header Ribbon -->
+<section class="px-space-md pt-space-xs pb-space-sm bg-surface flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<button aria-label="Dismiss Shopping Bag" class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex items-baseline gap-2">
+<h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Shopping Bag</h1>
+<span class="font-label-badge text-label-badge text-on-surface-variant uppercase tracking-widest">(2)</span>
+</div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-medium tracking-wide">حقيبة التسوق</span>
+</div>
+</section>
+<!-- Kuwait Free Delivery Thermometer -->
+<section class="mx-space-md mb-space-md p-space-sm bg-surface-container-low rounded-xl flex flex-col gap-2"><div class="flex items-start justify-between gap-2"><div class="flex items-center gap-2 text-on-surface"><span class="material-symbols-outlined text-[18px] text-secondary">local_shipping</span><p class="font-body-sm text-body-sm text-on-surface font-medium leading-tight">Complimentary Climate-Controlled Delivery Across Kuwait</p></div><span class="font-label-badge text-label-badge text-secondary font-semibold uppercase tracking-wider shrink-0">توصيل مجاني</span></div><div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden relative"><div class="h-full bg-secondary rounded-full w-full"></div></div><div class="flex justify-between items-center text-on-surface-variant"><span class="font-price-fraction text-price-fraction">Express Dispatch Guaranteed</span><span class="font-price-fraction text-price-fraction">Kuwait VIP Courier</span></div></section>
+<!-- Cart Items List -->
+<section class="px-space-md flex flex-col gap-space-md mb-space-lg">
+<!-- Item 1: DR. ALTHEA 345 Relief Cream -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl flex flex-col gap-space-sm relative shadow-sm">
+<div class="flex gap-space-sm">
+<div class="w-24 h-28 bg-surface-container-low rounded-lg overflow-hidden shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="High-end Korean skincare tube of Dr. Althea 345 Relief Cream minimal packaging on pale linen podium, studio editorial lighting with soothing warm aesthetic, soft shadows and luxury cosmetic feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo72neiMg6AumQDyGQKvVqlCCw9OXPnMWk2fIWC0EDZdgN_3Pnz5yArHtobK__J9YbnK48K6F-pLBV--SW8FtUMFdUkPSavf9ssmacu7zl99m6iNTNbKL0F0RjIDGIDsCn_Xddl9vHNdQQsAqTsXvAAF2deUoDLLNwiUMBgPNlChtfbJ69W1CjJRddRNwTSH9UdmVMZw_fvh9gbFwy0jFtnIyat7u7KWuYF-rZngA-EuHx6dJBFxuY"/>
+<span class="absolute top-1 left-1 bg-surface/90 px-1.5 py-0.5 rounded-full font-label-badge text-label-badge text-on-surface uppercase">K-Beauty</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0 justify-between">
+<div>
+<div class="flex items-start justify-between gap-1">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest truncate">DR. ALTHEA</span>
+<button aria-label="Remove item" class="text-on-surface-variant hover:text-error transition-colors p-0.5 -mt-1 -mr-1">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<h2 class="font-title-editorial text-title-editorial text-on-surface leading-tight mt-0.5 line-clamp-1">345 Relief Cream – 50ml</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">KR-2024-N9 • Soothing Calming Complex</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<!-- Mobile Stepper -->
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5">
+<button aria-label="Decrease quantity" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="font-price-primary text-price-primary w-7 text-center font-medium">1</span>
+<button aria-label="Increase quantity" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<div class="text-right"><span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary font-semibold">Direct Inquiry</span><p class="font-price-fraction text-price-fraction text-on-surface-variant">Concierge Pricing</p></div>
+</div>
+</div>
+</div>
+<!-- Card Action Strip -->
+<div class="flex items-center justify-between pt-2 bg-surface-container-low/40 -mx-space-sm -mb-space-sm px-space-sm py-2 rounded-b-xl">
+<button class="flex items-center gap-1.5 font-label-caps text-label-caps text-on-surface-variant hover:text-secondary uppercase tracking-wider transition-colors">
+<span class="material-symbols-outlined text-[15px]">favorite</span>
+<span>Move to Wishlist</span>
+</button>
+<span class="font-label-badge text-label-badge text-outline uppercase tracking-wider">In Stock Salmiya</span>
+</div>
+</div>
+<!-- Item 2: ACM DERMATOLOGIE Sebionex Bar -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl flex flex-col gap-space-sm relative shadow-sm">
+<div class="flex gap-space-sm">
+<div class="w-24 h-28 bg-surface-container-low rounded-lg overflow-hidden shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="French dermatological skincare cleansing soap bar by ACM Laboratoire in elegant minimalist packaging staged on natural travertine stone plate, warm ambient light, architectural cosmetics still life." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6f4OnqEIfQB1AM-Gc4nGymuI-Zl26DMqI92KqpqSRG1cIj-saDUsIae8u99fjYZo7Zodc6lCxjGzHS-m0AhN8MEysLE53kSXGyfcI3Lc8PxRZdHsYXQs7hYfQIoq-ZnrUgmKPk9cAYxGhYj0oRG809ovVvb12rF_U8lcaTr7KUxqVJfIrmIgJbCI7suL4_RzfDFgvac69wvCs2ytoZL82q1d9hpFKx6t0htxha__qM1MAy_arqGLQ"/>
+<span class="absolute top-1 left-1 bg-surface/90 px-1.5 py-0.5 rounded-full font-label-badge text-label-badge text-on-surface uppercase">Pharma Care</span>
+</div>
+<div class="flex flex-col flex-1 min-w-0 justify-between">
+<div>
+<div class="flex items-start justify-between gap-1">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest truncate">ACM DERMATOLOGIE</span>
+<button aria-label="Remove item" class="text-on-surface-variant hover:text-error transition-colors p-0.5 -mt-1 -mr-1">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<h2 class="font-title-editorial text-title-editorial text-on-surface leading-tight mt-0.5 line-clamp-1">Sebionex Cleansing Bar 100g</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-1 mt-0.5">Standard • Dermatologically Tested</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<!-- Mobile Stepper -->
+<div class="flex items-center bg-surface-container-low rounded-lg p-0.5">
+<button aria-label="Decrease quantity" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="font-price-primary text-price-primary w-7 text-center font-medium">1</span>
+<button aria-label="Increase quantity" class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container-high rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<div class="text-right"><span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary font-semibold">Direct Inquiry</span><p class="font-price-fraction text-price-fraction text-on-surface-variant">Concierge Pricing</p></div>
+</div>
+</div>
+</div>
+<!-- Card Action Strip -->
+<div class="flex items-center justify-between pt-2 bg-surface-container-low/40 -mx-space-sm -mb-space-sm px-space-sm py-2 rounded-b-xl">
+<button class="flex items-center gap-1.5 font-label-caps text-label-caps text-on-surface-variant hover:text-secondary uppercase tracking-wider transition-colors">
+<span class="material-symbols-outlined text-[15px]">favorite</span>
+<span>Move to Wishlist</span>
+</button>
+<span class="font-label-badge text-label-badge text-outline uppercase tracking-wider">Fast Courier Ready</span>
+</div>
+</div>
+</section>
+<!-- Kuwait Dispatch & PACI Details -->
+<section class="px-space-md mb-space-md">
+<div class="bg-surface-container-low p-space-sm rounded-xl flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">pin_drop</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Kuwait Villa &amp; PACI Notes</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-highest px-2 py-0.5 rounded text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span class="font-label-badge text-label-badge font-semibold">PACI Verified</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-xs rounded-lg flex flex-col gap-1">
+<input class="bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline outline-none px-1 py-1 w-full" placeholder="PACI Code, Villa Gate, Block / Street details..." type="text"/>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+        Include specific villa gates, PACI address code, apartment buzzer details, or preferred call timings for express couriers.
+      </p>
+</div>
+</section>
+<!-- Signature Gift Atelier Add-on -->
+<section class="px-space-md mb-space-md">
+<label class="bg-surface-container-lowest p-space-sm rounded-xl flex items-start gap-3 cursor-pointer shadow-sm">
+<input checked="" class="mt-1 accent-primary w-4 h-4 rounded shrink-0" type="checkbox"/>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-body-md text-body-md font-medium text-on-surface">Signature Gift Atelier (Complimentary Packaging)</span>
+<span class="font-label-badge text-label-badge text-secondary uppercase font-semibold">Luxury Box</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Add Bespoke Mikyaj Box &amp; Card • تغليف فاخر مع بطاقة إهداء مخصصة
+        </p>
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider mt-1">Gilded ribbon &amp; personalized message included</span>
+</div>
+</label>
+</section>
+<!-- Privilege Coupon Input -->
+<section class="px-space-md mb-space-lg">
+<div class="flex items-center gap-2 bg-surface-container-low p-1.5 rounded-xl">
+<div class="flex items-center gap-2 flex-1 px-space-xs">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">confirmation_number</span>
+<input class="bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline uppercase tracking-wider outline-none w-full" placeholder="Privilege Code / كود الخصم" type="text"/>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-widest px-4 py-2.5 rounded-lg hover:bg-on-surface-variant transition-colors">
+        Apply
+      </button>
+</div>
+</section>
+<!-- Curated Pairings Carousel -->
+<section class="mb-space-lg">
+<div class="px-space-md flex items-center justify-between mb-space-sm">
+<div>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Ritual Synergies</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Curated Pairings</h3>
+</div>
+<span class="font-label-badge text-label-badge text-on-surface-variant uppercase tracking-wider">Swipe for more</span>
+</div>
+<div class="flex gap-space-sm overflow-x-auto px-space-md pb-2 no-scrollbar">
+<!-- Recommendation 1 -->
+<div class="w-44 shrink-0 bg-surface-container-lowest p-space-xs rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="w-full h-32 bg-surface-container-low rounded-lg overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Luxury amber crystal flacon of Royal Oudh Elixir perfume with golden cap, soft warm studio reflections on beige marble surface, luxury Gulf fragrance photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-DLUN4iM9B9UZpNMwULvXXrR5jjREWhydT1ZnyiHpIL6YSOPxsOp0PPEugw1C30sl4MrUytbyW3VtWiDqew4RYkm9ysuA1NkSvz9Ej1SXraWTLpw5ojc-PHk4a1YyHc5Lb4daPbas8YymUAFK3P7LK7cQx0gGSda3CmM8GwCM-XgrRM3Eg1kXHJFLms5ZgBv0CJesCoe1IxZ5K8LaXDQYnLh7-II7DBdS92b-Cp8F6FrRiJbCHQ97"/>
+<span class="absolute top-1.5 left-1.5 bg-surface/90 px-1.5 py-0.5 rounded font-label-badge text-label-badge text-on-surface">Pure Parfum</span>
+</div>
+<div class="flex flex-col">
+<h4 class="font-title-editorial text-body-md text-on-surface truncate">Royal Oudh Elixir</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">15ml Travel Attar</span>
+</div>
+<div class="flex items-center justify-between pt-1"><button class="w-full py-1.5 px-2 rounded-lg bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-caps text-label-badge uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"><span>Request Quote</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span></button></div>
+</div>
+<!-- Recommendation 2 -->
+<div class="w-44 shrink-0 bg-surface-container-lowest p-space-xs rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="w-full h-32 bg-surface-container-low rounded-lg overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Clear frosted glass serum dropper bottle labeled Glow Hydration Ampoule, luminous water droplets glistening on glass surface, high luxury skincare visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrZ4miENk9tpW4tkRJr3qOkQfyTafYiKbc6lVLuDAAaq5qKXV16wvh4_f7P52wJAnf7c2BzW6Slsjd_2kiXsDTe4zjqd_Kcm5SRjyihJi8_bDP-wPCW4ujoSYT6QifzPRjsfP8VIq1Jf0nd8Nw9Yu9m00wB28dPOQKOdT-4he4Y4Y33IxKnEvEV60g5gNmOqBamiGrQxrnxPsNfqVTrJ5LqptDJaiY1x27YkKlMw7OAM1WoIHeo3sY"/>
+<span class="absolute top-1.5 left-1.5 bg-surface/90 px-1.5 py-0.5 rounded font-label-badge text-label-badge text-on-surface">Best Seller</span>
+</div>
+<div class="flex flex-col">
+<h4 class="font-title-editorial text-body-md text-on-surface truncate">Glow Ampoule</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">30ml Hyaluronic Booster</span>
+</div>
+<div class="flex items-center justify-between pt-1"><button class="w-full py-1.5 px-2 rounded-lg bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-caps text-label-badge uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"><span>Request Quote</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span></button></div>
+</div>
+<!-- Recommendation 3 -->
+<div class="w-44 shrink-0 bg-surface-container-lowest p-space-xs rounded-xl flex flex-col gap-2 shadow-sm">
+<div class="w-full h-32 bg-surface-container-low rounded-lg overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Handcrafted rose quartz facial sculpting Gua Sha tool resting on smooth natural desert silk textile, minimalist luxury beauty accessory still life." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2wvFmmH8d6VDOM-o-SMG2469_t_VPvgZpeMvn8QHYsW88YzXHmydp5k3amU2vsgKvqjSgDgnoNSyb7EK0xcVO8T6IvhJSpXhQV5b48FG4nbq2jNv38a6sZkauuOH2lRPRT4HcBp_zQMR4ga3KyImiTzh9j0Fpt2kbNvTwuoC7Gsk1WTprRML7LnwiGVdhc-tQTGIIZxK1J4S4ZoFK0RTcA0QvWEcoWvr34jnazAghk3ETo3VQHtcN"/>
+<span class="absolute top-1.5 left-1.5 bg-surface/90 px-1.5 py-0.5 rounded font-label-badge text-label-badge text-on-surface">Artisanal</span>
+</div>
+<div class="flex flex-col">
+<h4 class="font-title-editorial text-body-md text-on-surface truncate">Sculpting Gua Sha</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Natural Rose Quartz</span>
+</div>
+<div class="flex items-center justify-between pt-1"><button class="w-full py-1.5 px-2 rounded-lg bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-label-caps text-label-badge uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"><span>Request Quote</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span></button></div>
+</div>
+</div>
+</section>
+<!-- Mikyaj Cold Chain Protocol Notice -->
+<section class="px-space-md mb-space-lg">
+<div class="bg-surface-container-low p-space-sm rounded-xl flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-surface flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[20px]">ac_unit</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Mikyaj Cold Chain Protocol</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Every active formula is dispatched via climate-regulated vans across Kuwait, preserving peptide stability up to 45°C ambient heat.
+        </p>
+</div>
+</div>
+</section>
+<!-- Delivery Method Selector & Order Summary Breakdown -->
+<section class="px-space-md mb-space-md flex flex-col gap-space-sm"><span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Kuwait Delivery Selection</span><div class="grid grid-cols-1 gap-2"><label class="bg-surface-container-lowest p-space-sm rounded-xl flex items-center justify-between cursor-pointer shadow-sm"><div class="flex items-center gap-3"><input checked="" class="accent-primary w-4 h-4" name="delivery_method" type="radio"/><div class="flex flex-col"><span class="font-body-md text-body-md font-medium text-on-surface">Capital, Hawalli, Ahmadi Courier</span><span class="font-body-sm text-body-sm text-on-surface-variant">Same day / Next Morning Arrival</span></div></div><span class="font-label-badge text-label-badge text-secondary font-bold uppercase tracking-wider">PRIORITY</span></label><label class="bg-surface-container-lowest p-space-sm rounded-xl flex items-center justify-between cursor-pointer shadow-sm"><div class="flex items-center gap-3"><input class="accent-primary w-4 h-4" name="delivery_method" type="radio"/><div class="flex flex-col"><span class="font-body-md text-body-md font-medium text-on-surface">Boutique Pickup (Salmiya Flagship)</span><span class="font-body-sm text-body-sm text-on-surface-variant">Ready in 2 Hours • Concierge Handover</span></div></div><span class="font-label-badge text-label-badge text-secondary font-bold uppercase tracking-wider">FREE</span></label></div><div class="bg-surface-container-lowest p-space-sm rounded-xl flex flex-col gap-2 mt-2 shadow-sm"><div class="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm"><span>Bag Items</span><span class="font-body-sm text-body-sm font-medium text-on-surface">2 Selected</span></div><div class="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm"><span>Kuwait Climate Delivery</span><span class="font-label-badge text-label-badge text-secondary font-semibold uppercase">Complimentary</span></div><div class="flex justify-between items-center text-on-surface-variant font-body-sm text-body-sm"><span>Signature Gift Atelier</span><span class="font-label-badge text-label-badge text-secondary font-semibold uppercase">Included</span></div><div class="h-px bg-surface-container-high my-1"></div><div class="flex justify-between items-baseline"><div class="flex flex-col"><span class="font-title-editorial text-title-editorial text-on-surface font-semibold">Order Total</span><span class="font-label-badge text-label-badge text-on-surface-variant uppercase">Exclusive Custom Consultation</span></div><div class="text-right"><span class="font-headline-sm text-headline-sm font-semibold text-primary">WhatsApp Quote</span><p class="font-price-fraction text-price-fraction text-outline">Direct with Beauty Specialist</p></div></div></div></section>
+<!-- Concierge Help Link -->
+<section class="px-space-md mb-space-lg text-center">
+<button class="inline-flex items-center gap-1.5 font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[16px] text-secondary">contact_support</span>
+<span>Need shade guidance before placing order? <strong class="text-primary underline">Talk to Concierge</strong></span>
+</button>
+</section>
+<!-- Sticky Bottom Kuwait Checkout Floating Bar -->
+<div class="fixed bottom-16 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl shadow-lg px-space-md py-3"><div class="max-w-md mx-auto flex flex-col gap-2"><a class="w-full bg-[#25D366] hover:bg-[#1ebd5b] text-white py-3.5 px-space-md rounded-xl flex items-center justify-between font-label-caps text-label-caps uppercase tracking-widest transition-all active:scale-[0.98] shadow-lg shadow-[#25D366]/20 border border-[#25D366]/30" href="https://wa.me/96599887766?text=Hello%20Mikyaj%20Kuwait,%20I%20want%20to%20complete%20my%20order%20for%20my%20bag%20items." target="_blank"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px]">chat</span><span class="font-bold text-white">CHECKOUT VIA WHATSAPP · طلب عبر واتساب</span></div><span class="material-symbols-outlined text-[20px]">arrow_forward</span></a><div class="flex items-center justify-center gap-4 text-on-surface-variant"><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">credit_card</span><span class="font-label-badge text-label-badge font-semibold tracking-wider text-on-surface">KNET كي نت</span></div><span class="text-outline-variant">•</span><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">payments</span><span class="font-label-badge text-label-badge font-semibold tracking-wider text-on-surface">Apple Pay</span></div><span class="text-outline-variant">•</span><div class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">verified_user</span><span class="font-label-badge text-label-badge font-semibold tracking-wider text-on-surface">Instant Concierge</span></div></div></div></div>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.03)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors gap-0.5" data-path="boutique" href="#"><span class="material-symbols-outlined text-[22px]">storefront</span><span class="font-label-caps text-label-badge uppercase tracking-wider">Boutique</span></a><a class="flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors gap-0.5" data-path="collections" href="#"><span class="material-symbols-outlined text-[22px]">auto_awesome</span><span class="font-label-caps text-label-badge uppercase tracking-wider">Curations</span></a><a aria-current="page" class="flex flex-col items-center justify-center w-14 h-14 transition-colors gap-0.5 relative text-primary font-semibold" data-path="cart" href="#"><div class="w-11 h-11 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-[20px]">shopping_bag</span></div></a><a class="flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors gap-0.5" data-path="fragrance-lounge" href="#"><span class="material-symbols-outlined text-[22px]">water_drop</span><span class="font-label-caps text-label-badge uppercase tracking-wider">Parfum</span></a><a class="flex flex-col items-center justify-center w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors gap-0.5" data-path="concierge" href="#"><span class="material-symbols-outlined text-[22px]">spa</span><span class="font-label-caps text-label-badge uppercase tracking-wider">Atelier</span></a></div></nav></body></html>

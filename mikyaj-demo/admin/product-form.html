@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Add Product — Mikyaj Admin</title><link rel="stylesheet" href="../css/main.css"/></head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header"><div class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><div><div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div><div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div></div></div></div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div><a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a href="orders.html" class="admin-nav-item"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      <div class="admin-nav-section">Catalog</div><a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a><a href="product-form.html" class="admin-nav-item active"><span class="material-symbols-outlined">add_box</span>Add Product</a><a href="categories.html" class="admin-nav-item"><span class="material-symbols-outlined">category</span>Categories</a><a href="brands.html" class="admin-nav-item"><span class="material-symbols-outlined">storefront</span>Brands</a>
+      <div class="admin-nav-section">Analytics</div><a href="reports.html" class="admin-nav-item"><span class="material-symbols-outlined">assessment</span>Reports</a><a href="customers.html" class="admin-nav-item"><span class="material-symbols-outlined">group</span>Customers</a>
+      <div class="admin-nav-section">System</div><a href="erp.html" class="admin-nav-item"><span class="material-symbols-outlined">hub</span>ERP Integration</a>
+      <a href="#" class="admin-nav-item" onclick="MikyajStore.adminLogout();window.location.href='login.html'"><span class="material-symbols-outlined">logout</span>Logout</a>
+    </nav>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h2 class="text-headline-sm" id="formTitle">Add New Product</h2>
+      <div class="flex gap-sm">
+        <a href="products.html" class="btn btn-outline btn-sm"><span class="material-symbols-outlined" style="font-size:16px">arrow_back</span>Back to Products</a>
+        <button class="btn btn-secondary btn-sm" onclick="fillDemoData()"><span class="material-symbols-outlined" style="font-size:16px">auto_awesome</span>Fill Demo Data</button>
+        <button class="btn btn-primary btn-sm" onclick="saveProduct()"><span class="material-symbols-outlined" style="font-size:16px">save</span>Save Product</button>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:2rem">
+        <!-- LEFT COLUMN -->
+        <div>
+          <!-- Basic Info -->
+          <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1.25rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">edit_note</span>Basic Information</h3>
+            <div class="form-group"><label class="form-label">Product Name (English) *</label><input type="text" id="prodName" class="form-input" placeholder="e.g. Vitamin C Radiance Serum"/></div>
+            <div class="form-group"><label class="form-label">Product Name (Arabic)</label><input type="text" id="prodNameAr" class="form-input" placeholder="e.g. سيروم فيتامين سي للإشراقة" dir="rtl"/></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label class="form-label">Brand *</label><select id="prodBrand" class="form-select"></select></div>
+              <div class="form-group"><label class="form-label">Category *</label><select id="prodCategory" class="form-select"></select></div>
+            </div>
+            <div class="form-group"><label class="form-label">Description (English) *</label><textarea id="prodDesc" class="form-textarea" placeholder="Describe the product formulation, key benefits, and usage..."></textarea></div>
+            <div class="form-group"><label class="form-label">Description (Arabic)</label><textarea id="prodDescAr" class="form-textarea" placeholder="وصف المنتج بالعربية..." dir="rtl"></textarea></div>
+          </div>
+
+          <!-- Images -->
+          <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1.25rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">image</span>Product Images</h3>
+            <div class="image-upload-zone" id="uploadZone" onclick="document.getElementById('imageInput').click()">
+              <span class="material-symbols-outlined" style="font-size:40px;color:var(--outline-variant);display:block;margin-bottom:8px">cloud_upload</span>
+              <p class="text-body-md" style="color:var(--on-surface-variant)">Drag & drop images here or <span style="color:var(--secondary)">click to browse</span></p>
+              <p class="text-body-sm" style="color:var(--outline)">JPG, PNG up to 5MB • Max 5 images</p>
+            </div>
+            <input type="file" id="imageInput" accept="image/*" multiple style="display:none" onchange="handleImages(this)"/>
+            <div class="image-preview-grid" id="imagePreview"></div>
+          </div>
+
+          <!-- Ingredients & Certifications -->
+          <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1.25rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">science</span>Ingredients & Certifications</h3>
+            <div class="form-group"><label class="form-label">Ingredients (INCI Format)</label><textarea id="prodIngredients" class="form-textarea" placeholder="Water, Ascorbic Acid (15%), Propanediol..."></textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label class="form-label">EWG Safety Rating</label><select id="prodEwg" class="form-select"><option value="1">1 - Low Hazard</option><option value="2">2 - Low Hazard</option><option value="3" selected>3 - Moderate</option><option value="4">4 - Moderate</option><option value="5">5 - Moderate</option></select></div>
+              <div class="form-group"><label class="form-label">Skin Type Suitability</label><select id="prodSkinType" class="form-select" multiple style="height:80px"><option value="All">All Skin Types</option><option value="Oily">Oily</option><option value="Dry">Dry</option><option value="Combination">Combination</option><option value="Sensitive">Sensitive</option></select></div>
+            </div>
+            <div style="display:flex;gap:2rem;margin-top:0.5rem">
+              <label class="form-checkbox"><input type="checkbox" id="prodCrueltyFree" checked/> Cruelty-Free</label>
+              <label class="form-checkbox"><input type="checkbox" id="prodVegan"/> Vegan</label>
+              <label class="form-checkbox"><input type="checkbox" id="prodHalal" checked/> Halal Certified</label>
+            </div>
+          </div>
+
+          <!-- Shades -->
+          <div class="card" style="padding:1.5rem;margin-bottom:1.5rem">
+            <div class="flex-between" style="margin-bottom:1rem"><h3 class="text-headline-sm"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">palette</span>Shade Variants</h3><button class="btn btn-outline btn-sm" onclick="addShade()"><span class="material-symbols-outlined" style="font-size:16px">add</span>Add Shade</button></div>
+            <div id="shadesContainer"></div>
+            <p class="text-body-sm" style="color:var(--outline);margin-top:8px">Optional — add shade variants for makeup products (lipstick, foundation, etc.)</p>
+          </div>
+
+          <!-- Climate & Skin Concerns -->
+          <div class="card" style="padding:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1.25rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">thermostat</span>Kuwait Climate Tags & Skin Concerns</h3>
+            <div class="form-group">
+              <label class="form-label">Climate Suitability Tags</label>
+              <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                <label class="form-checkbox"><input type="checkbox" value="Gulf Heat" class="climate-tag"/> Gulf Heat Resistant</label>
+                <label class="form-checkbox"><input type="checkbox" value="AC Dry Skin" class="climate-tag"/> AC Dry Skin</label>
+                <label class="form-checkbox"><input type="checkbox" value="Humidity Resistant" class="climate-tag"/> Humidity Resistant</label>
+                <label class="form-checkbox"><input type="checkbox" value="UV Protection" class="climate-tag"/> UV Protection</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Skin Concerns Addressed</label>
+              <div style="display:flex;gap:1rem;flex-wrap:wrap">
+                <label class="form-checkbox"><input type="checkbox" value="Hydration" class="concern-tag"/> Hydration</label>
+                <label class="form-checkbox"><input type="checkbox" value="Anti-aging" class="concern-tag"/> Anti-aging</label>
+                <label class="form-checkbox"><input type="checkbox" value="Barrier Repair" class="concern-tag"/> Barrier Repair</label>
+                <label class="form-checkbox"><input type="checkbox" value="Hyperpigmentation" class="concern-tag"/> Hyperpigmentation</label>
+                <label class="form-checkbox"><input type="checkbox" value="Acne Scars" class="concern-tag"/> Acne Scars</label>
+                <label class="form-checkbox"><input type="checkbox" value="Radiance" class="concern-tag"/> Radiance</label>
+                <label class="form-checkbox"><input type="checkbox" value="Redness" class="concern-tag"/> Redness</label>
+                <label class="form-checkbox"><input type="checkbox" value="Oil Control" class="concern-tag"/> Oil Control</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+          <!-- Publish Status -->
+          <div class="card" style="padding:1.25rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Status</h3>
+            <div class="flex-between" style="margin-bottom:1rem">
+              <span class="text-body-md">Published</span>
+              <label class="form-toggle"><input type="checkbox" id="prodPublished" checked/><span class="form-toggle-slider"></span></label>
+            </div>
+            <div class="flex-between">
+              <span class="text-body-md">Featured Product</span>
+              <label class="form-toggle"><input type="checkbox" id="prodFeatured"/><span class="form-toggle-slider"></span></label>
+            </div>
+          </div>
+
+          <!-- Pricing -->
+          <div class="card" style="padding:1.25rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">payments</span>Pricing (KWD)</h3>
+            <div class="form-group"><label class="form-label">Selling Price *</label><input type="number" id="prodPrice" class="form-input" step="0.001" placeholder="0.000"/></div>
+            <div class="form-group"><label class="form-label">Compare-at Price</label><input type="number" id="prodComparePrice" class="form-input" step="0.001" placeholder="0.000"/></div>
+            <div class="form-group"><label class="form-label">Cost Price</label><input type="number" id="prodCostPrice" class="form-input" step="0.001" placeholder="0.000"/></div>
+            <div id="marginDisplay" class="text-body-sm" style="color:var(--success);padding:8px;background:rgba(129,199,132,0.1);text-align:center;display:none"></div>
+          </div>
+
+          <!-- Inventory -->
+          <div class="card" style="padding:1.25rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">warehouse</span>Inventory</h3>
+            <div class="form-group"><label class="form-label">SKU</label><input type="text" id="prodSku" class="form-input" placeholder="MKJ-SKC-001"/></div>
+            <div class="form-group"><label class="form-label">Barcode (EAN/UPC)</label><input type="text" id="prodBarcode" class="form-input" placeholder="8809572890123"/></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label class="form-label">Stock Qty</label><input type="number" id="prodStock" class="form-input" value="0"/></div>
+              <div class="form-group"><label class="form-label">Weight (g)</label><input type="number" id="prodWeight" class="form-input" value="0"/></div>
+            </div>
+            <div class="form-group"><label class="form-label">Volume / Size</label><input type="text" id="prodVolume" class="form-input" placeholder="e.g. 50ml, 30g"/></div>
+          </div>
+
+          <!-- Tags -->
+          <div class="card" style="padding:1.25rem;margin-bottom:1.5rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Tags</h3>
+            <div class="form-group"><label class="form-label">Product Tags</label><input type="text" id="prodTags" class="form-input" placeholder="bestseller, korean, vitamin-c (comma separated)"/></div>
+          </div>
+
+          <!-- SEO -->
+          <div class="card" style="padding:1.25rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem"><span class="material-symbols-outlined" style="font-size:20px;vertical-align:middle;margin-right:8px">search</span>SEO</h3>
+            <div class="form-group"><label class="form-label">SEO Title</label><input type="text" id="prodSeoTitle" class="form-input" placeholder="Product Name — Mikyaj Kuwait"/></div>
+            <div class="form-group"><label class="form-label">SEO Description</label><textarea id="prodSeoDesc" class="form-textarea" style="min-height:60px" placeholder="Brief description for search engines..."></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVE BAR -->
+      <div style="margin-top:2rem;padding:1.5rem;background:var(--surface-container);border:1px solid var(--outline-variant);display:flex;justify-content:space-between;align-items:center">
+        <span class="text-body-sm" style="color:var(--on-surface-variant)">All changes are saved to browser storage for this demo.</span>
+        <div class="flex gap-sm">
+          <a href="products.html" class="btn btn-outline">Cancel</a>
+          <button class="btn btn-primary" onclick="saveProduct()"><span class="material-symbols-outlined" style="font-size:16px">save</span>Save Product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container"></div>
+<script src="../js/store.js"></script><script src="../js/seed-data.js"></script><script src="../js/app.js"></script>
+<script>
+let editingId = null;
+let uploadedImages = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!MikyajStore.isAdminLoggedIn()) { window.location.href = 'login.html'; return; }
+
+  // Populate dropdowns
+  const brandSel = document.getElementById('prodBrand');
+  brandSel.innerHTML = '<option value="">Select Brand</option>' + MikyajStore.getBrands().map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+  const catSel = document.getElementById('prodCategory');
+  catSel.innerHTML = '<option value="">Select Category</option>' + MikyajStore.getCategories().map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+  // Margin calculator
+  document.getElementById('prodPrice').addEventListener('input', calcMargin);
+  document.getElementById('prodCostPrice').addEventListener('input', calcMargin);
+
+  // Check if editing
+  const params = new URLSearchParams(window.location.search);
+  editingId = params.get('id');
+  if (editingId) loadProduct(editingId);
+
+  // Drag & drop
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); handleDroppedFiles(e.dataTransfer.files); });
+});
+
+function loadProduct(id) {
+  const p = MikyajStore.getProduct(id);
+  if (!p) return;
+  document.getElementById('formTitle').textContent = 'Edit Product';
+  document.getElementById('prodName').value = p.name || '';
+  document.getElementById('prodNameAr').value = p.nameAr || '';
+  document.getElementById('prodBrand').value = p.brandId || '';
+  document.getElementById('prodCategory').value = p.category || '';
+  document.getElementById('prodDesc').value = p.description || '';
+  document.getElementById('prodDescAr').value = p.descriptionAr || '';
+  document.getElementById('prodPrice').value = p.price || '';
+  document.getElementById('prodComparePrice').value = p.comparePrice || '';
+  document.getElementById('prodCostPrice').value = p.costPrice || '';
+  document.getElementById('prodSku').value = p.sku || '';
+  document.getElementById('prodBarcode').value = p.barcode || '';
+  document.getElementById('prodStock').value = p.stock || 0;
+  document.getElementById('prodWeight').value = p.weight || 0;
+  document.getElementById('prodVolume').value = p.volume || '';
+  document.getElementById('prodIngredients').value = p.ingredients || '';
+  document.getElementById('prodEwg').value = p.ewgRating || 3;
+  document.getElementById('prodCrueltyFree').checked = p.crueltyFree;
+  document.getElementById('prodVegan').checked = p.vegan;
+  document.getElementById('prodHalal').checked = p.halalCertified;
+  document.getElementById('prodPublished').checked = p.published;
+  document.getElementById('prodFeatured').checked = p.featured;
+  document.getElementById('prodTags').value = (p.tags || []).join(', ');
+
+  // Images
+  const preview = document.getElementById('imagePreview');
+  (p.images || []).forEach(img => {
+    uploadedImages.push(img);
+    preview.innerHTML += `<div class="image-preview-item" data-src="${img}"><img src="../${img}"/><button class="remove-btn" onclick="removeImage(this,'${img}')">&times;</button></div>`;
+  });
+
+  // Climate tags
+  document.querySelectorAll('.climate-tag').forEach(cb => { if ((p.climateTags||[]).includes(cb.value)) cb.checked = true; });
+  document.querySelectorAll('.concern-tag').forEach(cb => { if ((p.skinConcern||[]).includes(cb.value)) cb.checked = true; });
+
+  // Shades
+  (p.shades || []).forEach(s => addShade(s.name, s.code));
+  calcMargin();
+}
+
+function handleImages(input) { handleDroppedFiles(input.files); }
+function handleDroppedFiles(files) {
+  Array.from(files).slice(0, 5).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      uploadedImages.push(e.target.result);
+      const preview = document.getElementById('imagePreview');
+      preview.innerHTML += `<div class="image-preview-item" data-src="${e.target.result}"><img src="${e.target.result}"/><button class="remove-btn" onclick="removeImage(this,'${e.target.result}')">&times;</button></div>`;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function removeImage(btn, src) { uploadedImages = uploadedImages.filter(i => i !== src); btn.parentElement.remove(); }
+
+function addShade(name = '', code = '#C4706A') {
+  const container = document.getElementById('shadesContainer');
+  const div = document.createElement('div');
+  div.className = 'flex gap-sm';
+  div.style.cssText = 'align-items:center;margin-bottom:8px';
+  div.innerHTML = `
+    <input type="color" value="${code}" style="width:40px;height:36px;border:none;background:none;cursor:pointer" class="shade-color"/>
+    <input type="text" value="${name}" placeholder="Shade name (e.g. Desert Rose)" class="form-input shade-name" style="flex:1"/>
+    <button class="btn btn-ghost btn-sm" style="color:var(--error)" onclick="this.parentElement.remove()"><span class="material-symbols-outlined" style="font-size:18px">close</span></button>
+  `;
+  container.appendChild(div);
+}
+
+function calcMargin() {
+  const price = parseFloat(document.getElementById('prodPrice').value) || 0;
+  const cost = parseFloat(document.getElementById('prodCostPrice').value) || 0;
+  const display = document.getElementById('marginDisplay');
+  if (price > 0 && cost > 0) {
+    const margin = ((price - cost) / price * 100).toFixed(1);
+    display.textContent = `Margin: ${margin}% • Profit: ${(price - cost).toFixed(3)} KWD`;
+    display.style.display = 'block';
+  } else { display.style.display = 'none'; }
+}
+
+function saveProduct() {
+  const name = document.getElementById('prodName').value.trim();
+  if (!name) { MikyajApp.showToast('Product name is required', 'error'); return; }
+  const price = parseFloat(document.getElementById('prodPrice').value);
+  if (!price || price <= 0) { MikyajApp.showToast('Valid price is required', 'error'); return; }
+
+  const brandId = document.getElementById('prodBrand').value;
+  const brand = MikyajStore.getBrand(brandId);
+
+  // Collect shades
+  const shades = Array.from(document.querySelectorAll('#shadesContainer > div')).map(div => ({
+    name: div.querySelector('.shade-name').value,
+    code: div.querySelector('.shade-color').value
+  })).filter(s => s.name);
+
+  const productData = {
+    name,
+    nameAr: document.getElementById('prodNameAr').value,
+    brand: brand?.name || '',
+    brandId,
+    category: document.getElementById('prodCategory').value,
+    description: document.getElementById('prodDesc').value,
+    descriptionAr: document.getElementById('prodDescAr').value,
+    price,
+    comparePrice: parseFloat(document.getElementById('prodComparePrice').value) || null,
+    costPrice: parseFloat(document.getElementById('prodCostPrice').value) || null,
+    sku: document.getElementById('prodSku').value,
+    barcode: document.getElementById('prodBarcode').value,
+    stock: parseInt(document.getElementById('prodStock').value) || 0,
+    stockStatus: parseInt(document.getElementById('prodStock').value) > 0 ? 'in-stock' : 'out-of-stock',
+    weight: parseInt(document.getElementById('prodWeight').value) || 0,
+    volume: document.getElementById('prodVolume').value,
+    ingredients: document.getElementById('prodIngredients').value,
+    ewgRating: parseInt(document.getElementById('prodEwg').value),
+    crueltyFree: document.getElementById('prodCrueltyFree').checked,
+    vegan: document.getElementById('prodVegan').checked,
+    halalCertified: document.getElementById('prodHalal').checked,
+    published: document.getElementById('prodPublished').checked,
+    featured: document.getElementById('prodFeatured').checked,
+    tags: document.getElementById('prodTags').value.split(',').map(t => t.trim()).filter(Boolean),
+    images: uploadedImages.length ? uploadedImages : ['assets/images/product_serum.jpg'],
+    shades: shades.length ? shades : undefined,
+    climateTags: Array.from(document.querySelectorAll('.climate-tag:checked')).map(cb => cb.value),
+    skinConcern: Array.from(document.querySelectorAll('.concern-tag:checked')).map(cb => cb.value),
+    skinType: Array.from(document.getElementById('prodSkinType').selectedOptions).map(o => o.value)
+  };
+
+  if (editingId) {
+    MikyajStore.updateProduct(editingId, productData);
+    MikyajApp.showToast('Product updated successfully!', 'success');
+  } else {
+    MikyajStore.addProduct(productData);
+    MikyajApp.showToast('Product created successfully!', 'success');
+  }
+  setTimeout(() => window.location.href = 'products.html', 1000);
+}
+
+function fillDemoData() {
+  document.getElementById('prodName').value = 'Luminous Silk Hydrating Primer';
+  document.getElementById('prodNameAr').value = 'برايمر الحرير المضيء المرطب';
+  
+  const brands = MikyajStore.getBrands();
+  if (brands.length > 0) document.getElementById('prodBrand').value = brands[0].id;
+  
+  const cats = MikyajStore.getCategories();
+  if (cats.length > 0) document.getElementById('prodCategory').value = cats[0].id;
+
+  document.getElementById('prodDesc').value = 'A lightweight, hydrating primer that blurs imperfections and preps the skin for flawless makeup application. Enriched with hyaluronic acid.';
+  document.getElementById('prodDescAr').value = 'برايمر خفيف ومرطب يخفي العيوب ويجهز البشرة لتطبيق مكياج خالٍ من العيوب. غني بحمض الهيالورونيك.';
+  
+  document.getElementById('prodPrice').value = '18.500';
+  document.getElementById('prodComparePrice').value = '22.000';
+  document.getElementById('prodCostPrice').value = '8.000';
+  document.getElementById('prodSku').value = 'MKJ-PRM-001';
+  document.getElementById('prodBarcode').value = '8809572899999';
+  document.getElementById('prodStock').value = '150';
+  document.getElementById('prodWeight').value = '40';
+  document.getElementById('prodVolume').value = '30ml';
+  document.getElementById('prodIngredients').value = 'Water, Dimethicone, Glycerin, Hyaluronic Acid, Niacinamide, Mica, Titanium Dioxide';
+  document.getElementById('prodEwg').value = '2';
+  document.getElementById('prodSeoTitle').value = 'Luminous Silk Hydrating Primer - Mikyaj Kuwait';
+  document.getElementById('prodSeoDesc').value = 'Buy Luminous Silk Hydrating Primer in Kuwait. Authentic luxury makeup base.';
+  document.getElementById('prodTags').value = 'primer, hydrating, bestseller, luminous';
+  
+  document.querySelectorAll('.climate-tag').forEach(cb => cb.checked = false);
+  const acDry = document.querySelector('.climate-tag[value="AC Dry Skin"]');
+  if(acDry) acDry.checked = true;
+  const humRes = document.querySelector('.climate-tag[value="Humidity Resistant"]');
+  if(humRes) humRes.checked = true;
+
+  document.querySelectorAll('.concern-tag').forEach(cb => cb.checked = false);
+  const hydr = document.querySelector('.concern-tag[value="Hydration"]');
+  if(hydr) hydr.checked = true;
+  const rad = document.querySelector('.concern-tag[value="Radiance"]');
+  if(rad) rad.checked = true;
+  
+  calcMargin();
+  MikyajApp.showToast('Demo data filled successfully!', 'success');
+}
+</script>
+</body>
+</html>

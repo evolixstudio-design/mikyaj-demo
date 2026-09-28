@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Products — Mikyaj Admin</title><link rel="stylesheet" href="../css/main.css"/></head>
+<body>
+<div class="admin-layout">
+  <!-- SIDEBAR (same as dashboard) -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header"><div class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><div><div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div><div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div></div></div></div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="orders.html" class="admin-nav-item"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      <div class="admin-nav-section">Catalog</div>
+      <a href="products.html" class="admin-nav-item active"><span class="material-symbols-outlined">inventory_2</span>Products</a>
+      <a href="product-form.html" class="admin-nav-item"><span class="material-symbols-outlined">add_box</span>Add Product</a>
+      <a href="categories.html" class="admin-nav-item"><span class="material-symbols-outlined">category</span>Categories</a>
+      <a href="brands.html" class="admin-nav-item"><span class="material-symbols-outlined">storefront</span>Brands</a>
+      <div class="admin-nav-section">Analytics</div>
+      <a href="reports.html" class="admin-nav-item"><span class="material-symbols-outlined">assessment</span>Reports</a>
+      <a href="customers.html" class="admin-nav-item"><span class="material-symbols-outlined">group</span>Customers</a>
+      <div class="admin-nav-section">System</div>
+      <a href="erp.html" class="admin-nav-item"><span class="material-symbols-outlined">hub</span>ERP Integration</a>
+      <a href="#" class="admin-nav-item" onclick="MikyajStore.adminLogout();window.location.href='login.html'"><span class="material-symbols-outlined">logout</span>Logout</a>
+    </nav>
+    <div style="padding:1rem 1.5rem;border-top:1px solid var(--outline-variant)"><a href="../index.html" class="text-body-sm flex gap-xs" style="color:var(--on-surface-variant);align-items:center"><span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>View Storefront</a></div>
+  </aside>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h2 class="text-headline-sm">Product Management</h2>
+      <a href="product-form.html" class="btn btn-primary btn-sm"><span class="material-symbols-outlined" style="font-size:16px">add</span>Add New Product</a>
+    </div>
+    <div class="admin-content">
+      <!-- FILTERS & SEARCH -->
+      <div class="flex-between" style="margin-bottom:1.5rem">
+        <div class="flex gap-sm" style="align-items:center">
+          <div style="position:relative;display:flex;align-items:center;background:var(--surface-container-low);border:1px solid var(--outline-variant);padding:6px 12px;width:300px">
+            <span class="material-symbols-outlined" style="font-size:18px;color:var(--outline)">search</span>
+            <input type="text" id="searchInput" placeholder="Search products..." style="background:none;border:none;outline:none;color:var(--on-surface);font-size:13px;padding-left:8px;width:100%" oninput="filterProducts()"/>
+          </div>
+          <select class="form-select" id="catFilter" style="width:160px;padding:6px 30px 6px 10px;font-size:12px" onchange="filterProducts()">
+            <option value="">All Categories</option>
+          </select>
+          <select class="form-select" id="statusFilter" style="width:140px;padding:6px 30px 6px 10px;font-size:12px" onchange="filterProducts()">
+            <option value="">All Status</option>
+            <option value="in-stock">In Stock</option>
+            <option value="low">Low Stock</option>
+            <option value="out">Out of Stock</option>
+          </select>
+        </div>
+        <div class="flex gap-sm">
+          <button class="btn btn-outline btn-sm" onclick="exportCSV()"><span class="material-symbols-outlined" style="font-size:16px">download</span>Export CSV</button>
+          <span class="text-body-sm" style="color:var(--on-surface-variant)" id="productCount"></span>
+        </div>
+      </div>
+
+      <!-- PRODUCTS TABLE -->
+      <div class="card" style="padding:0">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead><tr>
+              <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"/></th>
+              <th>Product</th><th>SKU</th><th>Category</th><th>Price (KWD)</th><th>Stock</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BULK ACTIONS -->
+      <div class="flex-between" style="margin-top:1rem">
+        <div class="flex gap-sm" style="align-items:center">
+          <span class="text-body-sm" style="color:var(--on-surface-variant)">Bulk Actions:</span>
+          <button class="btn btn-outline btn-sm" onclick="bulkAction('publish')">Publish</button>
+          <button class="btn btn-outline btn-sm" onclick="bulkAction('unpublish')">Unpublish</button>
+          <button class="btn btn-danger btn-sm" onclick="bulkAction('delete')">Delete Selected</button>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container"></div>
+<script src="../js/store.js"></script><script src="../js/seed-data.js"></script><script src="../js/app.js"></script>
+<script>
+let allProducts = [], filteredProducts = [], selectedIds = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!MikyajStore.isAdminLoggedIn()) { window.location.href = 'login.html'; return; }
+  // Populate category filter
+  const catFilter = document.getElementById('catFilter');
+  MikyajStore.getCategories().forEach(c => catFilter.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+  loadProducts();
+});
+
+function loadProducts() {
+  allProducts = MikyajStore.getProducts();
+  filterProducts();
+}
+
+function filterProducts() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const status = document.getElementById('statusFilter').value;
+
+  filteredProducts = allProducts.filter(p => {
+    if (search && !p.name.toLowerCase().includes(search) && !p.brand?.toLowerCase().includes(search) && !p.sku?.toLowerCase().includes(search)) return false;
+    if (cat && p.category !== cat) return false;
+    if (status === 'in-stock' && p.stock < 20) return false;
+    if (status === 'low' && (p.stock >= 20 || p.stock <= 0)) return false;
+    if (status === 'out' && p.stock > 0) return false;
+    return true;
+  });
+
+  document.getElementById('productCount').textContent = filteredProducts.length + ' products';
+  renderTable();
+}
+
+function renderTable() {
+  const tbody = document.getElementById('productsBody');
+  tbody.innerHTML = '';
+  filteredProducts.forEach(p => {
+    const cat = MikyajStore.getCategory(p.category);
+    const stockBadge = p.stock <= 0 ? 'badge-error' : p.stock < 20 ? 'badge-warning' : 'badge-success';
+    const stockText = p.stock <= 0 ? 'Out of Stock' : p.stock < 20 ? 'Low Stock' : 'In Stock';
+    tbody.innerHTML += `
+      <tr>
+        <td><input type="checkbox" value="${p.id}" class="product-checkbox" onchange="updateSelection()"/></td>
+        <td>
+          <div class="flex gap-sm" style="align-items:center">
+            <div style="width:50px;height:50px;overflow:hidden;background:var(--surface-container);flex-shrink:0"><img src="../${p.images?.[0]||'assets/images/product_serum.jpg'}" style="width:100%;height:100%;object-fit:cover"/></div>
+            <div>
+              <div style="font-weight:500;margin-bottom:2px">${p.name}</div>
+              <div class="text-body-sm" style="color:var(--on-surface-variant)">${p.brand||''}</div>
+            </div>
+          </div>
+        </td>
+        <td class="text-body-sm" style="color:var(--on-surface-variant)">${p.sku||'—'}</td>
+        <td>${cat?.name||'—'}</td>
+        <td>
+          <span style="font-weight:600">${MikyajApp.formatKWD(p.price)}</span>
+          ${p.comparePrice ? `<br/><span class="text-body-sm" style="color:var(--outline);text-decoration:line-through">${MikyajApp.formatKWD(p.comparePrice)}</span>` : ''}
+        </td>
+        <td style="font-weight:600">${p.stock}</td>
+        <td><span class="badge ${stockBadge}">${stockText}</span>${p.published?'':'<br/><span class="badge badge-outline" style="margin-top:4px">Draft</span>'}</td>
+        <td>
+          <div class="flex gap-xs">
+            <a href="product-form.html?id=${p.id}" class="btn btn-ghost btn-sm" style="padding:4px" title="Edit"><span class="material-symbols-outlined" style="font-size:18px">edit</span></a>
+            <a href="../product.html?id=${p.id}" target="_blank" class="btn btn-ghost btn-sm" style="padding:4px" title="View"><span class="material-symbols-outlined" style="font-size:18px">visibility</span></a>
+            <button class="btn btn-ghost btn-sm" style="padding:4px;color:var(--error)" title="Delete" onclick="deleteProduct('${p.id}')"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>
+          </div>
+        </td>
+      </tr>`;
+  });
+}
+
+function updateSelection() { selectedIds = Array.from(document.querySelectorAll('.product-checkbox:checked')).map(cb => cb.value); }
+function toggleSelectAll() { const checked = document.getElementById('selectAll').checked; document.querySelectorAll('.product-checkbox').forEach(cb => cb.checked = checked); updateSelection(); }
+
+async function deleteProduct(id) {
+  if (await MikyajApp.confirm('Are you sure you want to delete this product?')) {
+    MikyajStore.deleteProduct(id);
+    MikyajApp.showToast('Product deleted', 'success');
+    loadProducts();
+  }
+}
+
+async function bulkAction(action) {
+  if (selectedIds.length === 0) { MikyajApp.showToast('No products selected', 'warning'); return; }
+  if (action === 'delete') {
+    if (!await MikyajApp.confirm(`Delete ${selectedIds.length} products?`)) return;
+    selectedIds.forEach(id => MikyajStore.deleteProduct(id));
+  } else {
+    selectedIds.forEach(id => MikyajStore.updateProduct(id, { published: action === 'publish' }));
+  }
+  MikyajApp.showToast(`${selectedIds.length} products ${action}ed`, 'success');
+  selectedIds = [];
+  loadProducts();
+}
+
+function exportCSV() {
+  const headers = 'Name,SKU,Brand,Category,Price,Stock,Status\n';
+  const rows = filteredProducts.map(p => `"${p.name}","${p.sku||''}","${p.brand||''}","${MikyajStore.getCategory(p.category)?.name||''}",${p.price},${p.stock},"${p.published?'Published':'Draft'}"`).join('\n');
+  const blob = new Blob([headers + rows], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'mikyaj_products.csv'; a.click();
+  MikyajApp.showToast('CSV exported successfully', 'success');
+}
+</script>
+</body>
+</html>

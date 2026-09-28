@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+/* Entrance Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGently {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.82; transform: scale(1.02); }
+}
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.32); }
+  65% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+@keyframes cartPulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-250 { animation-delay: 250ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-350 { animation-delay: 350ms; }
+.delay-400 { animation-delay: 400ms; }
+
+.badge-pulse {
+  animation: pulseGently 3s ease-in-out infinite;
+}
+.cart-badge-bounce {
+  animation: cartPulse 0.45s ease-out;
+}
+.heart-bounce {
+  animation: heartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Accordion Smooth Height Transition Support */
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+.accordion-wrapper.expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.accordion-inner {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"inverse-primary": "#5f5e5e", "primary-fixed-dim": "#c8c6c5", "on-background": "#e4e2df", "on-surface-variant": "#c4c7c7", "on-secondary": "#4d251e", "surface-container-low": "#1b1c1a", "on-secondary-fixed": "#33110b", "secondary-fixed": "#ffdad4", "tertiary-fixed-dim": "#d8c2b7", "inverse-surface": "#e4e2df", "on-surface": "#e4e2df", "outline-variant": "#444748", "primary-fixed": "#e5e2e1", "on-tertiary-fixed": "#251912", outline: "#8e9192", "surface-container": "#1f201e", "surface-container-lowest": "#0e0e0d", "on-tertiary-fixed-variant": "#53443b", error: "#ffb4ab", "secondary-fixed-dim": "#f7b7ac", "secondary-container": "#683a33", "on-error-container": "#ffdad6", "surface-tint": "#c8c6c5", tertiary: "#d8c2b7", "on-primary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#474646", "surface-variant": "#343533", "tertiary-container": "#1b100a", primary: "#c8c6c5", "surface-container-highest": "#343533", "on-tertiary-container": "#8d7a70", "surface-bright": "#393938", "on-secondary-fixed-variant": "#683a33", "inverse-on-surface": "#30312f", surface: "#131412", "on-error": "#690005", "on-primary-container": "#7e7d7d", "on-tertiary": "#3b2d26", "error-container": "#93000a", "on-secondary-container": "#e4a69b", "on-primary": "#313030", "tertiary-fixed": "#f5ded3", "surface-container-high": "#2a2a28", "primary-container": "#121212", background: "#131412", "surface-dim": "#131412", secondary: "#f7b7ac"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"margin-desktop": "4rem", "space-4xl": "6rem", "space-xl": "2rem", "space-3xl": "4.5rem", "container-max-desktop": "1440px", "space-xs": "0.5rem", "space-2xs": "0.25rem", "space-2xl": "3rem", "space-lg": "1.5rem", "gutter-desktop": "2rem", "space-sm": "0.75rem", "space-md": "1rem"}, fontFamily: {"label-caps": ["DM Sans"], "display-hero": ["Bodoni Moda"], "headline-md": ["Bodoni Moda"], "body-md": ["DM Sans"], "headline-lg": ["Bodoni Moda"], "price-fraction": ["DM Sans"], "headline-sm": ["Bodoni Moda"], "body-lg": ["DM Sans"], "display-hero-mobile": ["Bodoni Moda"], "body-sm": ["DM Sans"], "price-primary": ["DM Sans"], "title-editorial": ["Bodoni Moda"], "label-badge": ["DM Sans"], "headline-lg-mobile": ["Bodoni Moda"], headline: ["Bodoni Moda"], display: ["Bodoni Moda"], body: ["DM Sans"], label: ["DM Sans"]}, fontSize: {"label-caps": ["11px", {lineHeight: "14px", letterSpacing: "0.12em", fontWeight: "600"}], "display-hero": ["56px", {lineHeight: "64px", letterSpacing: "-0.02em", fontWeight: "400"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "0", fontWeight: "400"}], "body-md": ["14px", {lineHeight: "22px", letterSpacing: "0.01em", fontWeight: "400"}], "headline-lg": ["38px", {lineHeight: "46px", letterSpacing: "-0.01em", fontWeight: "400"}], "price-fraction": ["12px", {lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "400"}], "headline-sm": ["20px", {lineHeight: "28px", letterSpacing: "0", fontWeight: "500"}], "body-lg": ["16px", {lineHeight: "26px", letterSpacing: "0.01em", fontWeight: "400"}], "display-hero-mobile": ["36px", {lineHeight: "44px", letterSpacing: "-0.01em", fontWeight: "400"}], "body-sm": ["12px", {lineHeight: "18px", letterSpacing: "0.02em", fontWeight: "400"}], "price-primary": ["15px", {lineHeight: "20px", letterSpacing: "0.03em", fontWeight: "500"}], "title-editorial": ["18px", {lineHeight: "26px", letterSpacing: "0.02em", fontWeight: "500"}], "label-badge": ["10px", {lineHeight: "12px", letterSpacing: "0.08em", fontWeight: "500"}], "headline-lg-mobile": ["28px", {lineHeight: "36px", letterSpacing: "0", fontWeight: "400"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><!-- Floating Interactive Feedback Toast -->
+<div class="fixed bottom-6 right-6 z-[90] pointer-events-none transform translate-y-12 opacity-0 transition-all duration-300 ease-out flex items-center gap-space-sm bg-primary text-on-primary px-space-md py-space-sm shadow-xl rounded-sm" id="cartToast">
+<span class="material-symbols-outlined text-secondary-container text-[20px]">check_circle</span>
+<div class="flex flex-col text-left">
+<span class="font-label-caps text-label-caps tracking-wider uppercase">Cart Updated</span>
+<span class="font-body-sm text-body-sm text-surface-variant">345 Relief Cream added to your bag</span>
+</div>
+</div>
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-28 flex flex-col justify-between"><div class="w-full bg-primary text-on-primary py-space-2xs px-margin-desktop"><div class="max-w-[1440px] mx-auto flex items-center justify-between font-label-caps text-label-caps uppercase"><span class="flex items-center gap-space-xs font-body-sm text-body-sm normal-case"><span class="material-symbols-outlined text-[16px] text-surface-container-high">local_shipping</span><span>Complimentary delivery across Kuwait on orders over 20.000 KD <span class="text-outline-variant mx-space-2xs">•</span> توصيل مجاني في جميع أنحاء الكويت</span></span><div class="flex items-center gap-space-md font-label-caps text-label-caps"><span class="text-on-primary cursor-pointer hover:text-outline-variant transition-colors">EN</span><span class="text-outline">|</span><span class="text-outline-variant hover:text-on-primary transition-colors cursor-pointer">العربية</span><span class="text-outline ml-space-xs">|</span><span class="text-on-primary ml-space-xs tracking-wider">KWD</span></div></div></div><div class="w-full max-w-[1440px] mx-auto px-margin-desktop flex items-center justify-between h-full"><div class="flex items-center gap-space-xl"><a class="flex items-center gap-space-sm group" data-path="home" href="#"><img alt="Mikyaj Official Logo" class="h-11 w-11 rounded-full object-cover shadow-sm transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmyqkCnfKSgHKu5HXcArBeY3P65zf2pAU7KTvQ9woCHebUULRyknoXkneKpFw6D7NHEx2wEpg14QoSxFxVDC0gVMFJzG1gwV9VjnpUsieN_hejB9rgNze3f4fZDdKebd1-TNZXdqFP2jNQN4ggsA6WMXJepcYDDyLFdOPMzdUAHbnHaUoXKJW70Jp-bUx77aZS6tW2wQJTe_XQkem9gOG-FrmPca34LvYrpysz7O_yNQK8iYnEApNU7wQHNcHyhj4XWQ"/><div class="flex flex-col text-left"><span class="font-headline-sm text-[18px] tracking-wider text-on-surface uppercase font-bold transition-colors group-hover:text-secondary">MIKYAJ</span><span class="font-label-badge text-[9px] uppercase tracking-widest text-outline-variant -mt-1">KUWAIT</span></div></a><nav class="hidden xl:flex items-center gap-space-lg font-label-caps text-label-caps uppercase tracking-widest" data-active-classes="text-primary font-bold"><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="home" href="#">Home</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="shop-all" href="#">Shop All</a><a aria-current="page" class="transition-colors text-primary font-bold" data-path="skincare" href="#">Skincare</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="makeup" href="#">Makeup</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="hair-care" href="#">Hair Care</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="body-care" href="#">Body Care</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="brands" href="#">Brands</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#">Contact</a></nav></div><div class="flex items-center gap-space-md"><div class="relative hidden lg:flex items-center w-64 bg-surface-container-low px-space-sm py-space-2xs transition-all duration-300 focus-within:ring-1 focus-within:ring-primary focus-within:bg-surface-container-lowest"><span class="material-symbols-outlined text-outline text-[18px]">search</span><input class="w-full bg-transparent px-space-xs font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search formulations, scents..." type="text"/></div><button aria-label="Search" class="lg:hidden flex items-center text-on-surface hover:text-secondary transition-colors"><span class="material-symbols-outlined text-[22px]">search</span></button><a aria-label="Wishlist" class="flex items-center text-on-surface hover:text-secondary transition-colors" data-path="wishlist" href="#"><span class="material-symbols-outlined text-[22px]">favorite</span></a><a aria-label="Cart" class="relative flex items-center text-on-surface hover:text-secondary transition-colors group" data-path="cart" href="#"><span class="material-symbols-outlined text-[22px] transition-transform duration-200 group-hover:scale-110">shopping_bag</span><span class="absolute -top-1 -right-2 bg-primary text-on-primary font-label-badge text-label-badge w-4 h-4 rounded-full flex items-center justify-center transition-all duration-300" id="headerCartCount">2</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs transition-transform duration-200 hover:scale-105 cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="w-full pt-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Breadcrumb Navigation Bar -->
+<div class="w-full bg-surface-container-low/60 backdrop-blur-sm animate-fade-in-up">
+<div class="max-w-[1440px] mx-auto px-margin-desktop py-space-sm">
+<nav aria-label="Breadcrumb" class="flex items-center gap-space-xs font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant">
+<a class="hover:text-primary transition-colors" data-path="home" href="#">Home</a>
+<span class="text-outline-variant text-[10px]">/</span>
+<a class="hover:text-primary transition-colors" data-path="skincare" href="#">Skincare</a>
+<span class="text-outline-variant text-[10px]">/</span>
+<a class="hover:text-primary transition-colors" data-path="serums-ampoules" href="#">Serums &amp; Ampoules</a>
+<span class="text-outline-variant text-[10px]">/</span>
+<span class="text-on-surface font-semibold truncate max-w-xs">345 Relief Cream 50ml</span>
+</nav>
+</div>
+</div>
+<!-- Main Product Canvas (Two-Column Gallery + Sticky Rail) -->
+<section class="max-w-[1440px] mx-auto px-margin-desktop py-space-xl w-full">
+<div class="grid grid-cols-12 gap-gutter-desktop items-start">
+<!-- LEFT COLUMN: Multi-Angle Interactive Gallery -->
+<div class="col-span-12 lg:col-span-7 flex flex-col gap-space-md animate-fade-in-up delay-100">
+<!-- Main Zoomable Hero Showcase with Smooth Focal Tracking -->
+<div class="relative w-full aspect-[4/5] bg-surface-container-low overflow-hidden group cursor-crosshair shadow-sm select-none" id="galleryContainer">
+<!-- Live Primary Image Frame -->
+<img class="w-full h-full object-cover object-center transition-all duration-300 ease-out origin-center" data-alt="Luxurious, crisp studio product photography of Dr. Althea 345 Relief Cream tube resting elegantly on fine sand stone. Minimalist clean beauty aesthetic with gentle warm sunbeams casting soft architectural shadows. Ultra fine mist droplets visible, ivory, neutral beige and soft sage studio backdrop, editorial cosmetic staging." id="mainGalleryViewer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlb8TprxvT86Ei8C_L4tNNEhTWIDgQpCBySJUlY8Cu_BCngqu51MO8KEerQHBf2VzRonAbzexkK3XFjXb4liWYbhh7vDrjRBMfsHs_wuTTRQnAYKwX1x3aVnock_vNL4pWxKX0El-uGG9OzQ-0kEzLDrxEz4GP9AZvgtx868EYqVXYjfqZuU7on7WAlx3dQ2wwntHe5APcpoamNbefGGZps_hluezDPFhz9i2aR9yZ-IbG9ezHaR_K"/>
+<!-- Overlaid Quality & Authenticity Floating Pills -->
+<div class="absolute top-space-md left-space-md flex flex-col gap-space-2xs pointer-events-none">
+<span class="badge-pulse bg-surface/90 backdrop-blur-md px-space-sm py-space-2xs text-on-surface font-label-badge text-label-badge uppercase tracking-widest shadow-sm">
+              Kuwait Exclusive Batch
+            </span>
+<span class="bg-secondary text-on-secondary px-space-sm py-space-2xs font-label-badge text-label-badge uppercase tracking-widest shadow-sm">
+              Bespoke Concierge Allocation
+            </span>
+</div>
+<!-- Micro Zoom Action Hint -->
+<div class="absolute bottom-space-md right-space-md bg-surface/85 backdrop-blur-md text-on-surface px-space-sm py-space-2xs flex items-center gap-space-2xs font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+<span class="material-symbols-outlined text-[16px]">zoom_in</span>
+<span>Hover to Inspect Details</span>
+</div>
+</div>
+<!-- 4-Tile Synchronized Thumbnail Rail -->
+<div class="grid grid-cols-4 gap-space-sm pt-space-xs" id="thumbRail">
+<button class="thumb-btn relative aspect-[4/5] bg-surface-container-low overflow-hidden transition-all duration-300 shadow-md ring-2 ring-primary scale-[1.02] focus:outline-none" data-thumb-alt="Luxurious, crisp studio product photography of Dr. Althea 345 Relief Cream tube resting elegantly on fine sand stone. Minimalist clean beauty aesthetic with gentle warm sunbeams casting soft architectural shadows. Ultra fine mist droplets visible, ivory, neutral beige and soft sage studio backdrop, editorial cosmetic staging." data-thumb-src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlb8TprxvT86Ei8C_L4tNNEhTWIDgQpCBySJUlY8Cu_BCngqu51MO8KEerQHBf2VzRonAbzexkK3XFjXb4liWYbhh7vDrjRBMfsHs_wuTTRQnAYKwX1x3aVnock_vNL4pWxKX0El-uGG9OzQ-0kEzLDrxEz4GP9AZvgtx868EYqVXYjfqZuU7on7WAlx3dQ2wwntHe5APcpoamNbefGGZps_hluezDPFhz9i2aR9yZ-IbG9ezHaR_K" type="button">
+<img class="w-full h-full object-cover pointer-events-none transition-transform duration-300 hover:scale-105" data-alt="Dr. Althea 345 Relief Cream front tube packaging centered against warm cream limestone plinth, studio light luxury packaging photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzsJcI0-zQgq8SQ6aqEIB2eOiYh27Z1n3UbV-ORdzWta8dxC_3mud908FgPD9TvZm12wz6t34Yueg-WTO29L3iJvXRuLPqFlYgiP6LTGuMd3wheM9N4Pr-NIxgdkh-DWcWGP8G5nNU7-N0kENsA0iu5VeyjB3ZdZX3I7CQuO4UW3G5kIv8epgdnRHznr2pmWBnV8Wp-ZHq3tMiV0XQSEJrMqBdJM2QhwKIIQivUhu30Eq7gx0fimLk"/>
+<span class="sr-only">Front Angle View</span>
+</button>
+<button class="thumb-btn relative aspect-[4/5] bg-surface-container-low overflow-hidden transition-all duration-300 shadow-sm opacity-70 hover:opacity-100 hover:scale-[1.01] focus:outline-none" data-thumb-alt="Close up macro view of silky white Dr. Althea 345 cream formulation texture swabbed on a clear frosted glass tile with dewy water droplets and soft botanical eucalyptus accents." data-thumb-src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtuCC18BNeFfqWPVcrKMfcs8Y68nh2e8EehjyVVvCt5JRVg5rFoWwnvfV-AeavjMITlsAN8trq5xXG3AE_NwNdlCc4vSKAv5s1CFktCRcSVJ6NdfiuHW8d6AxwgcqNcFPA6ToOkDIb066usaCkrrcHwcLkDcTMBfIEeXzu8O22SZLTSlLxkJqpFzduduYX-Il3OYQ2M68tfhDiAJk2VfMxWEWhEUJnU63JdbEBupZUb-dGfpwn3o7k" type="button">
+<img class="w-full h-full object-cover pointer-events-none transition-transform duration-300 hover:scale-105" data-alt="Close up macro view of silky white Dr. Althea 345 cream formulation texture swabbed on a clear frosted glass tile with dewy water droplets and soft botanical eucalyptus accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtuCC18BNeFfqWPVcrKMfcs8Y68nh2e8EehjyVVvCt5JRVg5rFoWwnvfV-AeavjMITlsAN8trq5xXG3AE_NwNdlCc4vSKAv5s1CFktCRcSVJ6NdfiuHW8d6AxwgcqNcFPA6ToOkDIb066usaCkrrcHwcLkDcTMBfIEeXzu8O22SZLTSlLxkJqpFzduduYX-Il3OYQ2M68tfhDiAJk2VfMxWEWhEUJnU63JdbEBupZUb-dGfpwn3o7k"/>
+<span class="sr-only">Formula Texture Swatch</span>
+</button>
+<button class="thumb-btn relative aspect-[4/5] bg-surface-container-low overflow-hidden transition-all duration-300 shadow-sm opacity-70 hover:opacity-100 hover:scale-[1.01] focus:outline-none" data-thumb-alt="Side angle editorial shot of Dr. Althea cream cap open, dispensing a smooth ribbon of gentle barrier repair cream onto an elegant marble pedestal with warm amber backlight." data-thumb-src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj6uUnBbE0q5x1fPlqR16y0NkHpsNKnQ5a7FaOMGRb-EDGZs2r_9eoNThFRH9YgAdNUESz_ry2pkGHEPQv6q1OMx0v7Vf0nd7ZYiQB6DXP1vXshCl-Maz_nVhusAm8khmJLt8YRlcVynu9C5Gpv7GgkbmzNNQPNRTyKqX5CqfLP0LAEDzmmF3wKn_CClg1AvtX3BGnXnCSdvd-wZKFtsHK6gW5GQ59brj_iJeW4l0BLVMHyTqm80fA" type="button">
+<img class="w-full h-full object-cover pointer-events-none transition-transform duration-300 hover:scale-105" data-alt="Side angle editorial shot of Dr. Althea cream cap open, dispensing a smooth ribbon of gentle barrier repair cream onto an elegant marble pedestal with warm amber backlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj6uUnBbE0q5x1fPlqR16y0NkHpsNKnQ5a7FaOMGRb-EDGZs2r_9eoNThFRH9YgAdNUESz_ry2pkGHEPQv6q1OMx0v7Vf0nd7ZYiQB6DXP1vXshCl-Maz_nVhusAm8khmJLt8YRlcVynu9C5Gpv7GgkbmzNNQPNRTyKqX5CqfLP0LAEDzmmF3wKn_CClg1AvtX3BGnXnCSdvd-wZKFtsHK6gW5GQ59brj_iJeW4l0BLVMHyTqm80fA"/>
+<span class="sr-only">Dispenser Detail View</span>
+</button>
+<button class="thumb-btn relative aspect-[4/5] bg-surface-container-low overflow-hidden transition-all duration-300 shadow-sm opacity-70 hover:opacity-100 hover:scale-[1.01] focus:outline-none" data-thumb-alt="Dr. Althea packaging box and tube paired with soothing raw botanical ingredients including centella asiatica leaves, resveratrol ampoule droplet, and ceramide molecular crystals." data-thumb-src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH-ksygkCjgOEGpIDLdZe-uLXfzCl-TYOXlqjAHsNH78uH7DKRsg-_YR2fYMMXZuL1r9o-veRZu2aaMFfSOhRyxVvB5psRzJUa7WZ50chTQBCRE7qEJngL9Lxs600FeGC4s8kqcuQzLBOJZQFVE9fjh6NiBnnh-7SBlaw6Y-eu93wZwgvmguCP1uEDCsksti-gG6v0wizUMpZQsxEPWKs-PQCv-52w-QlHDC7f7DoCWObLU2i9wHXL" type="button">
+<img class="w-full h-full object-cover pointer-events-none transition-transform duration-300 hover:scale-105" data-alt="Dr. Althea packaging box and tube paired with soothing raw botanical ingredients including centella asiatica leaves, resveratrol ampoule droplet, and ceramide molecular crystals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH-ksygkCjgOEGpIDLdZe-uLXfzCl-TYOXlqjAHsNH78uH7DKRsg-_YR2fYMMXZuL1r9o-veRZu2aaMFfSOhRyxVvB5psRzJUa7WZ50chTQBCRE7qEJngL9Lxs600FeGC4s8kqcuQzLBOJZQFVE9fjh6NiBnnh-7SBlaw6Y-eu93wZwgvmguCP1uEDCsksti-gG6v0wizUMpZQsxEPWKs-PQCv-52w-QlHDC7f7DoCWObLU2i9wHXL"/>
+<span class="sr-only">Ingredient Botanical Staging</span>
+</button>
+</div>
+<!-- Micro Certifications Banner -->
+<div class="mt-space-md p-space-md bg-surface-container-low/70 flex items-center justify-between shadow-sm border border-outline-variant/30">
+<div class="flex items-center gap-space-xs text-on-surface hover:text-secondary transition-colors cursor-default">
+<span class="material-symbols-outlined text-secondary text-[20px]">eco</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">EWG Green Certified</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface hover:text-secondary transition-colors cursor-default">
+<span class="material-symbols-outlined text-secondary text-[20px]">science</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Hypoallergenic Tested</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface hover:text-secondary transition-colors cursor-default">
+<span class="material-symbols-outlined text-secondary text-[20px]">pets</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">100% Cruelty-Free</span>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Sticky Purchase Console & Product Intel -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-space-lg lg:sticky lg:top-32">
+<!-- Brand & Bilingual Identity Header -->
+<div class="space-y-space-2xs animate-fade-in-up delay-150">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-widest font-bold">DR. ALTHEA SEOUL</span>
+<button aria-label="Add to wishlist" class="p-space-2xs text-on-surface-variant hover:text-secondary transition-colors relative group focus:outline-none" id="wishlistBtn" type="button">
+<span class="material-symbols-outlined text-[26px] transition-transform duration-200" id="wishlistIcon">favorite_border</span>
+</button>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface leading-snug">
+            345 Relief Cream – 50ml
+            <span class="block font-title-editorial text-title-editorial text-on-surface-variant font-normal mt-1" dir="rtl">
+              كريم مهدئ للبشرة ومقوي للحاجز الطبيعي
+            </span>
+</h1>
+<!-- Verified Buyer Social Proof -->
+<div class="flex items-center gap-space-sm pt-space-2xs">
+<div class="flex items-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-price-primary text-price-primary text-on-surface font-semibold">4.9</span>
+<span class="text-outline-variant">•</span>
+<a class="font-body-sm text-body-sm text-on-surface-variant underline hover:text-primary transition-colors" href="#reviews">
+              184 Verified Gulf Reviews
+            </a>
+</div>
+</div>
+<!-- Kuwaiti Dinar Pricing Console -->
+<div class="p-space-md bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs border border-outline-variant/30 animate-fade-in-up delay-200 transition-all duration-300"><div class="flex items-center justify-between flex-wrap gap-space-xs"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Price on Request</span><span class="font-title-editorial text-[14px] text-secondary font-normal" dir="rtl">تسعيرة عند الطلب</span></div><span class="bg-surface-container text-on-surface-variant px-space-sm py-space-2xs font-label-caps text-label-caps uppercase tracking-wider font-semibold border border-outline-variant/30">Bespoke Quotation</span></div><div class="flex items-center gap-space-xs text-on-surface pt-space-xs"><span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span><span class="w-2 h-2 -ml-3.5 rounded-full bg-secondary"></span><span class="font-body-sm text-body-sm font-medium text-on-surface">Authentic Atelier Direct — Immediate VIP Concierge Quotation</span></div></div>
+<!-- Volume / Size Variant Selector -->
+<div class="space-y-space-xs animate-fade-in-up delay-250">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider">Select Volume / الحجم</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Selected: <strong class="text-on-surface transition-all duration-200" id="selectedVariantText">50ml Standard</strong></span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm" id="variantGroup"><button class="variant-option py-space-sm px-space-md bg-primary text-on-primary text-left transition-all duration-200 transform active:scale-[0.98] flex flex-col gap-space-2xs shadow-sm ring-2 ring-primary focus:outline-none" data-volume="50ml" type="button"><div class="flex items-center justify-between w-full"><span class="font-label-caps text-label-caps uppercase tracking-wider font-semibold">50ml Tube</span><span class="material-symbols-outlined text-[16px] variant-check">check</span></div><span class="font-body-sm text-body-sm opacity-90">Daily Barrier Care • Standard</span></button><button class="variant-option py-space-sm px-space-md bg-surface-container-low text-on-surface text-left transition-all duration-200 transform active:scale-[0.98] hover:bg-surface-container flex flex-col gap-space-2xs shadow-sm focus:outline-none" data-volume="100ml" type="button"><div class="flex items-center justify-between w-full"><span class="font-label-caps text-label-caps uppercase tracking-wider font-semibold">100ml Value Size</span><span class="bg-secondary/15 text-secondary px-space-2xs font-label-badge text-label-badge uppercase">Extended</span></div><span class="font-body-sm text-body-sm text-on-surface-variant">Intensive Repair • Family Edition</span></button></div>
+</div>
+<!-- Quantity Stepper & Add to Bag Operations -->
+<div class="space-y-space-sm animate-fade-in-up delay-300"><div class="space-y-space-sm"><a class="w-full h-12 bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary-container active:scale-[0.99] transition-all duration-200 shadow-md hover:shadow-xl flex items-center justify-center gap-space-xs relative overflow-hidden group focus:outline-none" href="https://wa.me/96599887766?text=Hello%20Mikyaj,%20I%20would%20like%20a%20quote%20for%20Dr.%20Althea%20345%20Relief%20Cream%2050ml." rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[22px] text-secondary-fixed transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 animate-pulse">chat</span><span class="btn-text tracking-wider">GET QUOTE VIA WHATSAPP (طلب تسعيرة عبر واتساب)</span></a><button class="w-full h-12 bg-surface-container-lowest text-on-surface font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container active:scale-[0.99] transition-all duration-200 shadow-sm flex items-center justify-center gap-space-xs border border-outline-variant/40 hover:border-secondary transition-colors" type="button"><span class="material-symbols-outlined text-secondary text-[20px]">support_agent</span><span>BESPOKE BEAUTY CONSULTATION (استشارة تجميل خاصة)</span></button></div></div>
+<!-- Kuwait Delivery & Guarantees Card with Dynamic Timer -->
+<div class="p-space-md bg-surface-container-low/60 shadow-sm space-y-space-sm border border-outline-variant/30 animate-fade-in-up delay-350">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[22px] mt-0.5 animate-spin" style="animation-duration: 12s;">timer</span>
+<div class="space-y-space-2xs">
+<p class="font-body-md text-body-md text-on-surface font-medium">
+                Order within <span class="text-secondary font-semibold font-mono tracking-tight badge-pulse inline-block" id="countdownTimer">3h 14m 28s</span> for Same-Day delivery across Kuwait.
+              </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Complimentary luxury packaging on orders above 20.000 KD.
+              </p>
+</div>
+</div>
+<div class="pt-space-xs flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-space-2xs hover:text-on-surface transition-colors cursor-default">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+<span>100% Authentic Korean Direct</span>
+</div>
+<div class="flex items-center gap-space-2xs hover:text-on-surface transition-colors cursor-default">
+<span class="material-symbols-outlined text-[18px] text-secondary">payments</span>
+<span>KNET &amp; Cash On Delivery</span>
+</div>
+</div>
+</div>
+<!-- Clean Editorial Accordions -->
+<div class="space-y-space-xs pt-space-xs animate-fade-in-up delay-400" id="accordionGroup">
+<!-- Accordion Item 1 -->
+<div class="bg-surface-container-lowest shadow-sm border border-outline-variant/20 transition-colors">
+<button class="accordion-toggle w-full p-space-md flex items-center justify-between text-left group focus:outline-none" type="button">
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-secondary transition-colors">
+                Key Benefits &amp; Skin Concerns
+              </span>
+<span class="material-symbols-outlined text-on-surface transition-transform duration-300 accordion-icon">expand_more</span>
+</button>
+<div class="accordion-wrapper">
+<div class="accordion-inner px-space-md pb-space-md space-y-space-xs font-body-md text-body-md text-on-surface-variant">
+<p>Specifically engineered for sensitized, compromised, or hyperpigmentation-prone Gulf complexions exposed to harsh atmospheric humidity and intense desert heat.</p>
+<ul class="space-y-space-2xs pl-space-sm list-disc">
+<li>Immediate thermal soothing with multi-level Centella Asiatica &amp; Madecassoside.</li>
+<li>Fades stubborn post-acne pigmentation via Resveratrol and Niacinamide (2%).</li>
+<li>Restores lipid balance through 5 essential multi-lamellar ceramides.</li>
+<li>Non-greasy, fast-absorbing weightless veil tailored for humid Middle Eastern climates.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Accordion Item 2 -->
+<div class="bg-surface-container-lowest shadow-sm border border-outline-variant/20 transition-colors">
+<button class="accordion-toggle w-full p-space-md flex items-center justify-between text-left group focus:outline-none" type="button">
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-secondary transition-colors">
+                Clean Ingredients (EWG Verified)
+              </span>
+<span class="material-symbols-outlined text-on-surface transition-transform duration-300 accordion-icon">expand_more</span>
+</button>
+<div class="accordion-wrapper">
+<div class="accordion-inner px-space-md pb-space-md space-y-space-xs font-body-md text-body-md text-on-surface-variant">
+<p class="font-body-sm text-body-sm leading-relaxed">
+                Water/Aqua, Glycerin, Butylene Glycol, Caprylic/Capric Triglyceride, Hydrogenated Polydecene, Niacinamide, Cetearyl Olivate, Sorbitan Olivate, Resveratrol, Centella Asiatica Extract, Madecassoside, Ceramide NP, Ceramide AP, Ceramide EOP, Phytosphingosine, Cholesterol, Sodium Hyaluronate, Melia Azadirachta Leaf Extract, Panthenol, Carbomer, Tromethamine, Hydroxyacetophenone, 1,2-Hexanediol, Ethylhexylglycerin.
+              </p>
+<div class="pt-space-2xs flex items-center gap-space-xs text-on-surface font-label-caps text-label-caps uppercase">
+<span class="material-symbols-outlined text-secondary text-[16px]">check_circle</span>
+<span>Free of parabens, synthetic fragrances, and artificial dyes.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion Item 3 -->
+<div class="bg-surface-container-lowest shadow-sm border border-outline-variant/20 transition-colors">
+<button class="accordion-toggle w-full p-space-md flex items-center justify-between text-left group focus:outline-none" type="button">
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-secondary transition-colors">
+                How to Use / طريقة الاستخدام
+              </span>
+<span class="material-symbols-outlined text-on-surface transition-transform duration-300 accordion-icon">expand_more</span>
+</button>
+<div class="accordion-wrapper">
+<div class="accordion-inner px-space-md pb-space-md space-y-space-xs font-body-md text-body-md text-on-surface-variant">
+<div class="space-y-space-xs">
+<div>
+<h4 class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider font-semibold">Step 1 • Morning &amp; Evening</h4>
+<p class="font-body-md text-body-md">Following toner and serum, dispense a pearl-sized amount onto clean fingertips.</p>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider font-semibold">Step 2 • Gentle Press Technique</h4>
+<p class="font-body-md text-body-md">Press softly across the forehead, cheeks, and neck until seamlessly absorbed. Do not rub vigorously.</p>
+</div>
+<div class="p-space-sm bg-surface-container-low font-body-sm text-body-sm text-on-surface border-l-2 border-secondary">
+<strong>Kuwait Summer Tip:</strong> Store inside your Mikyaj Beauty Refrigerator at 14°C for an immediate vasoconstricting cooling sensation on flushed skin.
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Accordion Item 4 -->
+<div class="bg-surface-container-lowest shadow-sm border border-outline-variant/20 transition-colors">
+<button class="accordion-toggle w-full p-space-md flex items-center justify-between text-left group focus:outline-none" type="button">
+<span class="font-headline-sm text-headline-sm text-on-surface group-hover:text-secondary transition-colors">
+                Authentic Kuwait Distributor Guarantee
+              </span>
+<span class="material-symbols-outlined text-on-surface transition-transform duration-300 accordion-icon">expand_more</span>
+</button>
+<div class="accordion-wrapper">
+<div class="accordion-inner px-space-md pb-space-md space-y-space-xs font-body-md text-body-md text-on-surface-variant">
+<p>Every Dr. Althea item procured via Mikyaj Kuwait is imported directly through formal ministerial customs clearance with temperature-monitored air cargo from Seoul. Scan the security QR sticker on the base packaging for instant batch validation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Complete Your Routine (Complementary Product Recommendations Carousel) -->
+<section class="w-full bg-surface-container-low py-space-3xl mt-space-3xl">
+<div class="max-w-[1440px] mx-auto px-margin-desktop space-y-space-xl">
+<!-- Section Editorial Title -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="space-y-space-2xs">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-widest font-semibold">Synergistic Formulations</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">
+            Complete Your Daily Kuwait Barrier Routine
+          </h2>
+</div>
+<div class="flex items-center gap-space-sm">
+<button aria-label="Previous recommended item" class="w-11 h-11 bg-surface-container-lowest text-on-surface flex items-center justify-center hover:bg-primary hover:text-on-primary active:scale-95 transition-all shadow-sm focus:outline-none" id="carouselPrev" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<button aria-label="Next recommended item" class="w-11 h-11 bg-surface-container-lowest text-on-surface flex items-center justify-center hover:bg-primary hover:text-on-primary active:scale-95 transition-all shadow-sm focus:outline-none" id="carouselNext" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Recommendation Mosaic Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-desktop overflow-x-auto scroll-smooth pb-2" id="recommendationCarousel">
+<!-- Cross-sell Card 1 -->
+<div class="group bg-surface-container-lowest flex flex-col shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out" data-alt="Dr. Althea Oasis Soothing Mask box and individual luxury foil packet arranged on fine sand with a dewy aloe leaf in soft morning sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC5-mQBZlwGNBZUbqcxsTRdDBQ-z__fGPf0az4rnqF3O5jZ2OFZl_sBVqQv0EXoXiLg_Fk0wf04jcaGw9nJH58LYFDV50o070ReSqJvAPhNwdTt8tKFDNAf-kEVmOb7nrf2VePdoIze9G6Zwxk4Gtq3GJjl-iXNE-RcNyXa57GQar6opxEwDLi8rGJBblP8jtgDXo04uE6YkjS7DCQ43obwt5siOGre4MaPV4GCCC5C84ijDrcpZcR"/>
+<div class="absolute top-space-sm left-space-sm bg-surface/90 backdrop-blur-sm px-space-xs py-space-2xs font-label-badge text-label-badge uppercase tracking-wider text-on-surface">
+              Step 01: Prime
+            </div>
+<button aria-label="Quick Add Oasis Mask" class="quick-add-btn absolute bottom-space-sm left-space-sm right-space-sm bg-primary text-on-primary font-label-caps text-label-caps uppercase py-space-xs text-center opacity-0 group-hover:opacity-100 hover:bg-primary-container active:scale-95 transition-all duration-200 shadow-md" type="button">Get Quote (طلب تسعيرة)</button>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-sm">
+<div class="space-y-space-2xs">
+<span class="font-label-caps text-label-caps uppercase text-outline tracking-wider">DR. ALTHEA</span>
+<h3 class="font-title-editorial text-title-editorial text-on-surface group-hover:text-secondary transition-colors line-clamp-1">
+                Oasis Soothing Mask (5 Pack)
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Pre-infused rose of jericho essence to quench dry desert parched skin.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs"><span class="font-body-sm text-body-sm text-on-surface font-semibold">Price on Request</span><span class="font-label-badge text-label-badge uppercase text-secondary font-medium">تسعيرة عند الطلب</span></div>
+</div>
+</div>
+<!-- Cross-sell Card 2 -->
+<div class="group bg-surface-container-lowest flex flex-col shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out" data-alt="Dr. Althea Gentle Vitamin C Boosting Serum glass bottle with pipette dropper reflecting clean sunlight onto an alabaster stone table." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpSjR2ZqJYj7MBpyROrgUSrHI0s1IY0ENYByTn9BY22jpPY5qSczxCwvOOhPa9XCLu7i47k-byIeh_y_Dh7KLLaHlh5hWsRK_FtG_UKQSXA-_L0mo-vGiyjRehdFyis74pfTVzyLd0j2Gm7Qk-v6LGVwBP4lckaxO7G53o3ogWWjaTCVAP1QEkYw2-yWxee2ZiV_culc0X8xMEDCnth55Isuc6P0CyQsyYAj6kQV3UERT56rIDeOOw"/>
+<div class="absolute top-space-sm left-space-sm bg-secondary text-on-secondary px-space-xs py-space-2xs font-label-badge text-label-badge uppercase tracking-wider shadow-sm">
+              Step 02: Brighten
+            </div>
+<button aria-label="Quick Add Vitamin C Serum" class="quick-add-btn absolute bottom-space-sm left-space-sm right-space-sm bg-primary text-on-primary font-label-caps text-label-caps uppercase py-space-xs text-center opacity-0 group-hover:opacity-100 hover:bg-primary-container active:scale-95 transition-all duration-200 shadow-md" type="button">Get Quote (طلب تسعيرة)</button>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-sm">
+<div class="space-y-space-2xs">
+<span class="font-label-caps text-label-caps uppercase text-outline tracking-wider">DR. ALTHEA</span>
+<h3 class="font-title-editorial text-title-editorial text-on-surface group-hover:text-secondary transition-colors line-clamp-1">
+                Vitamin C Boosting Serum 30ml
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Stabilized 15% antioxidant complex for stubborn UV pigmentation marks.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs"><span class="font-body-sm text-body-sm text-on-surface font-semibold">Price on Request</span><span class="font-label-badge text-label-badge uppercase text-secondary font-medium">تسعيرة عند الطلب</span></div>
+</div>
+</div>
+<!-- Cross-sell Card 3 -->
+<div class="group bg-surface-container-lowest flex flex-col shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out" data-alt="Anua Heartleaf 77% Soothing Toner tall minimalist frosted bottle positioned alongside crisp green fresh heartleaf foliage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuYtS6alNS0P3zN4nENpgtIaZXvVdJqe1MRLoTrgfg0tYkdt3J8t_Dtq8r7sWdkV7LSa2mQl6Q5DkhZylb-eEZ4qW0MpJSVYOADFOp3YFFZXeY3JartZXItoNka8QuDMR_oqBe-kKLCyy12rRYTRb4wv3-DgBulaGRhbhhq7NZAsNhoT6MOAiKsg5Es6ZxS2s-H8JXbFFCpMWSZnJQBSQL0nZguyAOVy6nmmB27yPqThMD1eCsBwmx"/>
+<div class="absolute top-space-sm left-space-sm bg-surface/90 backdrop-blur-sm px-space-xs py-space-2xs font-label-badge text-label-badge uppercase tracking-wider text-on-surface">
+              Step 00: Prep
+            </div>
+<button aria-label="Quick Add Heartleaf Toner" class="quick-add-btn absolute bottom-space-sm left-space-sm right-space-sm bg-primary text-on-primary font-label-caps text-label-caps uppercase py-space-xs text-center opacity-0 group-hover:opacity-100 hover:bg-primary-container active:scale-95 transition-all duration-200 shadow-md" type="button">Get Quote (طلب تسعيرة)</button>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-sm">
+<div class="space-y-space-2xs">
+<span class="font-label-caps text-label-caps uppercase text-outline tracking-wider">ANUA SEOUL</span>
+<h3 class="font-title-editorial text-title-editorial text-on-surface group-hover:text-secondary transition-colors line-clamp-1">
+                Heartleaf 77% Soothing Toner 250ml
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Optimal sub-acidic balancing liquid for calming inflamed Kuwait summer pores.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs"><span class="font-body-sm text-body-sm text-on-surface font-semibold">Price on Request</span><span class="font-label-badge text-label-badge uppercase text-secondary font-medium">تسعيرة عند الطلب</span></div>
+</div>
+</div>
+<!-- Cross-sell Card 4 -->
+<div class="group bg-surface-container-lowest flex flex-col shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+<div class="relative aspect-[4/5] bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out" data-alt="Beauty of Joseon Relief Sun Rice and Probiotics sunscreen tube lying next to raw porcelain bowl of golden unpolished rice grains." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCri13QRBYzWa1zJEHY5wSeiiu1N_dhkP364_gJAigeHo982qQVICfHXU5c176nb4k6aolgRmoui3ilM9zqgymSEYUqDLex8jObGirxpxtDhgHe9yCXXS_U8RbXL4005_3JIUS7b5veDoI2x4KzEV17xI5KMQdXt8J8rQsltF93k8fiqBvqm2O3fDElgxniOjZqNT14xBPeYyozVnZaz-hadb7z5gpiwMal-w8yT-hFMWYUEMWhokmv"/>
+<div class="absolute top-space-sm left-space-sm bg-surface/90 backdrop-blur-sm px-space-xs py-space-2xs font-label-badge text-label-badge uppercase tracking-wider text-on-surface">
+              Step 04: Shield
+            </div>
+<button aria-label="Quick Add Relief Sunscreen" class="quick-add-btn absolute bottom-space-sm left-space-sm right-space-sm bg-primary text-on-primary font-label-caps text-label-caps uppercase py-space-xs text-center opacity-0 group-hover:opacity-100 hover:bg-primary-container active:scale-95 transition-all duration-200 shadow-md" type="button">Get Quote (طلب تسعيرة)</button>
+</div>
+<div class="p-space-md flex flex-col flex-1 justify-between gap-space-sm">
+<div class="space-y-space-2xs">
+<span class="font-label-caps text-label-caps uppercase text-outline tracking-wider">BEAUTY OF JOSEON</span>
+<h3 class="font-title-editorial text-title-editorial text-on-surface group-hover:text-secondary transition-colors line-clamp-1">
+                Relief Sun: Rice + Probiotics SPF50+
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                Ultralight velvet broad spectrum filter without sticky whitecast under Gulf sun.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-space-xs"><span class="font-body-sm text-body-sm text-on-surface font-semibold">Price on Request</span><span class="font-label-badge text-label-badge uppercase text-secondary font-medium">تسعيرة عند الطلب</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive JavaScript Engine for PDP Features -->
+<script>
+    (function initPDP() {
+      // 1. Gallery Thumbnail Switcher & Hover Luxury Zoom
+      const viewer = document.getElementById('mainGalleryViewer');
+      const galleryContainer = document.getElementById('galleryContainer');
+      const thumbBtns = document.querySelectorAll('.thumb-btn');
+
+      thumbBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          thumbBtns.forEach(b => {
+            b.classList.remove('ring-2', 'ring-primary', 'shadow-md', 'scale-[1.02]');
+            b.classList.add('opacity-70', 'shadow-sm');
+          });
+          btn.classList.add('ring-2', 'ring-primary', 'shadow-md', 'scale-[1.02]');
+          btn.classList.remove('opacity-70', 'shadow-sm');
+
+          const newSrc = btn.getAttribute('data-thumb-src');
+          const newAlt = btn.getAttribute('data-thumb-alt');
+
+          if (viewer) {
+            viewer.style.opacity = '0.35';
+            viewer.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+              if (newSrc && newSrc !== 'placeholder') viewer.src = newSrc;
+              if (newAlt) {
+                viewer.setAttribute('data-alt', newAlt);
+                viewer.alt = newAlt;
+              }
+              viewer.style.opacity = '1';
+              viewer.style.transform = 'scale(1)';
+            }, 180);
+          }
+        });
+      });
+
+      // Smooth focal hover zoom tracking
+      if (galleryContainer && viewer) {
+        galleryContainer.addEventListener('mousemove', (e) => {
+          const rect = galleryContainer.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          viewer.style.transformOrigin = `${x}% ${y}%`;
+          viewer.style.transform = 'scale(1.35)';
+        });
+
+        galleryContainer.addEventListener('mouseleave', () => {
+          viewer.style.transformOrigin = 'center center';
+          viewer.style.transform = 'scale(1)';
+        });
+      }
+
+      // 2. Wishlist Tactile Toggle
+      const wishlistBtn = document.getElementById('wishlistBtn');
+      const wishlistIcon = document.getElementById('wishlistIcon');
+      let isWishlisted = false;
+
+      if (wishlistBtn && wishlistIcon) {
+        wishlistBtn.addEventListener('click', () => {
+          isWishlisted = !isWishlisted;
+          wishlistIcon.classList.add('heart-bounce');
+          setTimeout(() => wishlistIcon.classList.remove('heart-bounce'), 450);
+
+          if (isWishlisted) {
+            wishlistIcon.textContent = 'favorite';
+            wishlistIcon.style.fontVariationSettings = "'FILL' 1";
+            wishlistIcon.classList.add('text-secondary');
+            wishlistIcon.classList.remove('text-on-surface-variant');
+          } else {
+            wishlistIcon.textContent = 'favorite_border';
+            wishlistIcon.style.fontVariationSettings = "'FILL' 0";
+            wishlistIcon.classList.remove('text-secondary');
+            wishlistIcon.classList.add('text-on-surface-variant');
+          }
+        });
+      }
+
+      // 3. Volume / Variant Switcher with Spring & Price Morph
+      const variantBtns = document.querySelectorAll('.variant-option');
+      const priceCurrent = document.getElementById('priceCurrent');
+      const priceOriginal = document.getElementById('priceOriginal');
+      const priceSavingBadge = document.getElementById('priceSavingBadge');
+      const selectedVariantText = document.getElementById('selectedVariantText');
+
+      variantBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          variantBtns.forEach(b => {
+            b.classList.remove('bg-primary', 'text-on-primary', 'ring-2', 'ring-primary');
+            b.classList.add('bg-surface-container-low', 'text-on-surface');
+            const check = b.querySelector('.variant-check');
+            if (check) check.remove();
+          });
+
+          btn.classList.add('bg-primary', 'text-on-primary', 'ring-2', 'ring-primary');
+          btn.classList.remove('bg-surface-container-low', 'text-on-surface');
+
+          const topRow = btn.querySelector('div');
+          if (topRow && !topRow.querySelector('.variant-check')) {
+            const checkSpan = document.createElement('span');
+            checkSpan.className = 'material-symbols-outlined text-[16px] variant-check';
+            checkSpan.textContent = 'check';
+            topRow.appendChild(checkSpan);
+          }
+
+          const vol = btn.getAttribute('data-volume');
+          const price = btn.getAttribute('data-price');
+          const orig = btn.getAttribute('data-original');
+          const savings = btn.getAttribute('data-savings');
+
+          if (priceCurrent && price) {
+            priceCurrent.style.opacity = '0.2';
+            priceCurrent.style.transform = 'translateY(-4px)';
+            setTimeout(() => {
+              priceCurrent.textContent = price;
+              priceCurrent.style.opacity = '1';
+              priceCurrent.style.transform = 'translateY(0)';
+            }, 120);
+          }
+          if (priceOriginal && orig) priceOriginal.textContent = orig;
+          if (priceSavingBadge && savings) priceSavingBadge.textContent = savings;
+          if (selectedVariantText && vol) {
+            selectedVariantText.textContent = vol === '50ml' ? '50ml Standard' : '100ml Value Size';
+          }
+        });
+      });
+
+      // 4. Quantity Stepper
+      const qtyInput = document.getElementById('qtyInput');
+      const qtyMinus = document.getElementById('qtyMinus');
+      const qtyPlus = document.getElementById('qtyPlus');
+
+      if (qtyMinus && qtyPlus && qtyInput) {
+        qtyMinus.addEventListener('click', () => {
+          let val = parseInt(qtyInput.value, 10) || 1;
+          if (val > 1) {
+            qtyInput.value = val - 1;
+            qtyInput.style.transform = 'scale(0.85)';
+            setTimeout(() => qtyInput.style.transform = 'scale(1)', 150);
+          }
+        });
+
+        qtyPlus.addEventListener('click', () => {
+          let val = parseInt(qtyInput.value, 10) || 1;
+          if (val < 10) {
+            qtyInput.value = val + 1;
+            qtyInput.style.transform = 'scale(1.15)';
+            setTimeout(() => qtyInput.style.transform = 'scale(1)', 150);
+          }
+        });
+      }
+
+      // 5. Toast & Cart Micro-Interactions
+      const addToBagBtn = document.getElementById('addToBagBtn');
+      const headerCartCount = document.getElementById('headerCartCount');
+      const cartToast = document.getElementById('cartToast');
+
+      function triggerCartAddFeedback() {
+        if (headerCartCount) {
+          let cur = parseInt(headerCartCount.textContent, 10) || 0;
+          headerCartCount.textContent = cur + (parseInt(qtyInput ? qtyInput.value : 1, 10) || 1);
+          headerCartCount.classList.remove('cart-badge-bounce');
+          void headerCartCount.offsetWidth;
+          headerCartCount.classList.add('cart-badge-bounce');
+        }
+
+        if (cartToast) {
+          cartToast.classList.remove('translate-y-12', 'opacity-0');
+          cartToast.classList.add('translate-y-0', 'opacity-100');
+          setTimeout(() => {
+            cartToast.classList.remove('translate-y-0', 'opacity-100');
+            cartToast.classList.add('translate-y-12', 'opacity-0');
+          }, 2400);
+        }
+      }
+
+      if (addToBagBtn) {
+        addToBagBtn.addEventListener('click', () => {
+          const origContent = addToBagBtn.innerHTML;
+          addToBagBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[20px] animate-bounce">check</span>
+            <span>Added to Bag • تم الإضافة</span>
+          `;
+          addToBagBtn.classList.add('bg-secondary');
+          triggerCartAddFeedback();
+
+          setTimeout(() => {
+            addToBagBtn.innerHTML = origContent;
+            addToBagBtn.classList.remove('bg-secondary');
+          }, 1600);
+        });
+      }
+
+      // Quick Add from routine cards
+      document.querySelectorAll('.quick-add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const orig = btn.innerHTML;
+          btn.innerHTML = '✓ Added';
+          btn.classList.add('bg-secondary');
+          triggerCartAddFeedback();
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.classList.remove('bg-secondary');
+          }, 1400);
+        });
+      });
+
+      // 6. Expandable Accordions with Smooth Height Transitions
+      const accordions = document.querySelectorAll('.accordion-toggle');
+      accordions.forEach(acc => {
+        acc.addEventListener('click', () => {
+          const wrapper = acc.nextElementSibling;
+          const icon = acc.querySelector('.accordion-icon');
+          const isOpen = wrapper.classList.contains('expanded');
+
+          // Close other open accordions
+          document.querySelectorAll('.accordion-wrapper').forEach(w => w.classList.remove('expanded'));
+          document.querySelectorAll('.accordion-icon').forEach(i => i.style.transform = 'rotate(0deg)');
+
+          if (!isOpen) {
+            wrapper.classList.add('expanded');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+          }
+        });
+      });
+
+      // Open first accordion by default
+      if (accordions.length > 0) {
+        const firstWrapper = accordions[0].nextElementSibling;
+        const firstIcon = accordions[0].querySelector('.accordion-icon');
+        if (firstWrapper) firstWrapper.classList.add('expanded');
+        if (firstIcon) firstIcon.style.transform = 'rotate(180deg)';
+      }
+
+      // 7. Dynamic Countdown Timer Micro-update
+      const countdownEl = document.getElementById('countdownTimer');
+      let totalSeconds = 3 * 3600 + 14 * 60 + 28;
+      setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          const h = Math.floor(totalSeconds / 3600);
+          const m = Math.floor((totalSeconds % 3600) / 60);
+          const s = totalSeconds % 60;
+          if (countdownEl) {
+            countdownEl.textContent = `${h}h ${m < 10 ? '0' : ''}${m}m ${s < 10 ? '0' : ''}${s}s`;
+          }
+        }
+      }, 1000);
+
+      // 8. Routine Carousel Slide Controls
+      const carousel = document.getElementById('recommendationCarousel');
+      const prevBtn = document.getElementById('carouselPrev');
+      const nextBtn = document.getElementById('carouselNext');
+
+      if (carousel && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: -340, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: 340, behavior: 'smooth' });
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-low mt-space-4xl"><div class="max-w-[1440px] mx-auto px-margin-desktop py-space-3xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-2xl pb-space-2xl"><div class="space-y-space-md"><div class="flex items-center gap-space-sm"><img alt="Mikyaj Official Logo" class="h-12 w-12 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAotnuKk62yAYhJFYM7ZBk9E_kG4GF5vwMlPiyk1cKu_seZzAz0-xxdL80HkhUnwGSxYCaaYm1bbet48AqBvzto55N3gO6Fs4I6gxucYyCwUJtpIjZp19eSdE1iYHipjOTAHDKznwtk1-D6cdiG-h3Xgl632YTOK5M3ImYHAlLTuEmomWWO-KqLxhPJZnDe51y8EeG8roFl9pUaTfr0zEm1V88AGU_5LudOL3L5nmLnsh9E2zJvtGSz3LbbsKBlll6p9A"/><div class="flex flex-col"><span class="font-headline-md text-headline-md tracking-tight uppercase text-on-surface leading-none">MIKYAJ KUWAIT</span><span class="font-label-caps text-[10px] uppercase tracking-widest text-secondary mt-1">Haute Parfumerie &amp; Skincare Ateliers</span></div></div><p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">The epicenter of luxury Gulf cosmetics and prestigious sensory formulations. Curated meticulously for Kuwait’s elevated lifestyle with express regional dispatch.</p><div class="flex items-center gap-space-sm pt-space-2xs"><span class="font-label-caps text-label-caps uppercase text-on-surface-variant">State of Kuwait</span><span class="text-outline">•</span><span class="font-label-caps text-label-caps text-on-surface-variant">مدينة الكويت</span></div></div><div class="space-y-space-sm"><h4 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface font-semibold">Customer Care</h4><ul class="space-y-space-xs font-body-md text-body-md text-on-surface-variant"><li><a class="hover:text-on-surface transition-colors" data-path="contact" href="#">Client Concierge</a></li><li><a class="hover:text-on-surface transition-colors" data-path="order-tracking" href="#">Order Tracking</a></li><li><a class="hover:text-on-surface transition-colors" data-path="shade-consultation" href="#">Bespoke Shade Consultation</a></li><li><a class="hover:text-on-surface transition-colors" data-path="faq" href="#">Frequently Asked Questions</a></li></ul></div><div class="space-y-space-sm"><h4 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface font-semibold">Kuwait Express Dispatch</h4><ul class="space-y-space-xs font-body-md text-body-md text-on-surface-variant"><li class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">schedule</span><span>Same-day delivery across Capital, Hawalli &amp; Salmiya</span></li><li class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">verified</span><span>Climate-controlled cold chain logistics for luxury formulations</span></li><li class="flex items-start gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">shield</span><span>100% Guaranteed authentic batches directly from ateliers</span></li></ul></div><div class="space-y-space-sm"><h4 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface font-semibold">Payment Methods</h4><p class="font-body-sm text-body-sm text-on-surface-variant">Seamless and encrypted checkout honoring regional banking standards:</p><div class="flex flex-wrap items-center gap-space-xs pt-space-2xs"><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider shadow-sm">KNET / كي نت</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider shadow-sm">MyFatoorah</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider shadow-sm">VISA</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider shadow-sm">Mastercard</span><span class="bg-surface px-space-sm py-space-2xs font-label-caps text-label-caps uppercase text-on-surface tracking-wider shadow-sm">Apple Pay</span></div></div></div><div class="pt-space-xl flex flex-col md:flex-row items-center justify-between gap-space-md border-t border-outline-variant/30"><div class="flex flex-wrap items-center gap-space-lg font-label-caps text-label-caps uppercase"><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy-policy" href="#">Privacy Policy / سياسة الخصوصية</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="delivery-terms" href="#">Delivery Terms / شروط التوصيل</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="return-policy" href="#">Return &amp; Exchange / سياسة الاسترجاع</a></div><div class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-right">© 2025 Mikyaj Kuwait Company W.L.L. All Rights Reserved.</div></div></div></footer></body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Admin Login — Mikyaj Kuwait</title><link rel="stylesheet" href="../css/main.css"/></head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--surface-container-lowest)">
+  <div style="width:100%;max-width:420px;padding:2rem">
+    <div style="text-align:center;margin-bottom:2.5rem">
+      <div style="width:64px;height:64px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+        <span class="material-symbols-outlined" style="font-size:32px;color:var(--on-secondary)">spa</span>
+      </div>
+      <h1 class="text-headline-lg" style="margin-bottom:4px">MIKYAJ</h1>
+      <p class="text-label-caps" style="color:var(--secondary)">Kuwait Admin Portal</p>
+      <p class="text-body-sm" style="color:var(--on-surface-variant);margin-top:0.5rem">لوحة تحكم المسؤول</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" id="username" class="form-input" value="admin" placeholder="Enter username"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="password" class="form-input" value="mikyaj2025" placeholder="Enter password"/>
+      </div>
+      <div id="loginError" style="display:none;color:var(--error);font-size:12px;margin-bottom:1rem;padding:8px;background:var(--error-container);text-align:center">Invalid credentials. Try admin / mikyaj2025</div>
+      <button class="btn btn-primary btn-lg" style="width:100%;margin-bottom:1rem" onclick="doLogin()">
+        <span class="material-symbols-outlined" style="font-size:18px">login</span>
+        Sign In to Dashboard
+      </button>
+      <p class="text-body-sm" style="text-align:center;color:var(--outline)">Demo credentials: <strong>admin</strong> / <strong>mikyaj2025</strong></p>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <a href="../index.html" class="text-body-sm" style="color:var(--on-surface-variant)">← Back to Storefront</a>
+    </div>
+  </div>
+  <script src="../js/store.js"></script><script src="../js/seed-data.js"></script>
+  <script>
+    function doLogin() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (MikyajStore.adminLogin(user, pass)) {
+        window.location.href = 'dashboard.html';
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+    document.getElementById('password').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+    // Auto-login check
+    if (MikyajStore.isAdminLoggedIn()) window.location.href = 'dashboard.html';
+  </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Dashboard — Mikyaj Admin</title><link rel="stylesheet" href="../css/main.css"/><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script></head>
+<body>
+<div class="admin-layout">
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><div><div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div><div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div></div></div>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html" class="admin-nav-item active"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="orders.html" class="admin-nav-item"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      <div class="admin-nav-section">Catalog</div>
+      <a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a>
+      <a href="product-form.html" class="admin-nav-item"><span class="material-symbols-outlined">add_box</span>Add Product</a>
+      <a href="categories.html" class="admin-nav-item"><span class="material-symbols-outlined">category</span>Categories</a>
+      <a href="brands.html" class="admin-nav-item"><span class="material-symbols-outlined">storefront</span>Brands</a>
+      <div class="admin-nav-section">Analytics</div>
+      <a href="reports.html" class="admin-nav-item"><span class="material-symbols-outlined">assessment</span>Reports</a>
+      <a href="customers.html" class="admin-nav-item"><span class="material-symbols-outlined">group</span>Customers</a>
+      <div class="admin-nav-section">System</div>
+      <a href="erp.html" class="admin-nav-item"><span class="material-symbols-outlined">hub</span>ERP Integration</a>
+      <a href="#" class="admin-nav-item" onclick="MikyajStore.adminLogout();window.location.href='login.html'"><span class="material-symbols-outlined">logout</span>Logout</a>
+    </nav>
+    <div style="padding:1rem 1.5rem;border-top:1px solid var(--outline-variant)">
+      <a href="../index.html" class="text-body-sm flex gap-xs" style="color:var(--on-surface-variant);align-items:center"><span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>View Storefront</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h2 class="text-headline-sm">Dashboard Overview</h2>
+      <div class="flex gap-md" style="align-items:center">
+        <span class="text-body-sm" style="color:var(--on-surface-variant)" id="currentDate"></span>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--surface-container-high);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:18px">person</span></div>
+      </div>
+    </div>
+    <div class="admin-content">
+      <!-- KPI CARDS -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(247,183,172,0.15);color:var(--secondary)"><span class="material-symbols-outlined">payments</span></div>
+          <div class="stat-value" id="totalRevenue">0.000</div>
+          <div class="stat-label">Total Revenue (KWD)</div>
+          <div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +12.5% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(129,199,132,0.15);color:var(--success)"><span class="material-symbols-outlined">shopping_cart</span></div>
+          <div class="stat-value" id="totalOrders">0</div>
+          <div class="stat-label">Total Orders</div>
+          <div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +8.3% vs last month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(100,181,246,0.15);color:var(--info)"><span class="material-symbols-outlined">inventory_2</span></div>
+          <div class="stat-value" id="totalProducts">0</div>
+          <div class="stat-label">Active Products</div>
+          <div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">add</span> 3 added this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(255,183,77,0.15);color:var(--warning)"><span class="material-symbols-outlined">group</span></div>
+          <div class="stat-value" id="totalCustomers">0</div>
+          <div class="stat-label">Customers</div>
+          <div class="stat-change positive"><span class="material-symbols-outlined" style="font-size:14px">trending_up</span> +15.2% growth</div>
+        </div>
+      </div>
+
+      <!-- SECONDARY KPIs -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
+        <div class="stat-card">
+          <div class="stat-value" id="avgOrder" style="font-size:22px">0.000</div>
+          <div class="stat-label">Avg Order Value (KWD)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="font-size:22px;color:var(--warning)" id="pendingOrders">0</div>
+          <div class="stat-label">Pending Orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="font-size:22px;color:var(--error)" id="lowStock">0</div>
+          <div class="stat-label">Low Stock Items</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="font-size:22px;color:var(--success)">94.2%</div>
+          <div class="stat-label">Customer Satisfaction</div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;margin-bottom:2rem">
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 class="text-headline-sm">Revenue Trend (30 Days)</h3>
+            <div class="flex gap-xs"><span class="badge badge-outline">Daily</span><span class="badge badge-outline">KWD</span></div>
+          </div>
+          <canvas id="revenueChart" height="250"></canvas>
+        </div>
+        <div class="chart-container">
+          <div class="chart-header"><h3 class="text-headline-sm">Sales by Category</h3></div>
+          <canvas id="categoryChart" height="250"></canvas>
+        </div>
+      </div>
+
+      <!-- SECOND CHARTS ROW -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
+        <div class="chart-container">
+          <div class="chart-header"><h3 class="text-headline-sm">Top 5 Products by Revenue</h3></div>
+          <canvas id="topProductsChart" height="200"></canvas>
+        </div>
+        <div class="chart-container">
+          <div class="chart-header"><h3 class="text-headline-sm">Orders by Payment Method</h3></div>
+          <canvas id="paymentChart" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- RECENT ORDERS + QUICK ACTIONS -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem">
+        <div class="card" style="padding:0">
+          <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--outline-variant)" class="flex-between">
+            <h3 class="text-headline-sm">Recent Orders</h3>
+            <a href="orders.html" class="text-label-caps" style="color:var(--secondary)">View All →</a>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead><tbody id="recentOrdersBody"></tbody></table>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="padding:1.25rem;margin-bottom:1rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Quick Actions</h3>
+            <div style="display:flex;flex-direction:column;gap:0.5rem">
+              <a href="product-form.html" class="btn btn-primary btn-sm" style="justify-content:flex-start"><span class="material-symbols-outlined" style="font-size:18px">add</span>Add New Product</a>
+              <a href="orders.html" class="btn btn-outline btn-sm" style="justify-content:flex-start"><span class="material-symbols-outlined" style="font-size:18px">pending_actions</span>Process Pending Orders</a>
+              <a href="products.html" class="btn btn-outline btn-sm" style="justify-content:flex-start"><span class="material-symbols-outlined" style="font-size:18px">warning</span>View Low Stock Items</a>
+              <a href="reports.html" class="btn btn-outline btn-sm" style="justify-content:flex-start"><span class="material-symbols-outlined" style="font-size:18px">download</span>Export Reports</a>
+            </div>
+          </div>
+          <div class="card" style="padding:1.25rem">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Activity Feed</h3>
+            <div id="activityFeed" style="display:flex;flex-direction:column;gap:12px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container"></div>
+<script src="../js/store.js"></script><script src="../js/seed-data.js"></script><script src="../js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!MikyajStore.isAdminLoggedIn()) { window.location.href = 'login.html'; return; }
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  const orders = MikyajStore.getOrders();
+  const products = MikyajStore.getProducts();
+  const customers = MikyajStore.getCustomers();
+  const totalRev = orders.reduce((s,o)=>s+(o.total||0),0);
+
+  // KPIs
+  document.getElementById('totalRevenue').textContent = totalRev.toFixed(3);
+  document.getElementById('totalOrders').textContent = orders.length;
+  document.getElementById('totalProducts').textContent = products.filter(p=>p.published).length;
+  document.getElementById('totalCustomers').textContent = customers.length;
+  document.getElementById('avgOrder').textContent = orders.length ? (totalRev/orders.length).toFixed(3) : '0.000';
+  document.getElementById('pendingOrders').textContent = orders.filter(o=>o.status==='pending').length;
+  document.getElementById('lowStock').textContent = products.filter(p=>p.stock<20).length;
+
+  // Revenue Chart
+  const revData = MikyajStore.getRevenueByDay(30);
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: revData.map(d => d.date.slice(5)),
+      datasets: [{ label: 'Revenue (KWD)', data: revData.map(d => d.revenue), borderColor: '#f7b7ac', backgroundColor: 'rgba(247,183,172,0.1)', fill: true, tension: 0.4, pointRadius: 2 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#8e9192' }, grid: { color: 'rgba(68,71,72,0.3)' } }, x: { ticks: { color: '#8e9192', maxRotation: 0, maxTicksLimit: 10 }, grid: { display: false } } } }
+  });
+
+  // Category Chart
+  const catSales = MikyajStore.getSalesByCategory();
+  const catLabels = Object.keys(catSales).map(id => { const c = MikyajStore.getCategory(id); return c ? c.name : id; });
+  new Chart(document.getElementById('categoryChart'), {
+    type: 'doughnut',
+    data: {
+      labels: catLabels,
+      datasets: [{ data: Object.values(catSales), backgroundColor: ['#f7b7ac','#c8c6c5','#d8c2b7','#8e9192','#683a33','#444748'] }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#c4c7c7', font: { size: 11 } } } } }
+  });
+
+  // Top Products
+  const topProds = MikyajStore.getTopProducts(5);
+  new Chart(document.getElementById('topProductsChart'), {
+    type: 'bar',
+    data: {
+      labels: topProds.map(p => p.product.name.substring(0, 20) + '...'),
+      datasets: [{ label: 'Revenue (KWD)', data: topProds.map(p => p.revenue), backgroundColor: '#f7b7ac', borderRadius: 2 }]
+    },
+    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#8e9192' }, grid: { color: 'rgba(68,71,72,0.3)' } }, y: { ticks: { color: '#c4c7c7', font: { size: 11 } }, grid: { display: false } } } }
+  });
+
+  // Payment Methods
+  const payMethods = {};
+  orders.forEach(o => { payMethods[o.paymentMethod] = (payMethods[o.paymentMethod]||0) + 1; });
+  new Chart(document.getElementById('paymentChart'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(payMethods),
+      datasets: [{ data: Object.values(payMethods), backgroundColor: ['#f7b7ac','#c8c6c5','#d8c2b7','#683a33','#8e9192','#444748'] }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#c4c7c7', font: { size: 11 } } } } }
+  });
+
+  // Recent Orders
+  const tbody = document.getElementById('recentOrdersBody');
+  orders.slice(0, 8).forEach(o => {
+    const statusClass = {'pending':'badge-warning','processing':'badge-info','shipped':'badge-primary','delivered':'badge-success','cancelled':'badge-error'}[o.status]||'badge-outline';
+    tbody.innerHTML += `<tr><td style="font-weight:600">${o.id}</td><td>${o.customer||'Guest'}</td><td>${MikyajApp.formatKWD(o.total)}</td><td><span class="badge ${statusClass}">${o.status}</span></td><td class="text-body-sm" style="color:var(--on-surface-variant)">${MikyajApp.formatDate(o.createdAt)}</td></tr>`;
+  });
+
+  // Activity Feed
+  const feed = document.getElementById('activityFeed');
+  const activities = [
+    { icon:'shopping_cart', text:'New order #'+orders[0]?.id+' received', time:'2 min ago', color:'var(--success)' },
+    { icon:'inventory_2', text:'Stock alert: Serum below threshold', time:'15 min ago', color:'var(--warning)' },
+    { icon:'person_add', text:'New customer registered', time:'1 hour ago', color:'var(--info)' },
+    { icon:'star', text:'5-star review on Barrier Cream', time:'3 hours ago', color:'var(--secondary)' },
+    { icon:'local_shipping', text:'Order #'+orders[2]?.id+' dispatched', time:'5 hours ago', color:'var(--success)' }
+  ];
+  activities.forEach(a => {
+    feed.innerHTML += `<div class="flex gap-sm" style="align-items:start"><span class="material-symbols-outlined" style="font-size:18px;color:${a.color};margin-top:2px">${a.icon}</span><div><div class="text-body-sm">${a.text}</div><div class="text-body-sm" style="color:var(--outline);font-size:11px">${a.time}</div></div></div>`;
+  });
+});
+</script>
+</body>
+</html>

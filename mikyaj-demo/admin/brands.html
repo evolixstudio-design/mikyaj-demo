@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Brands — Mikyaj Admin</title><link rel="stylesheet" href="../css/main.css"/></head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header"><div class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><div><div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div><div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div></div></div></div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div><a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a href="orders.html" class="admin-nav-item"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      <div class="admin-nav-section">Catalog</div><a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a><a href="product-form.html" class="admin-nav-item"><span class="material-symbols-outlined">add_box</span>Add Product</a><a href="categories.html" class="admin-nav-item"><span class="material-symbols-outlined">category</span>Categories</a><a href="brands.html" class="admin-nav-item active"><span class="material-symbols-outlined">storefront</span>Brands</a>
+      <div class="admin-nav-section">Analytics</div><a href="reports.html" class="admin-nav-item"><span class="material-symbols-outlined">assessment</span>Reports</a><a href="customers.html" class="admin-nav-item"><span class="material-symbols-outlined">group</span>Customers</a>
+      <div class="admin-nav-section">System</div><a href="erp.html" class="admin-nav-item"><span class="material-symbols-outlined">hub</span>ERP Integration</a>
+      <a href="#" class="admin-nav-item" onclick="MikyajStore.adminLogout();window.location.href='login.html'"><span class="material-symbols-outlined">logout</span>Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar"><h2 class="text-headline-sm">Brand Management</h2><button class="btn btn-primary btn-sm" onclick="openModal()"><span class="material-symbols-outlined" style="font-size:16px">add</span>Add Brand</button></div>
+    <div class="admin-content">
+      <div class="card" style="padding:0">
+        <table class="data-table">
+          <thead><tr><th>Brand Name</th><th>Country of Origin</th><th>Status</th><th>Products Count</th><th>Actions</th></tr></thead>
+          <tbody id="brandBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="brandModal">
+  <div class="modal">
+    <div class="modal-header"><h3 class="text-headline-sm" id="modalTitle">Add Brand</h3><button onclick="closeModal()" style="color:var(--on-surface-variant)"><span class="material-symbols-outlined">close</span></button></div>
+    <div class="modal-body">
+      <input type="hidden" id="brandId"/>
+      <div class="form-group"><label class="form-label">Brand Name *</label><input type="text" id="brandName" class="form-input"/></div>
+      <div class="form-group"><label class="form-label">Country of Origin</label><input type="text" id="brandCountry" class="form-input" placeholder="e.g. South Korea, France"/></div>
+      <div class="form-group"><label class="form-checkbox"><input type="checkbox" id="brandActive" checked/> Active Brand</label></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveBrand()">Save Brand</button>
+    </div>
+  </div>
+</div>
+<div class="toast-container"></div>
+<script src="../js/store.js"></script><script src="../js/seed-data.js"></script><script src="../js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!MikyajStore.isAdminLoggedIn()) { window.location.href = 'login.html'; return; }
+  renderBrands();
+});
+
+function renderBrands() {
+  const brands = MikyajStore.getBrands().sort((a,b) => a.name.localeCompare(b.name));
+  const products = MikyajStore.getProducts();
+  const tbody = document.getElementById('brandBody');
+  tbody.innerHTML = brands.map(b => {
+    const count = products.filter(p => p.brandId === b.id).length;
+    return `<tr>
+      <td style="font-weight:600">${b.name}</td>
+      <td>${b.country||'—'}</td>
+      <td><span class="badge ${b.active?'badge-success':'badge-outline'}">${b.active?'Active':'Inactive'}</span></td>
+      <td>${count}</td>
+      <td>
+        <div class="flex gap-xs">
+          <button class="btn btn-ghost btn-sm" style="padding:4px" onclick="editBrand('${b.id}')"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button>
+          <button class="btn btn-ghost btn-sm" style="padding:4px;color:var(--error)" onclick="deleteBrand('${b.id}', ${count})"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openModal() {
+  document.getElementById('modalTitle').textContent = 'Add Brand';
+  document.getElementById('brandId').value = '';
+  document.getElementById('brandName').value = '';
+  document.getElementById('brandCountry').value = '';
+  document.getElementById('brandActive').checked = true;
+  document.getElementById('brandModal').classList.add('active');
+}
+
+function closeModal() { document.getElementById('brandModal').classList.remove('active'); }
+
+function editBrand(id) {
+  const b = MikyajStore.getBrand(id);
+  if (!b) return;
+  document.getElementById('modalTitle').textContent = 'Edit Brand';
+  document.getElementById('brandId').value = b.id;
+  document.getElementById('brandName').value = b.name;
+  document.getElementById('brandCountry').value = b.country || '';
+  document.getElementById('brandActive').checked = b.active !== false;
+  document.getElementById('brandModal').classList.add('active');
+}
+
+function saveBrand() {
+  const name = document.getElementById('brandName').value.trim();
+  if (!name) { MikyajApp.showToast('Name is required', 'error'); return; }
+  const data = {
+    name,
+    country: document.getElementById('brandCountry').value,
+    active: document.getElementById('brandActive').checked
+  };
+  const id = document.getElementById('brandId').value;
+  if (id) {
+    MikyajStore.updateBrand(id, data);
+    MikyajApp.showToast('Brand updated', 'success');
+  } else {
+    data.id = 'brand-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    MikyajStore.addBrand(data);
+    MikyajApp.showToast('Brand added', 'success');
+  }
+  closeModal();
+  renderBrands();
+}
+
+async function deleteBrand(id, count) {
+  if (count > 0) {
+    MikyajApp.showToast(`Cannot delete brand with ${count} active products.`, 'error');
+    return;
+  }
+  if (await MikyajApp.confirm('Are you sure you want to delete this brand?')) {
+    MikyajStore.deleteBrand(id);
+    MikyajApp.showToast('Brand deleted', 'success');
+    renderBrands();
+  }
+}
+</script>
+</body>
+</html>
