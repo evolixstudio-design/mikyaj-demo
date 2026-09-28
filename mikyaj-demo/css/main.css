@@ -3,7 +3,7 @@
    Design System: Dark luxury cosmetics aesthetic
    ═══════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 /* ─── CSS Variables ───────────────────────────────────────── */
@@ -35,8 +35,8 @@
   --warning: #ffb74d;
   --info: #64b5f6;
 
-  --font-display: 'Bodoni Moda', serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Lato', sans-serif;
 
   --radius: 0px;
   --radius-sm: 2px;
