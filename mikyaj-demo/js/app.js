@@ -8,7 +8,7 @@ const MikyajApp = {
   initTheme() {
     const savedTheme = localStorage.getItem('mikyaj_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    this.injectThemeToggle();
+    this.injectLayoutElements();
   },
   toggleTheme() {
     const current = document.documentElement.getAttribute('data-theme');
@@ -17,27 +17,74 @@ const MikyajApp = {
     localStorage.setItem('mikyaj_theme', newTheme);
     return newTheme;
   },
-  injectThemeToggle() {
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-ghost btn-sm theme-toggle-btn';
-    btn.style.padding = '6px';
-    btn.title = 'Toggle Theme';
-    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px">${document.documentElement.getAttribute('data-theme') === 'light' ? 'dark_mode' : 'light_mode'}</span>`;
-    btn.onclick = () => {
+  injectLayoutElements() {
+    // 1. Theme Button
+    const themeBtn = document.createElement('button');
+    themeBtn.className = 'btn btn-ghost btn-sm theme-toggle-btn';
+    themeBtn.style.padding = '6px';
+    themeBtn.title = 'Toggle Theme';
+    themeBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px">${document.documentElement.getAttribute('data-theme') === 'light' ? 'dark_mode' : 'light_mode'}</span>`;
+    themeBtn.onclick = () => {
       const newTheme = this.toggleTheme();
-      btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px">${newTheme === 'light' ? 'dark_mode' : 'light_mode'}</span>`;
+      themeBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px">${newTheme === 'light' ? 'dark_mode' : 'light_mode'}</span>`;
     };
 
-    // Try to append to admin topbar
+    // 2. Admin Settings Button (for storefront)
+    const adminBtn = document.createElement('a');
+    adminBtn.className = 'btn btn-ghost btn-sm';
+    adminBtn.style.padding = '6px';
+    adminBtn.title = 'Admin Panel';
+    const isAdmin = window.location.pathname.includes('/admin/');
+    // If we're in the storefront, path to admin is admin/login.html or admin/dashboard.html
+    const rootPath = window.location.pathname.includes('/mikyaj-demo/') ? window.location.pathname.split('/mikyaj-demo/')[0] + '/mikyaj-demo/' : '/';
+    adminBtn.href = MikyajStore.isAdminLoggedIn() ? (isAdmin ? 'dashboard.html' : 'admin/dashboard.html') : (isAdmin ? 'login.html' : 'admin/login.html');
+    adminBtn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px">settings</span>`;
+
+    // Inject Buttons
     const adminTopbar = document.querySelector('.admin-topbar .flex.gap-md') || document.querySelector('.admin-topbar .flex.gap-sm');
     if (adminTopbar) {
-      adminTopbar.prepend(btn);
+      adminTopbar.prepend(themeBtn);
     } else {
-      // Try storefront header
       const headerIcons = document.querySelector('header .flex.gap-md');
       if (headerIcons) {
-        headerIcons.prepend(btn);
+        headerIcons.prepend(adminBtn);
+        headerIcons.prepend(themeBtn);
       }
+    }
+
+    // 3. Admin Sidebar Footer (View Storefront + Evolix)
+    const adminSidebar = document.querySelector('.admin-sidebar');
+    if (adminSidebar) {
+      // Remove any existing hardcoded link to prevent duplicates
+      const existingLink = Array.from(adminSidebar.querySelectorAll('div')).find(d => d.textContent.includes('View Storefront'));
+      if (existingLink) existingLink.remove();
+
+      const sidebarFooter = document.createElement('div');
+      sidebarFooter.style.padding = '1rem 1.5rem';
+      sidebarFooter.style.borderTop = '1px solid var(--outline-variant)';
+      sidebarFooter.innerHTML = `
+        <a href="../index.html" class="text-body-sm flex gap-xs" style="color:var(--on-surface-variant);align-items:center;margin-bottom:12px;text-decoration:none">
+          <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>View Storefront
+        </a>
+        <div class="text-body-sm" style="color:var(--outline);font-size:11px;text-align:center">
+          Developed by<br/><a href="https://evolix-studio.in" target="_blank" style="color:var(--secondary);font-weight:600;text-decoration:none">Evolix Studio</a>
+        </div>
+      `;
+      adminSidebar.appendChild(sidebarFooter);
+    }
+
+    // 4. Storefront Footer (Evolix)
+    const storefrontFooter = document.querySelector('footer');
+    if (storefrontFooter) {
+      const creditDiv = document.createElement('div');
+      creditDiv.style.textAlign = 'center';
+      creditDiv.style.padding = '1.5rem';
+      creditDiv.style.borderTop = '1px solid var(--outline-variant)';
+      creditDiv.style.marginTop = '2rem';
+      creditDiv.className = 'text-body-sm';
+      creditDiv.style.color = 'var(--on-surface-variant)';
+      creditDiv.innerHTML = `Developed by <a href="https://evolix-studio.in" target="_blank" style="color:var(--secondary);font-weight:600;text-decoration:none">Evolix Studio</a>`;
+      storefrontFooter.appendChild(creditDiv);
     }
   },
 
