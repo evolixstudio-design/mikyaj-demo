@@ -552,13 +552,61 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 /* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .container { padding: 0 2rem; }
-  .admin-sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+  .admin-sidebar { transform: translateX(-100%); transition: transform 0.3s; z-index: 1000; }
   .admin-sidebar.open { transform: translateX(0); }
   .admin-main { margin-left: 0; }
   .text-display-hero { font-size: 36px; line-height: 44px; }
   .text-headline-lg { font-size: 28px; line-height: 36px; }
+  
+  /* Tablet grid adjustments */
+  div[style*="grid-template-columns:repeat(4"],
+  div[style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  div[style*="grid-template-columns:repeat(5"],
+  div[style*="grid-template-columns: repeat(5"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  div[style*="grid-template-columns:repeat(3"],
+  div[style*="grid-template-columns: repeat(3"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
+
 @media (max-width: 768px) {
   .container { padding: 0 1rem; }
   .text-display-hero { font-size: 28px; line-height: 36px; }
+  
+  /* Override inline grids to stack on mobile */
+  div[style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  /* Keep thumbnail grids as grids on mobile (usually 4 cols) */
+  #thumbnails[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    flex-direction: row !important;
+  }
+  /* Keep shade dots as flex row */
+  .shade-dots { flex-direction: row !important; }
+
+  /* Adjust Flex-between */
+  .flex-between { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  header .flex-between, .admin-topbar .flex-between { flex-direction: row; align-items: center; }
+
+  /* Hero Section */
+  .hero-content { margin-left: 0 !important; padding: 1.5rem !important; max-width: 100% !important; }
+  
+  /* Tables */
+  .table-wrapper { overflow-x: auto; width: calc(100vw - 2rem); }
+  
+  /* Admin adjustments */
+  .admin-topbar { padding: 0 1rem; }
+  .admin-content { padding: 1rem; }
+  
+  /* Ensure images never break layout */
+  img { max-width: 100%; height: auto; }
 }
