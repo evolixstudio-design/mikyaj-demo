@@ -581,21 +581,64 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
   div[style*="grid-template-columns"] {
     display: flex !important;
     flex-direction: column !important;
-    grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
   }
+  
+  /* Show products and categories in pairs of 2 on mobile */
+  #productsGrid, #bestSellersGrid, #newArrivalsGrid, #relatedGrid, #categoriesGrid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  
   /* Keep thumbnail grids as grids on mobile (usually 4 cols) */
   #thumbnails[style*="grid-template-columns"] {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
-    flex-direction: row !important;
   }
   /* Keep shade dots as flex row */
   .shade-dots { flex-direction: row !important; }
 
   /* Adjust Flex-between */
   .flex-between { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  header .flex-between, .admin-topbar .flex-between { flex-direction: row; align-items: center; }
+  .admin-topbar .flex-between { flex-direction: row; align-items: center; }
+
+  /* Header & Navbar Fixes */
+  header .flex-between {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto !important;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+  }
+  header .flex.gap-xl {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  header .flex.gap-xl > a {
+    align-self: center;
+    margin-bottom: 0.25rem;
+  }
+  #mainNav {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+  #mainNav::-webkit-scrollbar { display: none; }
+  
+  header .flex.gap-md {
+    width: 100%;
+    justify-content: space-between;
+  }
+  header .flex.gap-md > div:first-child {
+    flex: 1;
+    width: auto !important;
+  }
 
   /* Hero Section */
   .hero-content { margin-left: 0 !important; padding: 1.5rem !important; max-width: 100% !important; }
