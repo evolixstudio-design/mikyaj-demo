@@ -275,9 +275,10 @@
 
 <div class="toast-container"></div>
 
-<script src="js/store.js"></script>
-<script src="js/seed-data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/catalog-data.js?v=3"></script>
+  <script src="js/store.js?v=3"></script>
+<script src="js/seed-data.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   // Render Categories
@@ -328,7 +329,7 @@ function renderProductGrid(products, container) {
           <button class="wishlist-btn ${inWishlist?'active':''}" onclick="MikyajApp.toggleWishlist('${p.id}',this)">
             <span class="material-symbols-outlined" style="font-size:18px">favorite</span>
           </button>
-          <img src="${p.images[0]}" alt="${p.name}"/>
+          <a href="product.html?id=${p.id}"><img src="${p.images[0]}" alt="${p.name}" loading="lazy" style="width:100%;object-fit:cover;aspect-ratio:1/1"/></a>
           <div class="product-actions">
             <button class="btn btn-primary btn-sm" style="width:100%" onclick="MikyajApp.addToCart('${p.id}')">
               <span class="material-symbols-outlined" style="font-size:16px">shopping_bag</span>

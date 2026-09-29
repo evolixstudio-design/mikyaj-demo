@@ -5,9 +5,9 @@
 
 const MikyajStore = {
   KEYS: {
-    PRODUCTS: 'mikyaj_products',
-    CATEGORIES: 'mikyaj_categories',
-    BRANDS: 'mikyaj_brands',
+    PRODUCTS: 'mikyaj_v2_products',
+    CATEGORIES: 'mikyaj_v2_categories',
+    BRANDS: 'mikyaj_v2_brands',
     ORDERS: 'mikyaj_orders',
     CUSTOMERS: 'mikyaj_customers',
     CART: 'mikyaj_cart',
@@ -68,12 +68,21 @@ const MikyajStore = {
   },
   searchProducts(query) {
     const q = query.toLowerCase();
-    return this.getProducts().filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      p.nameAr?.toLowerCase().includes(q) ||
-      p.brand?.toLowerCase().includes(q) ||
-      p.description?.toLowerCase().includes(q)
-    );
+    const categories = this.getCategories();
+    return this.getProducts().filter(p => {
+      const cat = categories.find(c => c.id === p.category);
+      const catName = cat ? cat.name.toLowerCase() : '';
+      const catNameAr = cat && cat.nameAr ? cat.nameAr.toLowerCase() : '';
+      return (
+        p.name.toLowerCase().includes(q) ||
+        (p.nameAr && p.nameAr.toLowerCase().includes(q)) ||
+        (p.brand && p.brand.toLowerCase().includes(q)) ||
+        (p.sku && p.sku.toLowerCase().includes(q)) ||
+        catName.includes(q) ||
+        catNameAr.includes(q) ||
+        (p.description && p.description.toLowerCase().includes(q))
+      );
+    });
   },
 
   // ─── CATEGORIES ───────────────────────────────────────────

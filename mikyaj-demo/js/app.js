@@ -6,7 +6,7 @@
 const MikyajApp = {
   // ─── Theme Toggle ─────────────────────────────────────────
   initTheme() {
-    const savedTheme = localStorage.getItem('mikyaj_theme') || 'dark';
+    const savedTheme = localStorage.getItem('mikyaj_theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     this.injectLayoutElements();
   },

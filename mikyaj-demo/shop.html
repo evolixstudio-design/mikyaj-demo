@@ -142,7 +142,8 @@
   </div>
 </footer>
 <div class="toast-container"></div>
-<script src="js/store.js"></script><script src="js/seed-data.js"></script><script src="js/app.js"></script>
+<script src="js/catalog-data.js?v=3"></script>
+  <script src="js/store.js?v=3"></script><script src="js/seed-data.js?v=3"></script><script src="js/app.js?v=3"></script>
 <script>
 let currentView = 'grid';
 let filters = { category: null, brand: null, concerns: [], priceMin: 0, priceMax: 999, sort: 'featured', page: 1, perPage: 12 };
@@ -237,7 +238,7 @@ function renderShopGrid(products) {
           ${p.tags?.includes('bestseller')?'<span class="product-badge badge badge-primary">Bestseller</span>':''}
           ${p.climateTags?.includes('Gulf Heat')?'<span class="product-badge badge badge-secondary" style="top:2.5rem">Gulf Climate</span>':''}
           <button class="wishlist-btn ${inWL?'active':''}" onclick="MikyajApp.toggleWishlist('${p.id}',this)"><span class="material-symbols-outlined" style="font-size:18px">favorite</span></button>
-          <img src="${p.images[0]}" alt="${p.name}"/>
+          <a href="product.html?id=${p.id}"><img src="${p.images[0]}" alt="${p.name}" loading="lazy" style="width:100%;object-fit:cover;aspect-ratio:1/1"/></a>
           <div class="product-actions"><button class="btn btn-primary btn-sm" style="width:100%" onclick="MikyajApp.addToCart('${p.id}')"><span class="material-symbols-outlined" style="font-size:16px">shopping_bag</span>Add to Bag</button></div>
         </div>
         <div class="product-info">

@@ -578,7 +578,7 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
 
 @media (max-width: 768px) {
   .container { padding: 0 1rem; }
-  .text-display-hero { font-size: 28px; line-height: 36px; }
+  .text-display-hero { font-size: 24px; line-height: 32px; }
   
   /* Override inline grids to stack on mobile */
   div[style*="grid-template-columns"] {
@@ -587,43 +587,48 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     gap: 1.5rem !important;
   }
   
-  /* Show products and categories in pairs of 2 on mobile */
+  /* Show products in pairs of 2 on mobile like Shopify */
   #productsGrid, #bestSellersGrid, #newArrivalsGrid, #relatedGrid, #categoriesGrid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1rem !important;
+    gap: 0.5rem !important;
   }
+  .product-card { padding: 0.75rem; }
   
-  /* Keep thumbnail grids as grids on mobile (usually 4 cols) */
+  /* Keep thumbnail grids as grids on mobile */
   #thumbnails[style*="grid-template-columns"] {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
   }
-  /* Keep shade dots as flex row */
-  .shade-dots { flex-direction: row !important; }
+  .shade-dots { flex-direction: row !important; flex-wrap: wrap; }
 
-  /* Adjust Flex-between */
-  .flex-between { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .admin-topbar .flex-between { flex-direction: row; align-items: center; }
-
-  /* Header & Navbar Fixes */
+  /* Header & Navbar Fixes - Shopify Style */
   header .flex-between {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     height: auto !important;
     padding: 0.5rem 0;
     gap: 0.5rem;
   }
+  
+  /* Logo and main navigation wrapper */
   header .flex.gap-xl {
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 0.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center !important;
+    justify-content: space-between;
     width: 100%;
+    gap: 0.5rem;
   }
-  header .flex.gap-xl > a {
-    align-self: center;
-    margin-bottom: 0.25rem;
+  
+  /* Make the logo container take up available space */
+  header .flex.gap-xl > a:first-child {
+    flex: 1;
+    margin-bottom: 0;
   }
+
+  /* Horizontal scrolling navigation */
   #mainNav {
     width: 100%;
     overflow-x: auto;
@@ -631,20 +636,32 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     padding-bottom: 0.5rem;
     justify-content: flex-start;
     -webkit-overflow-scrolling: touch;
+    order: 3; /* Move to bottom of header */
+    border-top: 1px solid var(--outline-variant);
+    padding-top: 0.5rem;
   }
   #mainNav::-webkit-scrollbar { display: none; }
   
+  /* Icons row */
   header .flex.gap-md {
-    width: 100%;
-    justify-content: space-between;
+    width: auto;
+    justify-content: flex-end;
+    gap: 0.5rem !important;
   }
-  header .flex.gap-md > div:first-child {
-    flex: 1;
-    width: auto !important;
+  
+  /* Hide search bar input text on mobile to save space, keep icon */
+  header .form-input[type="text"] {
+    display: none;
+  }
+  header form {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
   }
 
   /* Hero Section */
-  .hero-content { margin-left: 0 !important; padding: 1.5rem !important; max-width: 100% !important; }
+  .hero-content { margin-left: 0 !important; padding: 1.5rem !important; max-width: 100% !important; text-align: center; }
+  .hero-content .flex { justify-content: center; }
   
   /* Tables */
   .table-wrapper { overflow-x: auto; width: calc(100vw - 2rem); }
@@ -665,16 +682,11 @@ input, select, textarea { font-family: inherit; font-size: inherit; }
     animation: fadeIn 0.3s ease-out;
     margin-top: 1rem;
   }
-
-  /* Hide messy icons from nav bar on mobile */
+  
+  /* Restore previously hidden features */
   .theme-toggle-btn,
   a[title="Admin Panel"],
   a[href="wishlist.html"] {
-    display: none !important;
-  }
-  
-  /* Align remaining cart icon to the right */
-  header .flex.gap-md {
-    justify-content: flex-end !important;
+    display: inline-flex !important;
   }
 }
