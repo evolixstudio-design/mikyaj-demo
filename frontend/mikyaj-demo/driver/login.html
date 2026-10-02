@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Driver Login — Mikyaj Kuwait</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--surface-container-lowest)">
+  <div style="width:100%;max-width:420px;padding:2rem">
+    <div style="text-align:center;margin-bottom:2.5rem">
+      <div style="width:64px;height:64px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+        <span class="material-symbols-outlined" style="font-size:32px;color:var(--on-primary)">local_shipping</span>
+      </div>
+      <h1 class="text-headline-lg" style="margin-bottom:4px">MIKYAJ</h1>
+      <p class="text-label-caps" style="color:var(--primary)">Kuwait Driver Portal</p>
+      <p class="text-body-sm" style="color:var(--on-surface-variant);margin-top:0.5rem">بوابة السائقين</p>
+    </div>
+    <div class="card" style="padding:2rem">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="email" class="form-input" placeholder="Enter email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="password" class="form-input" placeholder="Enter password"/>
+      </div>
+      <div id="loginError" style="display:none;color:var(--error);font-size:12px;margin-bottom:1rem;padding:8px;background:var(--error-container);text-align:center">Invalid credentials.</div>
+      <button class="btn btn-primary btn-lg" id="loginBtn" style="width:100%;margin-bottom:1rem" onclick="doLogin()">
+        <span class="material-symbols-outlined" style="font-size:18px">login</span>
+        Sign In to Dashboard
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <a href="../index.html" class="text-body-sm" style="color:var(--on-surface-variant)">← Back to Storefront</a>
+    </div>
+  </div>
+  <script src="../js/api.js?v=5"></script>
+  <script src="../js/app.js?v=5"></script>
+  <script>
+    async function doLogin() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+      const errorDiv = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+      
+      errorDiv.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;animation:spin 1s linear infinite">sync</span> Signing in...';
+
+      try {
+        const res = await fetch(`${MikyajAPI.BASE_URL}/driver/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: pass })
+        });
+        
+        if (!res.ok) {
+          if (res.status === 403) {
+            throw new Error('Driver account is inactive.');
+          }
+          throw new Error('Invalid credentials');
+        }
+
+        const data = await res.json();
+        localStorage.setItem('mikyaj_driver_session', JSON.stringify({
+          token: data.token,
+          driver: data.driver
+        }));
+
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        errorDiv.textContent = err.message || 'Invalid credentials. Please try again.';
+        errorDiv.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">login</span> Sign In to Dashboard';
+      }
+    }
+    document.getElementById('password').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+    
+    // Auto-login check
+    if (localStorage.getItem('mikyaj_driver_session')) {
+       window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

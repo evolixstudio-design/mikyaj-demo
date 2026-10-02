@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orders — Mikyaj Admin</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="flex gap-sm" style="align-items:center">
+        <span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span>
+        </span>
+        <div>
+          <div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div>
+          <div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div>
+        </div>
+      </div>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="orders.html" class="admin-nav-item active"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      
+      <div class="admin-nav-section">Catalog</div>
+      <a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a>
+      
+      <div style="margin-top:auto;padding-top:1rem">
+        <a href="#" class="admin-nav-item" onclick="logout(event)"><span class="material-symbols-outlined">logout</span>Logout</a>
+      </div>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h2 class="text-headline-sm">Order Management</h2>
+      <div class="flex gap-sm" style="align-items:center">
+        <span id="adminNameDisplay" class="text-label-caps" style="color:var(--outline)"></span>
+      </div>
+    </div>
+    <div class="admin-content">
+      
+      <!-- STATUS TABS -->
+      <div style="display:flex; gap:1rem; margin-bottom:2rem; overflow-x:auto; padding-bottom:8px; width:100%; max-width:100%; box-sizing:border-box">
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('')">
+          <div class="stat-label">All Orders</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('PENDING_PAYMENT')">
+          <div class="stat-label" style="color:var(--warning)">Pending Payment</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('CONFIRMED')">
+          <div class="stat-label" style="color:var(--info)">Confirmed</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('PROCESSING')">
+          <div class="stat-label" style="color:var(--info)">Processing</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('READY_FOR_DELIVERY')">
+          <div class="stat-label" style="color:var(--primary)">Ready for Delivery</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('OUT_FOR_DELIVERY')">
+          <div class="stat-label" style="color:var(--primary)">Out for Delivery</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('DELIVERED')">
+          <div class="stat-label" style="color:var(--success)">Delivered</div>
+        </div>
+        <div class="stat-card" style="cursor:pointer; min-width:140px" onclick="filterByStatus('CANCELLED')">
+          <div class="stat-label" style="color:var(--error)">Cancelled</div>
+        </div>
+      </div>
+
+      <!-- SEARCH & FILTER -->
+      <div class="flex-between" style="margin-bottom:1rem; flex-wrap:wrap; gap:1rem">
+        <div class="flex gap-sm" style="align-items:center; flex-wrap:wrap">
+          <div style="position:relative;display:flex;align-items:center;background:var(--surface-container-low);border:1px solid var(--outline-variant);padding:6px 12px;width:220px">
+            <span class="material-symbols-outlined" style="font-size:18px;color:var(--outline)">search</span>
+            <input type="text" id="orderSearch" placeholder="Search orders..." style="background:none;border:none;outline:none;color:var(--on-surface);font-size:13px;padding-left:8px;width:100%" onkeypress="if(event.key==='Enter') applyFilters()"/>
+          </div>
+          
+          <select class="form-select" id="payFilter" style="width:130px;padding:6px 30px 6px 10px;font-size:12px" onchange="applyFilters()">
+            <option value="">All Payments</option>
+            <option value="PENDING">Pending</option>
+            <option value="SUCCESS">Success / Paid</option>
+            <option value="FAILED">Failed</option>
+            <option value="CANCELLED">Cancelled</option>
+            <option value="REFUNDED">Refunded</option>
+          </select>
+          
+          <div class="flex gap-xs" style="align-items:center">
+            <input type="date" id="dateFrom" class="form-input" style="padding:6px;font-size:12px;width:120px" title="Date From" onchange="applyFilters()"/>
+            <span style="color:var(--outline)">-</span>
+            <input type="date" id="dateTo" class="form-input" style="padding:6px;font-size:12px;width:120px" title="Date To" onchange="applyFilters()"/>
+          </div>
+
+          <div class="flex gap-xs" style="align-items:center">
+            <input type="number" id="minTotal" class="form-input" style="padding:6px;font-size:12px;width:80px" placeholder="Min KWD" step="0.001" onkeypress="if(event.key==='Enter') applyFilters()"/>
+            <span style="color:var(--outline)">-</span>
+            <input type="number" id="maxTotal" class="form-input" style="padding:6px;font-size:12px;width:80px" placeholder="Max KWD" step="0.001" onkeypress="if(event.key==='Enter') applyFilters()"/>
+          </div>
+
+          <button class="btn btn-outline btn-sm" onclick="applyFilters()">Apply</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearFilters()" title="Clear Filters"><span class="material-symbols-outlined" style="font-size:18px">filter_alt_off</span></button>
+        </div>
+      </div>
+
+      <div id="loadingState" style="padding:4rem;text-align:center;color:var(--outline)">
+        <span class="material-symbols-outlined" style="font-size:32px;animation:spin 1s linear infinite">sync</span>
+        <div style="margin-top:1rem">Loading orders...</div>
+      </div>
+
+      <div id="errorState" style="display:none;padding:4rem;text-align:center;color:var(--error)">
+        <span class="material-symbols-outlined" style="font-size:32px">error</span>
+        <div style="margin-top:1rem" id="errorMessage">Unable to load orders.</div>
+      </div>
+
+      <div id="emptyState" style="display:none;padding:4rem;text-align:center;color:var(--outline)">
+        <span class="material-symbols-outlined" style="font-size:32px">search_off</span>
+        <div style="margin-top:1rem">No orders found matching criteria.</div>
+      </div>
+
+      <!-- ORDERS TABLE -->
+      <div class="card" style="padding:0; overflow-x:auto" id="tableContainer">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Date</th>
+              <th>Total (KWD)</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+      
+      <div id="paginationContainer" style="display:flex;justify-content:center;margin-top:2rem;gap:1rem">
+        <button class="btn btn-outline" id="loadMoreBtn" onclick="loadMore()" style="display:none">Load More Orders</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/api.js?v=4"></script>
+<script src="../js/app.js?v=4"></script>
+<script>
+let currentCursor = null;
+let currentStatus = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const session = JSON.parse(localStorage.getItem('mikyaj_admin_session'));
+  if (session && session.admin && session.admin.email) {
+    document.getElementById('adminNameDisplay').textContent = session.admin.email;
+  }
+  loadOrders(true);
+});
+
+function logout(e) {
+  e.preventDefault();
+  localStorage.removeItem('mikyaj_admin_session');
+  window.location.href = 'login.html';
+}
+
+function filterByStatus(status) {
+  currentStatus = status;
+  applyFilters();
+}
+
+function applyFilters() {
+  loadOrders(true);
+}
+
+function clearFilters() {
+  document.getElementById('orderSearch').value = '';
+  document.getElementById('payFilter').value = '';
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateTo').value = '';
+  document.getElementById('minTotal').value = '';
+  document.getElementById('maxTotal').value = '';
+  currentStatus = '';
+  applyFilters();
+}
+
+async function loadOrders(reset = false) {
+  if (reset) {
+    currentCursor = null;
+    document.getElementById('ordersBody').innerHTML = '';
+    document.getElementById('tableContainer').style.display = 'none';
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'none';
+    document.getElementById('loadMoreBtn').style.display = 'none';
+    document.getElementById('loadingState').style.display = 'block';
+  } else {
+    document.getElementById('loadMoreBtn').innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;animation:spin 1s linear infinite">sync</span> Loading...';
+    document.getElementById('loadMoreBtn').disabled = true;
+  }
+
+  const search = document.getElementById('orderSearch').value.trim();
+  const payStatus = document.getElementById('payFilter').value;
+  const dFrom = document.getElementById('dateFrom').value;
+  const dTo = document.getElementById('dateTo').value;
+  const mTotal = document.getElementById('minTotal').value;
+  const maxTotal = document.getElementById('maxTotal').value;
+
+  const query = new URLSearchParams();
+  query.append('limit', '20');
+  if (currentCursor) query.append('cursor', currentCursor);
+  if (currentStatus) query.append('status', currentStatus);
+  if (payStatus) query.append('payment_status', payStatus);
+  if (search) query.append('search', search);
+  if (dFrom) query.append('date_from', dFrom);
+  if (dTo) query.append('date_to', dTo);
+  if (mTotal) query.append('min_total', mTotal);
+  if (maxTotal) query.append('max_total', maxTotal);
+
+  try {
+    const data = await MikyajAPI.adminFetch(`/admin/orders?${query.toString()}`);
+    
+    document.getElementById('loadingState').style.display = 'none';
+    
+    if (reset && (!data.orders || data.orders.length === 0)) {
+      document.getElementById('emptyState').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('tableContainer').style.display = 'block';
+    
+    const tbody = document.getElementById('ordersBody');
+    const rows = data.orders.map(o => {
+      // Style order status
+      const orderStatus = o.status || o.order_status || '';
+      const sc = {
+        'PENDING_PAYMENT': 'badge-warning',
+        'CONFIRMED': 'badge-info',
+        'PROCESSING': 'badge-info',
+        'READY_FOR_DELIVERY': 'badge-primary',
+        'OUT_FOR_DELIVERY': 'badge-primary',
+        'DELIVERED': 'badge-success',
+        'CANCELLED': 'badge-error'
+      }[orderStatus] || 'badge-outline';
+      
+      // Style payment status
+      const pc = {
+        'PENDING': 'badge-warning',
+        'PAID': 'badge-success',
+        'SUCCESS': 'badge-success',
+        'FAILED': 'badge-error',
+        'CANCELLED': 'badge-error',
+        'REFUNDED': 'badge-primary'
+      }[o.payment_status] || 'badge-outline';
+
+      return `<tr>
+        <td style="font-weight:600">${o.order_number}</td>
+        <td><div style="font-weight:500">${o.customer_name||'Guest'}</div></td>
+        <td><div class="text-body-sm">${o.customer_phone||'—'}</div></td>
+        <td class="text-body-sm">${MikyajApp.formatDateTime(o.created_at)}</td>
+        <td style="font-weight:600">${o.total_amount}</td>
+        <td><span class="badge ${pc}">${o.payment_status || '—'}</span></td>
+        <td><span class="badge ${sc}">${orderStatus ? orderStatus.replace(/_/g, ' ') : '—'}</span></td>
+        <td>
+          <a class="btn btn-ghost btn-sm" style="padding:6px 12px" href="order-detail.html?orderNumber=${o.order_number}">
+            View
+          </a>
+        </td>
+      </tr>`;
+    });
+    
+    if (reset) {
+       tbody.innerHTML = rows.join('');
+    } else {
+       tbody.insertAdjacentHTML('beforeend', rows.join(''));
+    }
+
+    if (data.next_cursor) {
+      currentCursor = data.next_cursor;
+      document.getElementById('loadMoreBtn').style.display = 'inline-flex';
+      document.getElementById('loadMoreBtn').innerHTML = 'Load More Orders';
+      document.getElementById('loadMoreBtn').disabled = false;
+    } else {
+      document.getElementById('loadMoreBtn').style.display = 'none';
+    }
+
+  } catch (err) {
+    if (reset) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('errorState').style.display = 'block';
+      document.getElementById('errorMessage').textContent = err.message || 'Unable to load orders.';
+    } else {
+      document.getElementById('loadMoreBtn').innerHTML = 'Load More Orders';
+      document.getElementById('loadMoreBtn').disabled = false;
+      MikyajApp.showToast('Failed to load more orders.', 'error');
+    }
+  }
+}
+
+function loadMore() {
+  loadOrders(false);
+}
+</script>
+</body>
+</html>

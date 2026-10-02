@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Detail — Mikyaj Admin</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <style>
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    .timeline { border-left: 2px solid var(--outline-variant); margin-left: 12px; padding-left: 20px; position: relative; }
+    .timeline-item { position: relative; margin-bottom: 1.5rem; }
+    .timeline-item::before { content: ''; position: absolute; left: -26px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary); }
+    @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="flex gap-sm" style="align-items:center">
+        <span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span>
+        </span>
+        <div>
+          <div style="font-weight:700;letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</div>
+          <div class="text-label-badge" style="color:var(--secondary)">Admin Portal</div>
+        </div>
+      </div>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-nav-section">Main</div>
+      <a href="dashboard.html" class="admin-nav-item"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="orders.html" class="admin-nav-item active"><span class="material-symbols-outlined">receipt_long</span>Orders</a>
+      
+      <div class="admin-nav-section">Catalog</div>
+      <a href="products.html" class="admin-nav-item"><span class="material-symbols-outlined">inventory_2</span>Products</a>
+      
+      <div style="margin-top:auto;padding-top:1rem">
+        <a href="#" class="admin-nav-item" onclick="logout(event)"><span class="material-symbols-outlined">logout</span>Logout</a>
+      </div>
+    </nav>
+  </aside>
+  
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div class="flex gap-sm" style="align-items:center">
+        <a href="orders.html" class="btn btn-ghost btn-sm" style="padding:4px"><span class="material-symbols-outlined">arrow_back</span></a>
+        <h2 class="text-headline-sm" id="pageTitle">Order Detail</h2>
+      </div>
+      <div class="flex gap-sm" style="align-items:center">
+        <span id="adminNameDisplay" class="text-label-caps" style="color:var(--outline)"></span>
+      </div>
+    </div>
+
+    <div class="admin-content" id="mainContent">
+      <div id="loadingState" style="padding:4rem;text-align:center;color:var(--outline)">
+        <span class="material-symbols-outlined" style="font-size:32px;animation:spin 1s linear infinite">sync</span>
+        <div style="margin-top:1rem">Loading order details...</div>
+      </div>
+
+      <div id="errorState" style="display:none;padding:4rem;text-align:center;color:var(--error)">
+        <span class="material-symbols-outlined" style="font-size:32px">error</span>
+        <div style="margin-top:1rem" id="errorMessage">Unable to load order.</div>
+        <button class="btn btn-outline" style="margin-top:1rem" onclick="window.location.reload()">Refresh</button>
+      </div>
+
+      <div id="orderContent" style="display:none">
+        
+        <!-- Header -->
+        <div class="card" style="margin-bottom:2rem; padding: 1.5rem">
+          <div class="flex-between" style="align-items:flex-start">
+            <div>
+              <h1 class="text-headline-md" id="headerOrderNum" style="margin-bottom:8px"></h1>
+              <div class="text-body-sm" id="headerDate" style="color:var(--on-surface-variant)"></div>
+            </div>
+            <div style="text-align:right">
+              <div style="margin-bottom:8px"><span class="text-label-caps" style="margin-right:8px">Order Status</span><span id="badgeOrderStatus" class="badge"></span></div>
+              <div><span class="text-label-caps" style="margin-right:8px">Payment Status</span><span id="badgePaymentStatus" class="badge"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warnings -->
+        <div id="warningPanel" style="display:none; background:var(--warning-container); color:var(--on-warning-container); padding:1rem; border-radius:8px; margin-bottom:2rem; display:flex; gap:1rem; align-items:center">
+          <span class="material-symbols-outlined" style="color:var(--warning)">warning</span>
+          <span id="warningMessage"></span>
+        </div>
+
+        <!-- Grid 1 -->
+        <div class="detail-grid">
+          <div class="card">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Customer</h3>
+            <div id="customerInfo" class="text-body-md" style="line-height:1.6"></div>
+          </div>
+          <div class="card">
+            <h3 class="text-headline-sm" style="margin-bottom:1rem">Delivery Address</h3>
+            <div id="addressInfo" class="text-body-md" style="line-height:1.6; white-space:pre-wrap"></div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <div class="card" style="margin-bottom:2rem; padding:0; overflow-x:auto">
+          <div style="padding:1rem 1.5rem; border-bottom:1px solid var(--outline-variant)">
+            <h3 class="text-headline-sm">Order Items</h3>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>SKU</th>
+                <th style="text-align:center">Qty</th>
+                <th style="text-align:right">Price (KWD)</th>
+                <th style="text-align:right">Total (KWD)</th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+          <div style="padding:1.5rem; text-align:right; border-top:1px solid var(--outline-variant); background:var(--surface-container-lowest)">
+            <div class="text-label-caps" style="margin-bottom:4px">Order Total</div>
+            <div class="text-headline-lg" style="color:var(--primary)" id="orderTotal"></div>
+          </div>
+        </div>
+
+        <!-- Action Panel -->
+        <div class="card" style="margin-bottom:2rem; background:var(--surface-container-lowest)">
+          <h3 class="text-headline-sm" style="margin-bottom:1rem">Update Order</h3>
+          <div class="flex gap-sm" id="actionButtons">
+             <!-- Action buttons injected here -->
+          </div>
+        </div>
+
+        <!-- Grid 2: Payments & Reconciliation -->
+        <div class="detail-grid">
+          <div class="card">
+            <div class="flex-between" style="margin-bottom:1rem">
+              <h3 class="text-headline-sm">Payment Attempts</h3>
+              <button class="btn btn-ghost btn-sm" onclick="loadPayments()"><span class="material-symbols-outlined">refresh</span></button>
+            </div>
+            <div id="paymentsBody"></div>
+          </div>
+          <div class="card">
+            <div class="flex-between" style="margin-bottom:1rem">
+              <h3 class="text-headline-sm">Reconciliation & Refunds</h3>
+              <button class="btn btn-ghost btn-sm" onclick="loadReconciliation()"><span class="material-symbols-outlined">refresh</span></button>
+            </div>
+            <div id="reconciliationBody"></div>
+            <div id="refundHistoryBody" style="margin-top:1.5rem"></div>
+          </div>
+        </div>
+
+        <!-- Grid 3: History -->
+        <div class="card" style="margin-bottom:2rem">
+          <h3 class="text-headline-sm" style="margin-bottom:1.5rem">Order History</h3>
+          <div class="timeline" id="historyTimeline"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CANCELLATION MODAL -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <h3 class="text-headline-sm">Cancel Order</h3>
+      <button onclick="closeCancelModal()" style="color:var(--on-surface-variant)"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:1rem">Are you sure you want to cancel <strong id="cancelTargetOrder"></strong>?</p>
+      <div class="form-group">
+        <label class="form-label">Cancellation Reason <span style="color:var(--error)">*</span></label>
+        <textarea id="cancelReason" class="form-input" rows="3" placeholder="Enter reason for cancellation..."></textarea>
+      </div>
+      <div id="cancelError" style="display:none; color:var(--error); margin-bottom:1rem; font-size:14px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeCancelModal()">Go Back</button>
+      <button class="btn btn-primary" style="background:var(--error);border-color:var(--error)" id="confirmCancelBtn" onclick="submitCancel()">Confirm Cancellation</button>
+    </div>
+  </div>
+</div>
+
+<!-- REFUND MODAL -->
+<div class="modal-overlay" id="refundModal">
+  <div class="modal" style="max-width:500px; max-height:85vh; display:flex; flex-direction:column">
+    <div class="modal-header" style="flex-shrink:0">
+      <h3 class="text-headline-sm">Request Refund</h3>
+      <button onclick="closeRefundModal()" style="color:var(--on-surface-variant)"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto; flex:1; min-height:0">
+      <div style="background:var(--surface-container-low); padding:1rem; border-radius:6px; margin-bottom:1rem">
+        <div class="flex-between" style="margin-bottom:4px"><span class="text-label-caps">Paid Amount</span><span id="refundModalPaid">0.000 KWD</span></div>
+        <div class="flex-between" style="margin-bottom:4px"><span class="text-label-caps">Completed Refunds</span><span id="refundModalCompleted">0.000 KWD</span></div>
+        <div class="flex-between" style="margin-bottom:4px"><span class="text-label-caps">Pending Refunds</span><span id="refundModalPending">0.000 KWD</span></div>
+        <div class="flex-between" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--outline-variant); font-weight:600; color:var(--primary)"><span class="text-label-caps">Remaining Refundable</span><span id="refundModalRemaining">0.000 KWD</span></div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Refund Amount (KWD) <span style="color:var(--error)">*</span></label>
+        <input type="number" id="refundAmount" class="form-input" step="0.001" min="0.001" placeholder="e.g. 25.000">
+        <div id="refundPreview" class="text-body-sm" style="color:var(--outline); margin-top:4px; display:none"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Refund Reason <span style="color:var(--error)">*</span></label>
+        <textarea id="refundReason" class="form-input" rows="2" placeholder="Enter reason for refund..."></textarea>
+      </div>
+      <div id="refundError" style="display:none; color:var(--error); margin-bottom:1rem; font-size:14px; padding:0.5rem; background:var(--error-container); border-radius:4px"></div>
+    </div>
+    <div class="modal-footer" style="flex-shrink:0">
+      <button class="btn btn-outline" onclick="closeRefundModal()">Cancel</button>
+      <button class="btn btn-primary" id="confirmRefundBtn" onclick="submitRefund()">Confirm Refund Request</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="../js/api.js?v=4"></script>
+<script src="../js/app.js?v=4"></script>
+<script>
+let currentOrderNumber = null;
+let currentOrderData = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const session = JSON.parse(localStorage.getItem('mikyaj_admin_session'));
+  if (session && session.admin && session.admin.email) {
+    document.getElementById('adminNameDisplay').textContent = session.admin.email;
+  }
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  currentOrderNumber = urlParams.get('orderNumber');
+  
+  if (!currentOrderNumber) {
+    showError('No order number provided in URL.');
+    return;
+  }
+
+  document.getElementById('pageTitle').textContent = `Order ${currentOrderNumber}`;
+  loadOrderDetail();
+});
+
+function logout(e) {
+  e.preventDefault();
+  localStorage.removeItem('mikyaj_admin_session');
+  window.location.href = 'login.html';
+}
+
+function showError(msg) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('orderContent').style.display = 'none';
+  document.getElementById('errorState').style.display = 'block';
+  document.getElementById('errorMessage').textContent = msg;
+}
+
+function getStatusBadgeClass(status) {
+  return {
+    'PENDING_PAYMENT': 'badge-warning',
+    'CONFIRMED': 'badge-info',
+    'PROCESSING': 'badge-info',
+    'READY_FOR_DELIVERY': 'badge-primary',
+    'OUT_FOR_DELIVERY': 'badge-primary',
+    'DELIVERED': 'badge-success',
+    'CANCELLED': 'badge-error'
+  }[status] || 'badge-outline';
+}
+
+function getPaymentBadgeClass(status) {
+  return {
+    'PENDING': 'badge-warning',
+    'PAID': 'badge-success',
+    'SUCCESS': 'badge-success',
+    'FAILED': 'badge-error',
+    'CANCELLED': 'badge-error',
+    'REFUNDED': 'badge-primary'
+  }[status] || 'badge-outline';
+}
+
+async function loadOrderDetail() {
+  document.getElementById('errorState').style.display = 'none';
+  try {
+    const data = await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}`);
+    currentOrderData = data.order;
+    
+    // Header
+    document.getElementById('headerOrderNum').textContent = data.order.order_number;
+    document.getElementById('headerDate').textContent = MikyajApp.formatDateTime(data.order.created_at);
+    
+    const sBadge = document.getElementById('badgeOrderStatus');
+    const ordStatus = data.order.status || '';
+    sBadge.className = 'badge ' + getStatusBadgeClass(ordStatus);
+    sBadge.textContent = ordStatus ? ordStatus.replace(/_/g, ' ') : '—';
+
+    let payStatus = data.payment ? data.payment.status : 'PENDING';
+    const pBadge = document.getElementById('badgePaymentStatus');
+    pBadge.className = 'badge ' + getPaymentBadgeClass(payStatus);
+    pBadge.textContent = payStatus;
+
+    // Warning
+    const warnEl = document.getElementById('warningPanel');
+    if (data.order.status === 'CONFIRMED' && payStatus !== 'PAID' && payStatus !== 'SUCCESS') {
+       warnEl.style.display = 'flex';
+       document.getElementById('warningMessage').textContent = 'Order is CONFIRMED but payment is not SUCCESS.';
+    } else {
+       warnEl.style.display = 'none';
+    }
+
+    // Customer & Address
+    document.getElementById('customerInfo').innerHTML = `
+      <strong>${data.order.customer_name || 'Guest'}</strong><br/>
+      <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;color:var(--outline)">phone</span> ${data.order.customer_phone || 'N/A'}<br/>
+      <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;color:var(--outline)">email</span> ${data.order.customer_email || 'N/A'}
+    `;
+    document.getElementById('addressInfo').textContent = data.order.customer_address || 'Not provided';
+
+    // Items
+    const itemsTbody = document.getElementById('itemsBody');
+    itemsTbody.innerHTML = data.items.map(item => {
+       const lineTotal = parseFloat(item.line_total).toFixed(3);
+       return `<tr>
+         <td><div style="font-weight:500">${item.product_name || 'Unknown Product'}</div></td>
+         <td><span class="text-body-sm" style="color:var(--outline)">${item.sku || '—'}</span></td>
+         <td style="text-align:center">${item.quantity}</td>
+         <td style="text-align:right">${item.price_at_purchase}</td>
+         <td style="text-align:right;font-weight:600">${lineTotal}</td>
+       </tr>`;
+    }).join('');
+
+    document.getElementById('orderTotal').textContent = data.order.total_amount + ' KWD';
+
+    renderActions(data.order.status);
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('orderContent').style.display = 'block';
+
+    // Load async components
+    loadHistory();
+    loadPayments();
+    loadReconciliation();
+
+  } catch (err) {
+    if (err.status === 404) showError('Order not found.');
+    else showError(err.message || 'Unable to load order details right now.');
+  }
+}
+
+function renderActions(status) {
+  const container = document.getElementById('actionButtons');
+  let html = '';
+  
+  if (status === 'PENDING_PAYMENT') {
+    html += `<button class="btn btn-outline" onclick="changeStatus('CONFIRMED')">Confirm Order</button>`;
+  } else if (status === 'CONFIRMED') {
+    html += `<button class="btn btn-outline" onclick="changeStatus('PROCESSING')">Start Processing</button>`;
+  } else if (status === 'PROCESSING') {
+    html += `<button class="btn btn-outline" onclick="changeStatus('READY_FOR_DELIVERY')">Ready for Delivery</button>`;
+  } else if (status === 'READY_FOR_DELIVERY') {
+    html += `<button class="btn btn-primary" onclick="changeStatus('OUT_FOR_DELIVERY')">Out for Delivery</button>`;
+  } else if (status === 'OUT_FOR_DELIVERY') {
+    html += `<button class="btn btn-primary" onclick="changeStatus('DELIVERED')">Mark Delivered</button>`;
+  }
+
+  // Cancel action available for non-terminal states
+  if (!['DELIVERED', 'CANCELLED'].includes(status)) {
+    html += `<button class="btn btn-outline" style="color:var(--error);border-color:var(--error);margin-left:auto" onclick="openCancelModal()">Cancel Order</button>`;
+  }
+
+  if (['DELIVERED', 'CANCELLED'].includes(status)) {
+     html += `<div class="text-body-sm" style="color:var(--outline)">No further actions available.</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+async function changeStatus(newStatus) {
+  if (!confirm(`Mark this order as ${newStatus.replace(/_/g, ' ')}?`)) return;
+  
+  try {
+    await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}/status`, {
+      method: 'PATCH',
+      body: { status: newStatus }
+    });
+    MikyajApp.showToast(`Order status updated.`, 'success');
+    loadOrderDetail(); // full refresh
+  } catch (err) {
+    if (err.status === 409) {
+      alert("This order was updated by another session. Refresh the order and try again.");
+      loadOrderDetail();
+    } else {
+      MikyajApp.showToast(err.message || 'Failed to update status', 'error');
+    }
+  }
+}
+
+function openCancelModal() {
+  document.getElementById('cancelTargetOrder').textContent = currentOrderNumber;
+  document.getElementById('cancelReason').value = '';
+  document.getElementById('cancelError').style.display = 'none';
+  document.getElementById('cancelModal').classList.add('active');
+}
+function closeCancelModal() {
+  document.getElementById('cancelModal').classList.remove('active');
+}
+async function submitCancel() {
+  const reason = document.getElementById('cancelReason').value.trim();
+  const errDiv = document.getElementById('cancelError');
+  if (!reason) {
+    errDiv.textContent = 'Please enter a cancellation reason.';
+    errDiv.style.display = 'block';
+    return;
+  }
+  
+  const btn = document.getElementById('confirmCancelBtn');
+  btn.disabled = true;
+  btn.textContent = 'Cancelling...';
+
+  try {
+    await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}/cancel`, {
+      method: 'POST',
+      body: { reason }
+    });
+    closeCancelModal();
+    MikyajApp.showToast('Order successfully cancelled', 'success');
+    loadOrderDetail();
+  } catch (err) {
+    errDiv.textContent = err.message || 'Failed to cancel order.';
+    errDiv.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Confirm Cancellation';
+  }
+}
+
+async function loadHistory() {
+  const cont = document.getElementById('historyTimeline');
+  cont.innerHTML = '<span class="text-body-sm" style="color:var(--outline)">Loading history...</span>';
+  try {
+    const data = await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}/history`);
+    if (data.history.length === 0) {
+       cont.innerHTML = '<span class="text-body-sm" style="color:var(--outline)">No history available.</span>';
+       return;
+    }
+    cont.innerHTML = data.history.map(h => {
+      const isCancellation = h.new_status === 'CANCELLED';
+      const color = isCancellation ? 'var(--error)' : 'var(--primary)';
+      return `<div class="timeline-item">
+        <div class="text-label-caps" style="color:${color}">${h.new_status.replace(/_/g, ' ')}</div>
+        <div class="text-body-sm" style="color:var(--on-surface-variant);margin-top:4px">${MikyajApp.formatDateTime(h.created_at)} • Admin: ${h.changed_by_admin_id}</div>
+        ${h.reason ? `<div class="text-body-sm" style="margin-top:6px;padding:6px;background:var(--surface-container-low);border-left:2px solid ${color}">${h.reason}</div>` : ''}
+      </div>`;
+    }).join('');
+  } catch (err) {
+    cont.innerHTML = '<span class="text-body-sm" style="color:var(--error)">Failed to load history.</span>';
+  }
+}
+
+async function loadPayments() {
+  const cont = document.getElementById('paymentsBody');
+  cont.innerHTML = '<span class="text-body-sm" style="color:var(--outline)">Loading payments...</span>';
+  try {
+    const data = await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}/payments`);
+    if (data.payments.length === 0) {
+       cont.innerHTML = '<span class="text-body-sm" style="color:var(--outline)">No payment attempts found.</span>';
+       return;
+    }
+    cont.innerHTML = data.payments.map((p, i) => {
+       const badge = getPaymentBadgeClass(p.status);
+       return `<div style="padding:1rem; border:1px solid var(--outline-variant); border-radius:6px; margin-bottom:1rem">
+         <div class="flex-between" style="margin-bottom:8px">
+           <span class="text-label-caps">Attempt ${data.payments.length - i}</span>
+           <span class="badge ${badge}">${p.status}</span>
+         </div>
+         <div class="text-body-sm" style="color:var(--on-surface-variant)">Provider: ${p.provider} ${p.payment_method ? `(${p.payment_method})` : ''}</div>
+         <div class="text-body-sm" style="color:var(--on-surface-variant)">Amount: ${p.amount} ${p.currency}</div>
+         ${p.provider_invoice_id ? `<div class="text-body-sm" style="color:var(--on-surface-variant)">Invoice ID: ${p.provider_invoice_id}</div>` : ''}
+         <div class="text-body-sm" style="color:var(--on-surface-variant)">Date: ${MikyajApp.formatDateTime(p.created_at)}</div>
+       </div>`;
+    }).join('');
+  } catch (err) {
+    cont.innerHTML = '<span class="text-body-sm" style="color:var(--error)">Failed to load payments.</span>';
+  }
+}
+
+let activeReconciliation = null;
+
+async function loadReconciliation() {
+  const rCont = document.getElementById('reconciliationBody');
+  const hCont = document.getElementById('refundHistoryBody');
+  rCont.innerHTML = '<span class="text-body-sm" style="color:var(--outline)">Loading reconciliation...</span>';
+  hCont.innerHTML = '';
+  
+  try {
+    const data = await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}/reconciliation`);
+    const rec = data.reconciliation;
+    activeReconciliation = rec;
+    
+    // Status color
+    let statusColor = 'var(--outline)';
+    if (rec.reconciliationState === 'RECONCILED') statusColor = 'var(--success)';
+    else if (rec.reconciliationState === 'WARNING') statusColor = 'var(--warning)';
+    else if (rec.reconciliationState === 'MISMATCH') statusColor = 'var(--error)';
+    else if (rec.reconciliationState === 'UNMATCHED') statusColor = 'var(--error)';
+
+    let html = `
+      <div style="margin-bottom:1rem">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+          <span class="text-label-caps">Reconciliation</span>
+          <span style="font-weight:600; color:${statusColor}">${rec.reconciliationState}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:13px">
+          <span style="color:var(--outline)">Paid</span>
+          <span>${parseFloat(rec.paidAmount).toFixed(3)} KWD</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:13px">
+          <span style="color:var(--outline)">Refunded (Completed)</span>
+          <span>${parseFloat(rec.refundedCompletedAmount).toFixed(3)} KWD</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:13px">
+          <span style="color:var(--outline)">Refunded (Pending)</span>
+          <span>${parseFloat(rec.refundedPendingAmount).toFixed(3)} KWD</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-weight:600; font-size:14px; margin-top:8px; padding-top:8px; border-top:1px solid var(--outline-variant)">
+          <span>Remaining</span>
+          <span style="color:var(--primary)">${parseFloat(rec.remainingRefundableAmount).toFixed(3)} KWD</span>
+        </div>
+      </div>
+    `;
+
+    if (rec.warnings && rec.warnings.length > 0) {
+      html += `<div style="background:var(--error-container); color:var(--on-error-container); padding:8px; border-radius:4px; font-size:12px; margin-bottom:1rem">
+        <strong>Warnings:</strong><ul style="margin:4px 0 0 16px; padding:0">
+        ${rec.warnings.map(w => `<li>${w}</li>`).join('')}
+        </ul>
+      </div>`;
+    }
+
+    if (rec.remainingRefundableAmount > 0 && rec.paymentStatus === 'SUCCESS') {
+      html += `<button class="btn btn-outline" style="width:100%" onclick="openRefundModal()">Issue Refund Request</button>`;
+    }
+
+    rCont.innerHTML = html;
+
+    // Refund History
+    if (rec.refunds && rec.refunds.length > 0) {
+      hCont.innerHTML = `<h4 class="text-label-caps" style="margin-bottom:8px">Refund History</h4>` + 
+        rec.refunds.map(r => {
+          let badge = 'badge-outline';
+          if (r.status === 'REFUNDED') badge = 'badge-primary';
+          else if (r.status === 'FAILED' || r.status === 'CANCELLED') badge = 'badge-error';
+          else if (r.status === 'PENDING' || r.status === 'PROCESSING') badge = 'badge-warning';
+
+          return `<div style="padding:10px; border:1px solid var(--outline-variant); border-radius:4px; margin-bottom:8px; font-size:13px">
+            <div class="flex-between" style="margin-bottom:4px">
+              <strong>${parseFloat(r.amount).toFixed(3)} KWD</strong>
+              <span class="badge ${badge}" style="font-size:10px; padding:2px 6px">${r.status}</span>
+            </div>
+            ${r.provider_refund_id ? `<div style="color:var(--outline); font-size:11px; margin-bottom:2px">Ref: ${r.provider_refund_id}</div>` : ''}
+            <div style="color:var(--on-surface-variant); margin-top:4px; background:var(--surface-container-lowest); padding:4px; border-radius:4px">${r.reason || 'No reason'}</div>
+          </div>`;
+        }).join('');
+    } else {
+      hCont.innerHTML = `<span class="text-body-sm" style="color:var(--outline)">No refunds recorded.</span>`;
+    }
+  } catch (err) {
+    if (err.status === 404) {
+       rCont.innerHTML = '<span class="text-body-sm" style="color:var(--outline)">No successful payment available for reconciliation.</span>';
+    } else {
+       rCont.innerHTML = '<span class="text-body-sm" style="color:var(--error)">Failed to load reconciliation.</span>';
+    }
+  }
+}
+
+// Refund Modal Logic
+const refundAmountInput = document.getElementById('refundAmount');
+const refundPreviewDiv = document.getElementById('refundPreview');
+
+refundAmountInput.addEventListener('input', () => {
+  if (!activeReconciliation) return;
+  const val = parseFloat(refundAmountInput.value);
+  if (isNaN(val) || val <= 0) {
+    refundPreviewDiv.style.display = 'none';
+    return;
+  }
+  const rem = parseFloat(activeReconciliation.remainingRefundableAmount);
+  const newRem = rem - val;
+  if (newRem < 0) {
+    refundPreviewDiv.textContent = 'Preview: Amount exceeds remaining balance.';
+    refundPreviewDiv.style.color = 'var(--error)';
+  } else {
+    refundPreviewDiv.textContent = `Preview: Remaining will be ${newRem.toFixed(3)} KWD`;
+    refundPreviewDiv.style.color = 'var(--outline)';
+  }
+  refundPreviewDiv.style.display = 'block';
+});
+
+function openRefundModal() {
+  if (!activeReconciliation) return;
+  
+  document.getElementById('refundModalPaid').textContent = parseFloat(activeReconciliation.paidAmount).toFixed(3) + ' KWD';
+  document.getElementById('refundModalCompleted').textContent = parseFloat(activeReconciliation.refundedCompletedAmount).toFixed(3) + ' KWD';
+  document.getElementById('refundModalPending').textContent = parseFloat(activeReconciliation.refundedPendingAmount).toFixed(3) + ' KWD';
+  document.getElementById('refundModalRemaining').textContent = parseFloat(activeReconciliation.remainingRefundableAmount).toFixed(3) + ' KWD';
+  
+  document.getElementById('refundAmount').value = '';
+  document.getElementById('refundReason').value = '';
+  document.getElementById('refundError').style.display = 'none';
+  document.getElementById('refundPreview').style.display = 'none';
+  
+  document.getElementById('refundModal').classList.add('active');
+}
+
+function closeRefundModal() {
+  document.getElementById('refundModal').classList.remove('active');
+}
+
+async function submitRefund() {
+  const errDiv = document.getElementById('refundError');
+  errDiv.style.display = 'none';
+  
+  const amountRaw = document.getElementById('refundAmount').value.trim();
+  const reason = document.getElementById('refundReason').value.trim();
+  
+  if (!amountRaw) { errDiv.textContent = 'Amount is required.'; errDiv.style.display = 'block'; return; }
+  const amount = parseFloat(amountRaw);
+  if (isNaN(amount) || amount <= 0) { errDiv.textContent = 'Amount must be a positive number.'; errDiv.style.display = 'block'; return; }
+  if (!reason) { errDiv.textContent = 'Refund reason is required.'; errDiv.style.display = 'block'; return; }
+
+  const btn = document.getElementById('confirmRefundBtn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  try {
+    await MikyajAPI.adminFetch(`/admin/orders/${currentOrderNumber}/refunds`, {
+      method: 'POST',
+      body: {
+        payment_id: activeReconciliation.paymentId,
+        amount: amount.toFixed(3),
+        reason: reason
+      }
+    });
+    
+    closeRefundModal();
+    MikyajApp.showToast('Refund Request Submitted', 'success');
+    
+    // Refresh purely to recalculate balances and show new state
+    loadReconciliation();
+    loadPayments();
+  } catch (err) {
+    errDiv.textContent = err.message || 'Refund request failed.';
+    errDiv.style.display = 'block';
+    
+    // If backend rejected due to limits changing or conflicts, refresh UI
+    if (err.message === 'AMOUNT_EXCEEDS_REMAINING_BALANCE' || err.status === 409) {
+      loadReconciliation();
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Confirm Refund Request';
+  }
+}
+</script>
+</body>
+</html>

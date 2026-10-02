@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop All — Mikyaj Kuwait</title>
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<!-- TOP BAR -->
+<div style="background:var(--primary);color:var(--on-primary);padding:6px 0;font-size:12px">
+  <div class="container flex-between">
+    <span class="flex gap-xs" style="align-items:center"><span class="material-symbols-outlined" style="font-size:16px">local_shipping</span>Complimentary delivery across Kuwait on orders over 20.000 KD</span>
+    <button onclick="MikyajApp.toggleLanguage()" style="background:none;border:none;cursor:pointer;color:inherit;font:inherit;display:inline-flex;align-items:center;gap:4px;padding:2px 6px">
+      <span class="lang-indicator-en">EN</span>
+      <span style="opacity:0.6">|</span>
+      <span class="lang-indicator-ar">العربية</span>
+    </button>
+    <span style="opacity:0.6;margin-left:8px">|</span>
+    <span style="margin-left:8px;letter-spacing:0.15em">KWD</span>
+  </div>
+</div>
+<!-- HEADER -->
+<header style="background:var(--surface-container-low);border-bottom:1px solid var(--outline-variant);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)">
+  <div class="container flex-between" style="height:64px">
+    <div class="flex gap-xl" style="align-items:center">
+      <button class="btn-icon mobile-only mobile-menu-btn" id="openDrawerBtn" aria-label="Open Navigation Menu" style="background:none;border:none;color:var(--on-surface);cursor:pointer;align-items:center;justify-content:center;width:40px;height:40px">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <a href="index.html" class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a>
+      <nav class="flex gap-lg" style="align-items:center">
+        <a href="index.html" class="text-label-caps" style="color:var(--on-surface-variant)">Home</a>
+        <a href="shop.html" class="text-label-caps" style="color:var(--secondary)">Shop All</a>
+        <a href="shop.html?cat=cat-skincare" class="text-label-caps" style="color:var(--on-surface-variant)">Skincare</a>
+        <a href="shop.html?cat=cat-makeup" class="text-label-caps" style="color:var(--on-surface-variant)">Makeup</a>
+        
+      </nav>
+    </div>
+    <div class="flex gap-md" style="align-items:center">
+      <a href="wishlist.html" style="color:var(--on-surface)"><span class="material-symbols-outlined">favorite</span></a>
+      <a href="cart.html" style="position:relative;color:var(--on-surface)"><span class="material-symbols-outlined">shopping_bag</span><span class="cart-count" style="position:absolute;top:-4px;right:-8px;background:var(--secondary);color:var(--on-secondary);width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">0</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER & SEARCH -->
+<div class="drawer-overlay" id="mobileDrawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-header" style="display:flex;justify-content:space-between;padding:1rem;border-bottom:1px solid var(--outline-variant)">
+    <span class="text-headline-sm">Menu</span>
+    <button class="btn-icon" id="closeDrawerBtn"><span class="material-symbols-outlined">close</span></button>
+  </div>
+  <div class="drawer-content" style="padding:1rem;display:flex;flex-direction:column;gap:1rem">
+    <a href="index.html" class="drawer-link">Home / الرئيسية</a>
+    <a href="shop.html" class="drawer-link">Shop All / تسوق الكل</a>
+    <a href="index.html#brandsRow" class="drawer-link">Brands / العلامات التجارية</a>
+    <a href="cart.html" class="drawer-link">Shopping Bag / سلة التسوق</a>
+    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--outline-variant)">
+      <button class="btn btn-outline btn-sm" onclick="MikyajApp.toggleLanguage()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px">
+        <span class="material-symbols-outlined">translate</span> Switch to العربية / English
+      </button>
+    </div>
+  </div>
+</div>
+<div class="search-overlay" id="searchOverlay" style="position:fixed;top:0;left:0;right:0;background:var(--surface);z-index:100;padding:1rem;transform:translateY(-100%);transition:transform 0.3s;box-shadow:0 4px 12px rgba(0,0,0,0.1)">
+  <div class="container flex" style="align-items:center;gap:1rem">
+    <form style="flex:1;position:relative" action="shop.html" method="GET" class="flex">
+      <span class="material-symbols-outlined" style="position:absolute;inset-inline-start:1rem;top:50%;transform:translateY(-50%)">search</span>
+      <input type="search" enterkeyhint="search" name="q" class="form-input" placeholder="Search..." style="padding-inline-start:3rem;border-radius:24px;width:100%" autofocus>
+    </form>
+    <button class="btn-icon" id="closeSearchBtn"><span class="material-symbols-outlined">close</span></button>
+  </div>
+</div>
+
+
+<main>
+  <!-- BREADCRUMB -->
+  <div class="container" style="padding:1.5rem 4rem">
+    <div class="flex gap-xs text-body-sm" style="color:var(--on-surface-variant);align-items:center">
+      <a href="index.html">Home</a><span>/</span><span id="breadcrumbCat" style="color:var(--on-surface)">Shop All</span>
+      <span id="productCount" class="badge badge-outline" style="margin-left:1rem"></span>
+    </div>
+    <h1 class="text-headline-lg" style="margin-top:0.75rem" id="pageTitle">The Prestige Collection</h1>
+    <p class="text-body-md" style="color:var(--on-surface-variant);max-width:600px;margin-top:0.5rem">Explore artisanal Korean skincare, clinical actives, and elevated Middle Eastern pigment editions.</p>
+  </div>
+
+  <div class="container" style="display:grid;grid-template-columns:250px 1fr;gap:2rem;padding-bottom:4rem">
+    <!-- SIDEBAR FILTERS -->
+    <aside>
+      <div class="flex-between" style="margin-bottom:1.5rem">
+        <h3 class="text-headline-sm flex gap-xs" style="align-items:center;cursor:pointer" onclick="document.getElementById('mobileFilters').classList.toggle('expanded')">
+          <span class="material-symbols-outlined" style="font-size:20px">tune</span>Refine Edit
+          <span class="material-symbols-outlined mobile-only" style="font-size:18px">expand_more</span>
+        </h3>
+        <button class="text-label-caps" style="color:var(--secondary);cursor:pointer" onclick="resetFilters()">Reset</button>
+      </div>
+      <div id="mobileFilters" class="mobile-filters-collapse">
+        <!-- Active filters -->
+      <div id="activeFilters" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem"></div>
+      <!-- Category -->
+      <div class="card" style="margin-bottom:1rem;padding:1rem">
+        <div class="text-label-caps" style="margin-bottom:0.75rem">Category / الفئة</div>
+        <div id="categoryFilters" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+      <!-- Brand -->
+      <div class="card" style="margin-bottom:1rem;padding:1rem">
+        <div class="text-label-caps" style="margin-bottom:0.75rem">Brand</div>
+        <div id="brandFilters" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+      <!-- Skin Concern -->
+      <div class="card" style="margin-bottom:1rem;padding:1rem">
+        <div class="text-label-caps" style="margin-bottom:0.75rem">Skin Concern / نوع البشرة</div>
+        <div id="concernFilters" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+      <!-- Price Range -->
+      <div class="card" style="padding:1rem">
+        <div class="text-label-caps" style="margin-bottom:0.75rem">Price Range (KWD)</div>
+        <div class="flex gap-sm" style="align-items:center">
+          <input type="number" id="priceMin" placeholder="Min" class="form-input" style="width:80px;padding:6px" step="0.500" value="0"/>
+          <span>—</span>
+          <input type="number" id="priceMax" placeholder="Max" class="form-input" style="width:80px;padding:6px" step="0.500" value="50"/>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-top:0.75rem" onclick="applyFilters()">Apply Selection / تطبيق</button>
+      </div>
+      </div>
+    </aside>
+
+    <!-- PRODUCT GRID -->
+    <div>
+      <div class="flex-between" style="margin-bottom:1.5rem">
+        <div class="flex gap-md" style="align-items:center">
+          <span class="text-body-sm" style="color:var(--on-surface-variant)" id="showingCount">Showing products</span>
+          <div class="flex gap-xs" style="align-items:center;color:var(--secondary)">
+            <span class="material-symbols-outlined" style="font-size:16px">bolt</span>
+            <span class="text-body-sm">Express Delivery Available Today in Kuwait</span>
+          </div>
+        </div>
+        <div class="flex gap-sm" style="align-items:center">
+          <button class="btn btn-ghost btn-sm" id="gridViewBtn" onclick="setView('grid')" style="padding:6px"><span class="material-symbols-outlined" style="font-size:20px">grid_view</span></button>
+          <button class="btn btn-ghost btn-sm" id="listViewBtn" onclick="setView('list')" style="padding:6px"><span class="material-symbols-outlined" style="font-size:20px">view_list</span></button>
+          <select class="form-select" style="width:200px;padding:6px 32px 6px 10px;font-size:12px" id="sortSelect" onchange="applyFilters()">
+            <option value="featured">Featured & Editor's Picks</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="newest">Newest First</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+      <div id="productsGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem"></div>
+      <!-- PAGINATION -->
+      <div class="flex-between" style="margin-top:2rem">
+        <span class="text-body-sm" style="color:var(--on-surface-variant)">Show per page: <strong>12 products</strong></span>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCIERGE BANNER -->
+  <section style="padding:2rem 0;background:var(--surface-container-low)">
+    <div class="container">
+      <div class="card" style="padding:2rem;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div class="flex gap-xs" style="align-items:center;color:var(--secondary);margin-bottom:0.5rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--secondary)"></span><span class="text-label-caps">Complimentary Gulf Concierge</span></div>
+          <h3 class="text-headline-md">Unsure about your formulation or shade?</h3>
+          <p class="text-body-md" style="color:var(--on-surface-variant);max-width:500px;margin-top:0.5rem">Connect with our Kuwait beauty consultants for immediate WhatsApp shade-matching and clinical skin analysis tailored to Gulf climate conditions.</p>
+        </div>
+        <a href="https://wa.me/96599999999" target="_blank" class="btn btn-secondary" style="white-space:nowrap">
+          <span class="material-symbols-outlined" style="font-size:18px">chat</span>
+          Chat with Specialist →
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer style="background:var(--surface-container-lowest);border-top:1px solid var(--outline-variant);padding:2rem 0">
+  <div class="container flex-between text-body-sm" style="color:var(--outline)">
+    <div class="flex gap-lg"><a href="index.html">Home</a><a href="shop.html">Shop</a></div>
+    <span>© 2025 Mikyaj Kuwait Company W.L.L.</span>
+  </div>
+</footer>
+<div class="toast-container"></div>
+<script src="js/api.js?v=1"></script>
+<script src="js/store.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
+<script>
+let currentView = 'grid';
+let filters = { category: null, brand: null, minPrice: 0, maxPrice: 999, search: '', cursor: null };
+let fetchedProducts = [];
+let nextCursor = null;
+let currentRequestId = 0;
+let isFetching = false;
+window.__productCache = {}; 
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('cat')) filters.category = params.get('cat');
+  if (params.get('brand')) filters.brand = params.get('brand');
+  if (params.get('q')) filters.search = params.get('q');
+  
+  MikyajApp.updateCartBadge();
+  await initFilters();
+  
+  const searchForm = document.querySelector('form[action="shop.html"]');
+  if (searchForm) {
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = searchForm.querySelector('input[name="q"]').value;
+      filters.search = q;
+      filters.cursor = null;
+      document.getElementById('searchOverlay').style.transform = 'translateY(-100%)';
+      applyFilters(true);
+    });
+  }
+  applyFilters(true);
+});
+
+async function initFilters() {
+  const cats = await MikyajAPI.getCategories() || [];
+  const brands = await MikyajAPI.getBrands() || [];
+  
+  document.getElementById('categoryFilters').innerHTML = cats.map(c => `
+    <label class="form-checkbox text-body-sm"><input type="checkbox" value="${c.slug}" ${filters.category===c.slug?'checked':''} onchange="toggleCatFilter('${c.slug}')"/> ${MikyajApp.currentLang === 'ar' ? (c.name_ar || c.name_en) : (c.name_en || c.name_ar)}</label>
+  `).join('');
+
+  document.getElementById('brandFilters').innerHTML = brands.slice(0,8).map(b => `
+    <label class="form-checkbox text-body-sm"><input type="checkbox" value="${b.slug}" ${filters.brand===b.slug?'checked':''} onchange="toggleBrandFilter('${b.slug}')"/> ${b.name}</label>
+  `).join('');
+  
+  document.getElementById('concernFilters').innerHTML = ''; 
+}
+
+function toggleCatFilter(slug) { filters.category = filters.category === slug ? null : slug; applyFilters(true); }
+function toggleBrandFilter(slug) { filters.brand = filters.brand === slug ? null : slug; applyFilters(true); }
+function resetFilters() { 
+  filters = { category:null, brand:null, minPrice:0, maxPrice:999, search: '', cursor: null }; 
+  document.getElementById('priceMin').value = '0';
+  document.getElementById('priceMax').value = '999';
+  document.getElementById('sortSelect').value='featured';
+  initFilters(); 
+  applyFilters(true); 
+}
+
+async function applyFilters(reset = false) {
+  if (isFetching) return;
+  const reqId = ++currentRequestId;
+  isFetching = true;
+  if (reset) {
+    filters.cursor = null;
+    fetchedProducts = [];
+    document.getElementById('productsGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading products...</div>';
+  }
+  filters.minPrice = parseFloat(document.getElementById('priceMin').value) || 0;
+  filters.maxPrice = parseFloat(document.getElementById('priceMax').value) || 999;
+  
+  // Create search URL params explicitly to support array
+  const q = new URLSearchParams();
+  q.append('limit', 12);
+  if (filters.cursor) q.append('cursor', filters.cursor);
+  if (filters.category) q.append('category', filters.category);
+  if (filters.brand) q.append('brand', filters.brand);
+  if (filters.minPrice > 0) q.append('min_price', filters.minPrice);
+  if (filters.maxPrice < 999) q.append('max_price', filters.maxPrice);
+  if (filters.search) q.append('search', filters.search);
+
+  try {
+    const res = await MikyajAPI.fetchJson('/products?' + q.toString());
+    if (reqId !== currentRequestId) return;
+    if (res && res.products) {
+      if (reset) fetchedProducts = [];
+      res.products.forEach(p => {
+        if (!fetchedProducts.find(fp => fp.id === p.id)) {
+          fetchedProducts.push(p);
+          window.__productCache[p.id] = p; 
+        }
+      });
+      nextCursor = res.next_cursor;
+      
+      if (filters.category && res.products.length > 0 && res.products[0].category) {
+        const catName = MikyajApp.currentLang === 'ar' ? (res.products[0].category.name_ar || res.products[0].category.name_en) : (res.products[0].category.name_en || res.products[0].category.name_ar);
+        document.getElementById('breadcrumbCat').textContent = catName || 'Shop';
+        document.getElementById('pageTitle').textContent = catName || 'Shop All';
+      } else if (!filters.category) {
+         document.getElementById('breadcrumbCat').textContent = 'Shop All';
+         document.getElementById('pageTitle').textContent = 'The Prestige Collection';
+      }
+      document.getElementById('productCount').textContent = fetchedProducts.length + (nextCursor ? '+' : '') + ' Curated Formulas';
+      const af = document.getElementById('activeFilters');
+      af.innerHTML = '';
+      if (filters.category) af.innerHTML += `<span class="badge badge-outline" style="cursor:pointer" onclick="toggleCatFilter('${filters.category}')">${filters.category} ×</span>`;
+      if (filters.brand) af.innerHTML += `<span class="badge badge-outline" style="cursor:pointer" onclick="toggleBrandFilter('${filters.brand}')">${filters.brand} ×</span>`;
+      if (filters.search) af.innerHTML += `<span class="badge badge-outline" style="cursor:pointer" onclick="filters.search=''; applyFilters(true)">"${filters.search}" ×</span>`;
+      document.getElementById('showingCount').textContent = `Showing ${fetchedProducts.length} products`;
+      if (fetchedProducts.length === 0) {
+        document.getElementById('productsGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">No products found.</div>';
+      } else {
+        renderShopGrid(fetchedProducts);
+      }
+      renderPagination();
+    } else {
+      if (reset) document.getElementById('productsGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">No products found.</div>';
+      renderPagination();
+    }
+  } catch(e) {
+      console.error(e);
+      if (reset) document.getElementById('productsGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--error);">Unable to load products. Try again.</div>';
+  } finally {
+    isFetching = false;
+  }
+}
+
+function renderShopGrid(products) {
+  const grid = document.getElementById('productsGrid');
+  grid.style.gridTemplateColumns = currentView === 'grid' ? 'repeat(3,1fr)' : '1fr';
+  grid.innerHTML = products.map(p => {
+    const inWL = MikyajStore.isInWishlist(p.id);
+    const pName = MikyajApp.formatProductName(p);
+    const pNameAr = MikyajApp.formatProductSubtitle(p);
+    const pBrand = p.brand ? p.brand.name : '';
+    const imgUrl = p.primary_image ? p.primary_image.url : 'https://placehold.co/400x500?text=No+Image';
+    const priceStr = MikyajApp.formatKWD(parseFloat(p.selling_price));
+    const compStr = parseFloat(p.regular_price) > parseFloat(p.selling_price) ? MikyajApp.formatKWD(parseFloat(p.regular_price)) : '';
+    return `
+      <div class="product-card" onclick="if(!event.target.closest('button') && !event.target.closest('a')) window.location.href='product.html?slug=${p.slug}'" style="cursor:pointer;${currentView==='list'?'flex-direction:row':''}" >
+        <div class="product-image" style="${currentView==='list'?'width:200px;aspect-ratio:auto':''}">
+          <button class="wishlist-btn ${inWL?'active':''}" onclick="MikyajApp.toggleWishlist('${p.id}',this)"><span class="material-symbols-outlined" style="font-size:18px">favorite</span></button>
+          <a href="product.html?slug=${p.slug}"><img src="${imgUrl}" alt="${pName}" loading="lazy" style="width:100%;object-fit:cover;aspect-ratio:1/1"/></a>
+          <div class="product-actions"><button class="btn btn-primary btn-sm" style="width:100%" onclick="MikyajApp.addToCart('${p.id}')"><span class="material-symbols-outlined" style="font-size:16px">shopping_bag</span>Add to Bag</button></div>
+        </div>
+        <div class="product-info">
+          <span class="product-brand">${pBrand}</span>
+          <a href="product.html?slug=${p.slug}" class="product-name">${pName}</a>
+          <span class="text-body-sm" style="color:var(--on-surface-variant)">${pNameAr}</span>
+          ${p.sku ? `<span class="text-label-caps" style="color:var(--outline);font-size:9px">SKU: ${p.sku}</span>` : ''}
+          <div class="product-price" style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--outline-variant)">
+            <span>${priceStr} ${compStr ? `<span class="compare-price">${compStr}</span>` : ''}</span>
+            <div class="flex gap-xs" style="align-items:center">
+              <button class="btn btn-outline btn-sm" style="padding:4px 8px;min-height:28px" onclick="MikyajApp.addToCart('${p.id}')"><span class="material-symbols-outlined" style="font-size:16px">shopping_bag</span> BAG</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderPagination() {
+  const pg = document.getElementById('pagination');
+  pg.innerHTML = '';
+  if (nextCursor) {
+    pg.innerHTML = `<button class="btn btn-outline btn-sm" onclick="loadMore()">Load More Products</button>`;
+  }
+}
+
+function loadMore() {
+  if (nextCursor && !isFetching) {
+    filters.cursor = nextCursor;
+    applyFilters(false);
+  }
+}
+
+function setView(v) { currentView = v; document.getElementById('gridViewBtn').style.color = v==='grid'?'var(--secondary)':''; document.getElementById('listViewBtn').style.color = v==='list'?'var(--secondary)':''; renderShopGrid(fetchedProducts); }
+</script>
+  <script src="js/mobile.js?v=1"></script>
+
+<!-- STATIC BOTTOM NAV -->
+<nav class="bottom-app-bar mobile-only">
+  <a href="index.html" class="nav-item"><span class="material-symbols-outlined icon">home</span><span class="label">Home</span></a>
+  <a href="shop.html" class="nav-item active"><span class="material-symbols-outlined icon">storefront</span><span class="label">Shop</span></a>
+  <a href="shop.html#brandFilters" class="nav-item"><span class="material-symbols-outlined icon">verified</span><span class="label">Brands</span></a>
+  <a href="cart.html" class="nav-item">
+    <span style="position:relative;display:inline-flex">
+      <span class="material-symbols-outlined icon">shopping_bag</span>
+      <span class="cart-badge" id="mobileCartBadge" style="display:none;position:absolute;top:-4px;inset-inline-end:-8px;background:var(--secondary);color:var(--on-secondary);font-size:10px;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;font-weight:bold">0</span>
+    </span>
+    <span class="label">Cart</span>
+  </a>
+</nav>
+</body>
+</html>

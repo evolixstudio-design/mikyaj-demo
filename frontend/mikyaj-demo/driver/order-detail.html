@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Detail — Mikyaj Driver</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <style>
+    body { background: var(--surface-container-lowest); padding-bottom: 5rem; }
+    .driver-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--outline-variant);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .back-btn {
+      color: var(--on-surface);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--outline);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 1rem 0.5rem;
+    }
+    
+    .detail-card {
+      background: var(--surface);
+      border-top: 1px solid var(--outline-variant);
+      border-bottom: 1px solid var(--outline-variant);
+      padding: 1rem;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--on-surface-variant); font-size: 14px; }
+    .info-val { font-weight: 500; font-size: 14px; text-align: right; }
+    
+    .contact-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .item-row {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+    .item-row:last-child { border-bottom: none; }
+    .item-img {
+      width: 48px;
+      height: 48px;
+      background: var(--surface-container);
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .item-details { flex: 1; }
+    .item-title { font-weight: 600; font-size: 14px; }
+    .item-meta { font-size: 12px; color: var(--outline); }
+    
+    .action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--outline-variant);
+      padding: 1rem;
+      z-index: 100;
+      display: flex;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  
+  <header class="driver-header">
+    <a href="dashboard.html" class="back-btn"><span class="material-symbols-outlined">arrow_back</span></a>
+    <div style="font-weight:600;font-size:18px" id="headerTitle">Order Details</div>
+  </header>
+  
+  <div id="loadingState" style="padding:4rem;text-align:center;color:var(--outline)">
+    <span class="material-symbols-outlined" style="font-size:32px;animation:spin 1s linear infinite">sync</span>
+    <div style="margin-top:1rem">Loading order...</div>
+  </div>
+
+  <div id="errorState" style="display:none;padding:4rem;text-align:center;color:var(--error)">
+    <span class="material-symbols-outlined" style="font-size:32px">error</span>
+    <div style="margin-top:1rem" id="errorMessage">Unable to load order.</div>
+  </div>
+
+  <div id="orderContent" style="display:none;">
+    
+    <div class="section-title">Order Status</div>
+    <div class="detail-card">
+      <div class="info-row">
+        <span class="info-label">Order #</span>
+        <span class="info-val" id="ordNum"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="info-val"><span class="badge" id="ordStatus"></span></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Date</span>
+        <span class="info-val" id="ordDate"></span>
+      </div>
+    </div>
+
+    <div class="section-title">Customer</div>
+    <div class="detail-card">
+      <div class="info-row">
+        <span class="info-label">Name</span>
+        <span class="info-val" id="custName"></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-val" id="custPhone"></span>
+      </div>
+      <div class="contact-actions" id="contactActions"></div>
+    </div>
+
+    <div class="section-title">Delivery</div>
+    <div class="detail-card">
+      <div style="font-size:14px;line-height:1.5" id="delAddress"></div>
+      <div id="delNotes" style="margin-top:0.5rem;font-size:13px;color:var(--warning);display:none"></div>
+    </div>
+
+    <div class="section-title">Items</div>
+    <div class="detail-card" id="itemsContainer"></div>
+
+    <div class="section-title" id="financialTitle" style="display:none">Financial</div>
+    <div class="detail-card" id="financialCard" style="display:none">
+      <div class="info-row">
+        <span class="info-label">Total to Collect</span>
+        <span class="info-val" id="ordTotal"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-bar" id="actionBar" style="display:none">
+    <button class="btn btn-primary" style="flex:1" id="mainActionBtn" onclick="performAction()"></button>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="actionModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:1rem">
+    <div class="card" style="width:100%;max-width:320px;padding:1.5rem">
+      <h3 class="text-title-lg" id="modalTitle">Confirm Action</h3>
+      <p class="text-body-md" style="margin:1rem 0;color:var(--on-surface-variant)" id="modalText"></p>
+      <div class="flex gap-sm" style="justify-content:flex-end">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modalConfirmBtn" onclick="submitAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js?v=5"></script>
+  <script src="../js/app.js?v=5"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderNumber = urlParams.get('orderNumber');
+    let currentOrder = null;
+    let pendingAction = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!orderNumber) {
+        showError('No order number specified.');
+        return;
+      }
+      document.getElementById('headerTitle').textContent = `Order ${orderNumber}`;
+      loadOrder();
+    });
+
+    async function loadOrder() {
+      document.getElementById('loadingState').style.display = 'block';
+      document.getElementById('errorState').style.display = 'none';
+      document.getElementById('orderContent').style.display = 'none';
+      document.getElementById('actionBar').style.display = 'none';
+
+      try {
+        const data = await MikyajAPI.driverFetch(`/driver/orders/${orderNumber}`);
+        currentOrder = data.order;
+        document.getElementById('loadingState').style.display = 'none';
+        renderOrder();
+      } catch (err) {
+        document.getElementById('loadingState').style.display = 'none';
+        if (err.status === 404 || err.status === 403) {
+           showError('You do not have access to this delivery.');
+        } else {
+           showError(err.message || 'Failed to load order.');
+        }
+      }
+    }
+
+    function renderOrder() {
+      const o = currentOrder;
+      document.getElementById('orderContent').style.display = 'block';
+
+      document.getElementById('ordNum').textContent = o.order_number;
+      document.getElementById('ordDate').textContent = MikyajApp.formatDateTime(o.created_at);
+      
+      const ordStatus = o.status || o.order_status || '';
+      const sc = {
+        'READY_FOR_DELIVERY': 'badge-primary',
+        'OUT_FOR_DELIVERY': 'badge-warning',
+        'DELIVERED': 'badge-success',
+      }[ordStatus] || 'badge-outline';
+      
+      const statusEl = document.getElementById('ordStatus');
+      statusEl.className = `badge ${sc}`;
+      statusEl.textContent = ordStatus ? ordStatus.replace(/_/g, ' ') : '—';
+
+      document.getElementById('custName').textContent = o.customer_name || 'Guest';
+      document.getElementById('custPhone').textContent = o.customer_phone || '—';
+
+      if (o.customer_phone) {
+        document.getElementById('contactActions').innerHTML = `
+          <a href="tel:${o.customer_phone}" class="btn btn-outline btn-sm" style="flex:1;justify-content:center"><span class="material-symbols-outlined" style="font-size:16px">call</span> Call</a>
+          <a href="https://wa.me/${o.customer_phone.replace(/\+/g, '')}" target="_blank" class="btn btn-outline btn-sm" style="flex:1;justify-content:center"><span class="material-symbols-outlined" style="font-size:16px">chat</span> WhatsApp</a>
+        `;
+      }
+
+      document.getElementById('delAddress').textContent = o.customer_address || o.delivery_address || 'No address provided';
+      if (o.notes) {
+        document.getElementById('delNotes').textContent = `Notes: ${o.notes}`;
+        document.getElementById('delNotes').style.display = 'block';
+      }
+
+      // Items
+      if (o.items && o.items.length > 0) {
+        const itemsHtml = o.items.map(item => `
+          <div class="item-row">
+            <img src="${item.image_url || '../assets/placeholder.png'}" class="item-img" alt="${item.product_name}">
+            <div class="item-details">
+              <div class="item-title">${item.product_name}</div>
+              <div class="item-meta">Qty: ${item.quantity} | ${item.product_sku || ''}</div>
+            </div>
+          </div>
+        `).join('');
+        document.getElementById('itemsContainer').innerHTML = itemsHtml;
+      } else {
+        document.getElementById('itemsContainer').innerHTML = '<div class="text-body-sm" style="color:var(--outline)">No items found.</div>';
+      }
+
+      // Operational Financials (optional, typically drivers only care if cash on delivery, but here we just show total)
+      // Display if payment is not PAID or for awareness.
+      if (o.payment_status === 'PENDING') {
+        document.getElementById('financialTitle').style.display = 'block';
+        document.getElementById('financialCard').style.display = 'block';
+        document.getElementById('ordTotal').textContent = `${o.total_amount} KWD`;
+        document.getElementById('ordTotal').style.color = 'var(--error)';
+      } else if (o.payment_status === 'PAID' || o.payment_status === 'SUCCESS') {
+         // Paid online, nothing to collect
+        document.getElementById('financialTitle').style.display = 'block';
+        document.getElementById('financialCard').style.display = 'block';
+        document.getElementById('ordTotal').textContent = `PAID ONLINE (${o.total_amount} KWD)`;
+        document.getElementById('ordTotal').style.color = 'var(--success)';
+      }
+
+      // Actions
+      const bar = document.getElementById('actionBar');
+      const btn = document.getElementById('mainActionBtn');
+      bar.style.display = 'none';
+
+      if (o.status === 'READY_FOR_DELIVERY') {
+        bar.style.display = 'flex';
+        btn.textContent = 'Start Delivery';
+        btn.className = 'btn btn-primary';
+        pendingAction = 'START';
+      } else if (o.status === 'OUT_FOR_DELIVERY') {
+        bar.style.display = 'flex';
+        btn.textContent = 'Mark Delivered';
+        btn.className = 'btn btn-success';
+        btn.style.background = 'var(--success)';
+        btn.style.color = 'var(--on-primary)';
+        pendingAction = 'DELIVER';
+      } else if (o.status === 'DELIVERED') {
+        // terminal state
+      }
+    }
+
+    function performAction() {
+      const modal = document.getElementById('actionModal');
+      const text = document.getElementById('modalText');
+      if (pendingAction === 'START') {
+        document.getElementById('modalTitle').textContent = 'Start Delivery';
+        text.textContent = `Are you sure you want to start delivery for order ${orderNumber}?`;
+      } else if (pendingAction === 'DELIVER') {
+        document.getElementById('modalTitle').textContent = 'Confirm Delivery';
+        text.textContent = `Are you sure you want to mark order ${orderNumber} as DELIVERED?`;
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('actionModal').style.display = 'none';
+    }
+
+    async function submitAction() {
+      const btn = document.getElementById('modalConfirmBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;animation:spin 1s linear infinite">sync</span> Processing...';
+
+      let endpoint = '';
+      if (pendingAction === 'START') {
+        endpoint = `/driver/orders/${orderNumber}/start-delivery`;
+      } else if (pendingAction === 'DELIVER') {
+        endpoint = `/driver/orders/${orderNumber}/mark-delivered`;
+      }
+
+      try {
+        await MikyajAPI.driverFetch(endpoint, { method: 'POST' });
+        MikyajApp.showToast('Order updated successfully', 'success');
+        closeModal();
+        await loadOrder();
+      } catch (err) {
+        closeModal();
+        if (err.status === 409) {
+           MikyajApp.showToast('Conflict: The order was updated elsewhere. Refreshing...', 'error');
+           await loadOrder();
+        } else {
+           MikyajApp.showToast(err.message || 'Action failed', 'error');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Confirm';
+      }
+    }
+
+    function showError(msg) {
+      document.getElementById('errorState').style.display = 'block';
+      document.getElementById('errorMessage').textContent = msg;
+      document.getElementById('orderContent').style.display = 'none';
+      document.getElementById('actionBar').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

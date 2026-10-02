@@ -1,0 +1,121 @@
+/* 
+  Mikyaj Kuwait - Mobile First Enhancements 
+  Targeting Phase 5-13 of UX Polish
+*/
+body.drawer-open { overflow: hidden; }
+
+/* ─── Hide Mobile Components on Desktop ─── */
+.bottom-app-bar, .mobile-drawer, .drawer-overlay, .search-overlay, .bottom-sheet, .bottom-sheet-overlay, .sticky-atc-bar {
+  display: none !important;
+}
+
+header {
+  padding-top: env(safe-area-inset-top);
+}
+
+@media (max-width: 767px) {
+  /* ─── Reveal Mobile Components ─── */
+  .bottom-app-bar, .mobile-drawer, .sticky-atc-bar {
+    display: flex !important;
+  }
+  .drawer-overlay, .search-overlay, .bottom-sheet-overlay, .bottom-sheet { 
+    display: block !important; 
+  }
+
+  /* ─── Static Sticky Bottom App Navigation ─── */
+  .bottom-app-bar {
+    justify-content: space-around; align-items: center;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--surface); border-top: 1px solid var(--outline-variant); z-index: 60;
+    height: calc(56px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  }
+  .bottom-app-bar .nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    flex: 1; color: var(--on-surface-variant); text-decoration: none; padding: 0.5rem 0; gap: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .bottom-app-bar .nav-item.active { color: var(--secondary); }
+  .bottom-app-bar .nav-item .material-symbols-outlined { font-size: 24px; }
+  .bottom-app-bar .nav-item .label { font-size: 10px; font-weight: 500; }
+  
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)); }
+
+  /* ─── Sticky Add To Cart (Product Page) ─── */
+  .sticky-atc-bar {
+    justify-content: space-between; align-items: center;
+    position: fixed; bottom: 0; inset-inline-start: 0; right: 0;
+    background: var(--surface); border-top: 1px solid var(--outline-variant); z-index: 65;
+    padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom)) 1rem;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.08); transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .sticky-atc-bar.visible { transform: translateY(0); }
+  .sticky-atc-bar .atc-price-block { display: flex; flex-direction: column; }
+  .sticky-atc-bar .atc-price { font-weight: 600; font-size: 16px; color: var(--on-surface); }
+  .sticky-atc-bar .btn { flex: 1; margin-inline-start: 1rem; min-height: 48px; }
+  
+  body.has-sticky-atc { padding-bottom: calc(85px + env(safe-area-inset-bottom)); }
+  body.has-sticky-atc .bottom-app-bar { transform: translateY(100%); }
+
+  /* ─── Mobile Drawer & Search Overlay ─── */
+  .mobile-drawer {
+    position: fixed; top: 0; bottom: 0; inset-inline-start: 0; width: 85%; max-width: 360px;
+    background: var(--surface); z-index: 101; transform: translateX(calc(-100% * var(--dir-sign, 1)));
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex; flex-direction: column;
+    visibility: hidden;
+  }
+  html[dir="rtl"] { --dir-sign: -1; }
+  .mobile-drawer.open { transform: translateX(0); visibility: visible; }
+
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+
+  /* ─── Mobile Filters Bottom Sheet ─── */
+  .bottom-sheet {
+    position: fixed; bottom: 0; inset-inline-start: 0; right: 0;
+    background: var(--surface); z-index: 99; border-top-left-radius: 24px; border-top-right-radius: 24px;
+    padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom)) 1.5rem;
+    max-height: 85dvh; overflow-y: auto; transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+    visibility: hidden;
+  }
+  .bottom-sheet.expanded { transform: translateY(0); visibility: visible; }
+
+  /* ─── Cart Stacking ─── */
+  .cart-item {
+    display: flex !important; flex-direction: column !important;
+    align-items: flex-start !important; padding: 1rem !important; gap: 1rem !important; position: relative;
+  }
+  .cart-item-info { width: 100% !important; margin-inline-start: 0 !important; }
+  .cart-item-price, .cart-item-qty, .cart-item-total { width: 100% !important; text-align: start !important; }
+  .cart-item .btn-icon { position: absolute; top: 1rem; inset-inline-end: 1rem; }
+
+  /* ─── Scroll Snap & Image Gallery ─── */
+  .horizontal-snap {
+    display: flex !important; flex-direction: row !important;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    gap: 1rem !important; padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .horizontal-snap::-webkit-scrollbar { display: none; }
+  .horizontal-snap > * {
+    scroll-snap-align: start;
+    flex: 0 0 85%;
+  }
+  .horizontal-snap.products > .product-card {
+    flex: 0 0 45%;
+  }
+
+  /* ─── Footer Accordions ─── */
+  .footer-accordion-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .footer-accordion-toggle::after { content: 'expand_more'; font-family: 'Material Symbols Outlined'; transition: transform 0.3s; }
+  .footer-accordion-toggle.active::after { transform: rotate(180deg); }
+  .footer-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+}
