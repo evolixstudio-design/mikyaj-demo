@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: mikyaj-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node backend/server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 24.11.1
+      - key: FRONTEND_URL
+        value: https://mikyajkw.com
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_POOLED
+        sync: false
+      - key: ADMIN_JWT_SECRET
+        sync: false
+      - key: MYFATOORAH_API_KEY
+        sync: false
+      - key: MYFATOORAH_BASE_URL
+        value: https://apitest.myfatoorah.com
+      - key: MYFATOORAH_WEBHOOK_SECRET
+        sync: false
+      - key: MYFATOORAH_SUCCESS_URL
+        value: https://mikyajkw.com/api/payment/callback
+      - key: MYFATOORAH_FAILURE_URL
+        value: https://mikyajkw.com/checkout-result.html
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: AWS_ENDPOINT_URL_S3
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_BUCKET
+        sync: false
