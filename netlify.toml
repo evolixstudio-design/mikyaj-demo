@@ -2,6 +2,12 @@
   base = "frontend"
   publish = "mikyaj-demo"
 
+[[redirects]]
+  from = "/api/*"
+  to = "https://mikyaj-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
