@@ -2,11 +2,9 @@
 const MikyajAPI = {
   // Use localhost:3000 for local development, otherwise fallback to production backend.
   // Using relative path '/api' assumes frontend and backend are served together or via a proxy (like Netlify _redirects).
-  // For safety without a proxy, we can explicitly specify the production URL if known, or use dynamic resolution.
   BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
     ? (window.location.port === '3000' ? '/api' : 'http://localhost:3000/api') 
-    : 'https://your-production-api.com/api', // To be updated with actual production Render URL when deployed
-
+    : '/api',
   async fetchJson(endpoint) {
     try {
       const res = await fetch(`${this.BASE_URL}${endpoint}`);

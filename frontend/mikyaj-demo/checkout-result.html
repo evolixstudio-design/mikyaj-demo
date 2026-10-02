@@ -50,6 +50,7 @@
 </main>
 
 <script src="js/store.js"></script>
+<script src="js/api.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   try {
     // Ping backend to get authoritative status
-    const res = await fetch(`http://localhost:3000/api/payment/status/${orderNumber}`);
+    const res = await fetch(`${MikyajAPI.BASE_URL}/payment/status/${encodeURIComponent(orderNumber)}`);
     if (!res.ok) throw new Error('Could not verify order status');
     const data = await res.json();
     
