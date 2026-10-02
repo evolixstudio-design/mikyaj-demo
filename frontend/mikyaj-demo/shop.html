@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Shop All — Mikyaj Kuwait</title>
   <link rel="stylesheet" href="css/main.css"/>
+  <link rel="icon" type="image/png" href="/assets/images/logo.png">
 </head>
 <body>
 <!-- TOP BAR -->
@@ -26,7 +27,7 @@
       <button class="btn-icon mobile-only mobile-menu-btn" id="openDrawerBtn" aria-label="Open Navigation Menu" style="background:none;border:none;color:var(--on-surface);cursor:pointer;align-items:center;justify-content:center;width:40px;height:40px">
         <span class="material-symbols-outlined">menu</span>
       </button>
-      <a href="index.html" class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a>
+      <a href="index.html" class="flex gap-sm" style="align-items:center"><img src="/assets/images/logo.png" style="height:36px; object-fit:contain; border-radius: 50%;" alt="Mikyaj"><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a>
       <nav class="flex gap-lg" style="align-items:center">
         <a href="index.html" class="text-label-caps" style="color:var(--on-surface-variant)">Home</a>
         <a href="shop.html" class="text-label-caps" style="color:var(--secondary)">Shop All</a>
@@ -318,7 +319,7 @@ function renderShopGrid(products) {
     const pName = MikyajApp.formatProductName(p);
     const pNameAr = MikyajApp.formatProductSubtitle(p);
     const pBrand = p.brand ? p.brand.name : '';
-    const imgUrl = p.primary_image ? p.primary_image.url : 'https://placehold.co/400x500?text=No+Image';
+    const imgUrl = p.primary_image ? MikyajAPI.watermark(p.primary_image.url) : 'https://placehold.co/400x500?text=No+Image';
     const priceStr = MikyajApp.formatKWD(parseFloat(p.selling_price));
     const compStr = parseFloat(p.regular_price) > parseFloat(p.selling_price) ? MikyajApp.formatKWD(parseFloat(p.regular_price)) : '';
     return `

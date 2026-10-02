@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Product — Mikyaj Kuwait</title>
   <link rel="stylesheet" href="css/main.css"/>
+  <link rel="icon" type="image/png" href="/assets/images/logo.png">
 </head>
 <body>
 <!-- TOP BAR + HEADER (same as shop) -->
@@ -18,7 +19,7 @@
       <button class="btn-icon mobile-only mobile-menu-btn" id="openDrawerBtn" aria-label="Open Navigation Menu" style="background:none;border:none;color:var(--on-surface);cursor:pointer;align-items:center;justify-content:center;width:40px;height:40px">
         <span class="material-symbols-outlined">menu</span>
       </button>
-      <a href="index.html" class="flex gap-sm" style="align-items:center"><span style="width:36px;height:36px;background:var(--secondary);border-radius:50%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:20px;color:var(--on-secondary)">spa</span></span><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a><nav class="flex gap-lg" style="align-items:center"><a href="index.html" class="text-label-caps" style="color:var(--on-surface-variant)">Home</a><a href="shop.html" class="text-label-caps" style="color:var(--on-surface-variant)">Shop All</a></nav></div><div class="flex gap-md" style="align-items:center"><a href="wishlist.html" style="color:var(--on-surface)"><span class="material-symbols-outlined">favorite</span></a><a href="cart.html" style="position:relative;color:var(--on-surface)"><span class="material-symbols-outlined">shopping_bag</span><span class="cart-count" style="position:absolute;top:-4px;right:-8px;background:var(--secondary);color:var(--on-secondary);width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">0</span></a></div></div></header>
+      <a href="index.html" class="flex gap-sm" style="align-items:center"><img src="/assets/images/logo.png" style="height:36px; object-fit:contain; border-radius: 50%;" alt="Mikyaj"><span class="text-headline-sm" style="letter-spacing:0.05em;text-transform:uppercase">MIKYAJ</span></a><nav class="flex gap-lg" style="align-items:center"><a href="index.html" class="text-label-caps" style="color:var(--on-surface-variant)">Home</a><a href="shop.html" class="text-label-caps" style="color:var(--on-surface-variant)">Shop All</a></nav></div><div class="flex gap-md" style="align-items:center"><a href="wishlist.html" style="color:var(--on-surface)"><span class="material-symbols-outlined">favorite</span></a><a href="cart.html" style="position:relative;color:var(--on-surface)"><span class="material-symbols-outlined">shopping_bag</span><span class="cart-count" style="position:absolute;top:-4px;right:-8px;background:var(--secondary);color:var(--on-secondary);width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">0</span></a></div></div></header>
 
 <!-- MOBILE DRAWER & SEARCH -->
 <div class="drawer-overlay" id="mobileDrawerOverlay"></div>
@@ -279,7 +280,7 @@ async function renderRelated() {
         window.__productCache[p.id] = p; // Store in cache for Add to cart
         const pName = MikyajApp.formatProductName(p);
         const pBrand = p.brand ? p.brand.name : '';
-        const imgUrl = p.primary_image ? p.primary_image.url : 'https://placehold.co/400x500?text=No+Image';
+        const imgUrl = p.primary_image ? MikyajAPI.watermark(p.primary_image.url) : 'https://placehold.co/400x500?text=No+Image';
         grid.innerHTML += `
           <div class="product-card" onclick="if(!event.target.closest('button') && !event.target.closest('a')) window.location.href='product.html?slug=${p.slug}'" style="cursor:pointer">
             <div class="product-image"><img src="${imgUrl}" alt="${pName}"/ loading="lazy"><div class="product-actions"><button class="btn btn-primary btn-sm" style="width:100%" onclick="MikyajApp.addToCart('${p.id}')">Add to Bag</button></div></div>

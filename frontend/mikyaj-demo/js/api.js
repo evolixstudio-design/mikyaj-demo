@@ -5,6 +5,11 @@ const MikyajAPI = {
   BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
     ? (window.location.port === '3000' ? '/api' : 'http://localhost:3000/api') 
     : '/api',
+  
+  watermark(url) {
+    if (!url || typeof url !== 'string' || !url.includes('cloudinary.com/')) return url;
+    return url.replace('/image/upload/', '/image/upload/l_mikyaj_logo,w_100,g_north_west,x_20,y_20,o_80/');
+  },
   async fetchJson(endpoint) {
     try {
       const res = await fetch(`${this.BASE_URL}${endpoint}`);

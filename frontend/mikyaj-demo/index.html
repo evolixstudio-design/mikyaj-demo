@@ -6,6 +6,7 @@
   <title>Mikyaj Kuwait — Luxury Cosmetics & Skincare</title>
   <meta name="description" content="Kuwait's premier destination for luxury cosmetics, skincare, and beauty products. Authentic formulations with same-day delivery across Kuwait."/>
   <link rel="stylesheet" href="css/main.css"/>
+  <link rel="icon" type="image/png" href="/assets/images/logo.png">
 </head>
 <body>
 
@@ -410,7 +411,7 @@ function renderProductGrid(products, container) {
     const pName = MikyajApp.formatProductName(p);
     const pSubtitle = MikyajApp.formatProductSubtitle(p);
     const pBrand = p.brand ? p.brand.name : '';
-    const imgUrl = p.primary_image ? p.primary_image.url : 'https://placehold.co/400x500?text=No+Image';
+    const imgUrl = p.primary_image ? MikyajAPI.watermark(p.primary_image.url) : 'https://placehold.co/400x500?text=No+Image';
     const priceStr = MikyajApp.formatKWD(parseFloat(p.selling_price));
     const compStr = parseFloat(p.regular_price) > parseFloat(p.selling_price) ? MikyajApp.formatKWD(parseFloat(p.regular_price)) : '';
 
