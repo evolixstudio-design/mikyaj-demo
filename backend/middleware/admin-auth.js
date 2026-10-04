@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function requireAdminAuth(req, res, next) {
+async function requireAdminAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Authentication required. Missing or invalid Authorization header.' });
@@ -21,6 +21,8 @@ function requireAdminAuth(req, res, next) {
       return res.status(403).json({ error: 'Insufficient permissions. Admin role required.' });
     }
 
+    const row=(await require('../db').query("SELECT id FROM admin_users WHERE id=$1 AND status='ACTIVE' AND role='ADMIN'",[payload.id])).rows[0];
+    if(!row)return res.status(401).json({error:'Admin account is inactive.'});
     // Attach verified admin to request
     req.admin = {
       id: payload.id,

@@ -4,6 +4,13 @@ node_modules/
 AttarKuwait_Catalog/
 
 images/AttarKuwait_Catalog/
-images/
+/images/
+/.translation-venv/
+/.translation-models/
+/translation-output/
+/dist/
+/.local-test-data/
 test-results/
 e2e-report.json
+/docs/audit-*/
+/docs/rebuild-validation/

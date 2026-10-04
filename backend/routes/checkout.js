@@ -1,188 +1,54 @@
-const express = require('express');
-const router = express.Router();
-const { pool } = require('../db');
-const myfatoorah = require('../services/myfatoorah');
-
-// POST /api/checkout
-// Receives: { idempotencyKey, customer: { name, phone, address, email }, items: [{ productId, qty }] }
-router.post('/', async (req, res) => {
-  const client = await pool.connect();
-  try {
-    const { idempotencyKey, customer, items } = req.body;
-
-    // 1. Basic validation
-    if (!idempotencyKey) {
-      return res.status(400).json({ error: 'Missing idempotency key.' });
-    }
-    if (!customer || !customer.name || !customer.phone || !customer.address) {
-      return res.status(400).json({ error: 'Missing required customer details.' });
-    }
-    if (!items || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'Cart is empty.' });
-    }
-
-    // 2. Check for idempotency (has this checkout attempt already resulted in an order?)
-    const { rows: existingOrders } = await client.query(
-      'SELECT id, order_number, total_amount, status FROM orders WHERE idempotency_key = $1',
-      [idempotencyKey]
-    );
-
-    let order;
-
-    if (existingOrders.length > 0) {
-      order = existingOrders[0];
-    } else {
-      // Create new order via transaction
-      await client.query('BEGIN');
-      
-      let totalAmountFils = 0;
-      const orderItems = [];
-      const productQuantities = {};
-
-      // Validate products, aggregate duplicate quantities
-      for (const item of items) {
-        const { productId, qty } = item;
-        const safeQty = parseInt(qty, 10);
-        if (isNaN(safeQty) || safeQty < 1) {
-          throw new Error(`Invalid quantity for product ID: ${productId}.`);
-        }
-        productQuantities[productId] = (productQuantities[productId] || 0) + safeQty;
-      }
-
-      for (const [productId, qty] of Object.entries(productQuantities)) {
-        let query;
-        let params;
-        
-        if (!isNaN(productId)) {
-            query = 'SELECT id, selling_price, status FROM products WHERE id = $1';
-            params = [productId];
-        } else {
-            query = 'SELECT id, selling_price, status FROM products WHERE slug = $1 OR sku = $1';
-            params = [productId];
-        }
-        
-        const { rows } = await client.query(query, params);
-
-        if (rows.length === 0) {
-          throw new Error(`Product not found (ID: ${productId}).`);
-        }
-
-        const product = rows[0];
-        if (product.status !== 'ACTIVE') {
-          throw new Error(`Product is no longer available (ID: ${productId}).`);
-        }
-
-        // Use integer fils math for precise KWD calculation
-        const priceFils = Math.round(parseFloat(product.selling_price) * 1000);
-        totalAmountFils += priceFils * qty;
-
-        orderItems.push({
-          product_id: product.id,
-          quantity: qty,
-          price_at_purchase: (priceFils / 1000).toFixed(3)
-        });
-      }
-      
-      const totalAmount = (totalAmountFils / 1000).toFixed(3);
-
-      const orderNumber = 'MKJ-' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-
-      const orderQuery = `
-        INSERT INTO orders (
-          order_number, customer_name, customer_phone, customer_address, customer_email, total_amount, status, idempotency_key
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        RETURNING id, order_number, total_amount, status, created_at
-      `;
-      const orderParams = [
-        orderNumber,
-        customer.name,
-        customer.phone,
-        customer.address,
-        customer.email || null,
-        totalAmount,
-        'PENDING_PAYMENT',
-        idempotencyKey
-      ];
-      
-      const { rows: orderRows } = await client.query(orderQuery, orderParams);
-      order = orderRows[0];
-
-      const itemQuery = `
-        INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase)
-        VALUES ($1, $2, $3, $4)
-      `;
-      for (const oi of orderItems) {
-        await client.query(itemQuery, [order.id, oi.product_id, oi.quantity, oi.price_at_purchase]);
-      }
-
-      await client.query('COMMIT');
-    }
-
-    // 3. Initiate MyFatoorah Payment
-    // We only initiate payment if the order is still pending.
-    if (order.status !== 'PENDING_PAYMENT') {
-       return res.status(400).json({ error: `Cannot initiate payment for order in ${order.status} state.` });
-    }
-
-    // CREATE PENDING PAYMENT ROW FIRST to prevent orphaned external invoices
-    const { rows: paymentRows } = await client.query(`
-      INSERT INTO payments (order_id, provider, status, amount, currency)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING id
-    `, [order.id, 'MYFATOORAH', 'PENDING', order.total_amount, 'KWD']);
-    const paymentId = paymentRows[0].id;
-
-    try {
-      const paymentData = await myfatoorah.initiatePayment({
-        invoiceAmount: order.total_amount,
-        orderId: order.order_number,
-        customerName: customer.name,
-        customerPhone: customer.phone,
-        customerEmail: customer.email
-      });
-
-      const invoiceId = paymentData.InvoiceId.toString();
-      const invoiceURL = paymentData.InvoiceURL;
-
-      // UPDATE PAYMENT RECORD WITH INVOICE ID
-      await client.query(`
-        UPDATE payments SET provider_invoice_id = $1 WHERE id = $2
-      `, [invoiceId, paymentId]);
-
-      res.status(201).json({
-        success: true,
-        order: {
-          id: order.id,
-          order_number: order.order_number,
-          status: order.status,
-          total_amount: order.total_amount
-        },
-        payment: {
-          status: 'PENDING',
-          redirect_url: invoiceURL
-        }
-      });
-    } catch (paymentErr) {
-      console.error('Payment initiation failed:', paymentErr.message);
-      // UPDATE FAILED PAYMENT ATTEMPT
-      await client.query(`
-        UPDATE payments SET status = $1 WHERE id = $2
-      `, ['FAILED', paymentId]);
-
-      res.status(500).json({
-        success: false,
-        error: 'Order created but payment initiation failed. Please try again.',
-        order: order
-      });
-    }
-
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('Checkout error:', error.message);
-    res.status(400).json({ error: error.message });
-  } finally {
-    client.release();
-  }
+const router=require('express').Router();
+const crypto=require('node:crypto');
+const db=require('../db');
+const {getSettings}=require('../services/commerce-settings');
+const {quote,normalizeItems,phone,address,fail}=require('../services/commerce-quote');
+const gateway=require('../services/myfatoorah');
+const sha=v=>crypto.createHash('sha256').update(v).digest('hex');
+function trackingToken(order,key){const secret=process.env.ORDER_TRACKING_SECRET||process.env.ADMIN_JWT_SECRET;if(!secret)throw new Error('Order tracking is not configured');return crypto.createHmac('sha256',secret).update(order+':'+key).digest('hex');}
+router.post('/',require('../middleware/rate-limit')(15,60000),async(req,res,next)=>{
+ let client;let order,paymentId,token;
+ try{
+ res.set('Cache-Control','no-store');const b=req.body;
+ if(typeof b.idempotencyKey!=='string'||!/^[a-zA-Z0-9-]{20,100}$/.test(b.idempotencyKey))fail('Invalid checkout key.');
+ const customer=b.customer||{},name=String(customer.name||'').trim().slice(0,150);if(!name)fail('Your name is required.');
+ const customerPhone=phone(customer.phone),deliveryAddress=address(customer.address);
+ const email=String(customer.email||'').trim().toLowerCase();if(email&&(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254))fail('Invalid email.');
+ const items=normalizeItems(b.items),method=b.payment_method;
+ const payments=await getSettings('payments');
+ if(method==='COD'){if(!payments.cod_enabled)fail('Cash on delivery is unavailable.',409);}
+ else if(method!=='MYFATOORAH'||!payments.enabled||payments.provider!=='myfatoorah')fail('This payment method is not connected.',409);
+ const fingerprint=sha(JSON.stringify({items,name,phone:customerPhone,address:deliveryAddress,email,method,customer_id:req.customer?.id||null}));
+ client=await db.pool.connect();await client.query('BEGIN');
+ await client.query('SELECT pg_advisory_xact_lock(hashtext($1))',[b.idempotencyKey]);
+ order=(await client.query('SELECT * FROM orders WHERE idempotency_key=$1 FOR UPDATE',[b.idempotencyKey])).rows[0];
+ if(order&&order.checkout_fingerprint!==fingerprint)fail('Your bag or details changed. Refresh checkout and try again.',409);
+ if(!order){
+ await client.query('SELECT id FROM products WHERE id=ANY($1::int[]) ORDER BY id FOR SHARE',[items.map(i=>i.productId)]);
+ const totals=await quote(items,client,deliveryAddress.area);if(!totals.delivery_available)fail('Delivery to this area needs confirmation. Please contact the store or choose a configured area.',409);
+ const number='MKJ-'+crypto.randomBytes(8).toString('hex').toUpperCase();token=trackingToken(number,b.idempotencyKey);
+ order=(await client.query('INSERT INTO orders(order_number,customer_name,customer_phone,customer_address,customer_email,total_amount,subtotal,delivery_fee,status,payment_method,idempotency_key,customer_id,tracking_token_hash,checkout_fingerprint) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *',[number,name,customerPhone,JSON.stringify(deliveryAddress),email||null,totals.total,totals.subtotal,totals.delivery_fee,method==='COD'?'CONFIRMED':'PENDING_PAYMENT',method,b.idempotencyKey,req.customer?.id||null,sha(token),fingerprint])).rows[0];
+ for(const item of totals.items)await client.query('INSERT INTO order_items(order_id,product_id,quantity,price_at_purchase,product_name_ar,product_name_en) VALUES($1,$2,$3,$4,$5,$6)',[order.id,item.productId,item.qty,item.price,item.name_ar,item.name_en]);
+ await client.query('INSERT INTO order_status_history(order_id,new_status,reason) VALUES($1,$2,$3)',[order.id,order.status,method==='COD'?'Cash on delivery order received':'Awaiting verified payment']);
+ }
+ token=token||trackingToken(order.order_number,b.idempotencyKey);
+ const response={success:true,order:{order_number:order.order_number,status:order.status,total_amount:order.total_amount},tracking_token:token};
+ if(method==='COD'){await client.query('COMMIT');return res.status(201).json({...response,payment:{status:'UNPAID',method:'COD'}});}
+ if(order.status!=='PENDING_PAYMENT'){await client.query('COMMIT');return res.json({...response,payment:{status:order.status==='CANCELLED'?'CANCELLED':'SUCCESS'}});}
+ const pending=(await client.query("SELECT * FROM payments WHERE order_id=$1 AND status='PENDING' ORDER BY id DESC LIMIT 1",[order.id])).rows[0];
+ if(pending){if(pending.raw_reference){await client.query('COMMIT');return res.json({...response,payment:{status:'PENDING',redirect_url:pending.raw_reference}});}fail('A payment attempt is still being checked. Please wait before trying again.',409);}
+ paymentId=(await client.query("INSERT INTO payments(order_id,provider,status,amount,currency) VALUES($1,'MYFATOORAH','PENDING',$2,'KWD') RETURNING id",[order.id,order.total_amount])).rows[0].id;
+ await client.query('COMMIT');client.release();client=null;
+ try{
+ const data=await gateway.initiatePayment({invoiceAmount:order.total_amount,orderId:order.order_number,customerName:name,customerPhone,customerEmail:email});
+ const redirect=new URL(data.InvoiceURL);if(redirect.protocol!=='https:')throw new Error('Invalid payment URL');
+ await db.query('UPDATE payments SET provider_invoice_id=$1,raw_reference=$2 WHERE id=$3',[String(data.InvoiceId),redirect.href,paymentId]);
+ res.status(201).json({...response,payment:{status:'PENDING',redirect_url:redirect.href}});
+ }catch(e){
+ // Unknown network outcomes remain pending to prevent duplicate remote invoices.
+ if(e.definitive)await db.query("UPDATE payments SET status='FAILED',updated_at=NOW() WHERE id=$1",[paymentId]);
+ res.status(502).json({error:'Your order is saved. Payment could not be confirmed; check the order before retrying.',order:response.order,tracking_token:token});
+ }
+ }catch(e){if(client)await client.query('ROLLBACK');next(e)}finally{if(client)client.release()}
 });
-
-module.exports = router;
+module.exports=router;

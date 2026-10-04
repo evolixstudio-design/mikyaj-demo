@@ -5,10 +5,10 @@ const db = require('../db');
 router.get('/', async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT id, name_ar, name_en, slug, status 
+      SELECT id, name_ar, name_en, slug, status, priority
       FROM categories 
       WHERE status = 'ACTIVE' 
-      ORDER BY name_en ASC, id ASC
+      ORDER BY priority DESC, name_en ASC, id ASC
     `);
     res.json(result.rows);
   } catch (error) {

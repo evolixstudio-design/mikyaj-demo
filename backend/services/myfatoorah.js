@@ -1,10 +1,13 @@
 const crypto = require('crypto');
 const https = require('https');
 
-const API_KEY = process.env.MYFATOORAH_API_KEY;
-const BASE_URL = process.env.MYFATOORAH_BASE_URL.replace(/\/$/, ''); // remove trailing slash
+const { getSettings, getSecret } = require('./commerce-settings');
 
-function makeRequest(endpoint, method, data = null) {
+async function makeRequest(endpoint, method, data = null) {
+  const settings = await getSettings('payments');
+  const API_KEY = await getSecret('MYFATOORAH_API_KEY');
+  const BASE_URL = settings.mode === 'live' ? 'https://api.myfatoorah.com' : 'https://apitest.myfatoorah.com';
+  if (!API_KEY) throw new Error('Payment gateway is not configured.');
   return new Promise((resolve, reject) => {
     const url = new URL(BASE_URL + endpoint);
     
@@ -28,17 +31,18 @@ function makeRequest(endpoint, method, data = null) {
           if (res.statusCode >= 200 && res.statusCode < 300 && json.IsSuccess === true) {
             resolve(json.Data);
           } else {
-            console.error('MyFatoorah request failed with body:', body);
-            reject(new Error(json.Message || 'MyFatoorah request failed'));
+            const error = new Error('MyFatoorah rejected the request');
+            error.definitive = res.statusCode >= 400 && res.statusCode < 500;
+            reject(error);
           }
         } catch (err) {
-          console.error('MyFatoorah parse failed. Raw body:', body);
           reject(new Error('Invalid response from MyFatoorah'));
         }
       });
     });
 
     req.on('error', reject);
+    req.setTimeout(15000, () => req.destroy(new Error('Gateway timeout')));
 
     if (data) {
       req.write(JSON.stringify(data));
@@ -49,14 +53,15 @@ function makeRequest(endpoint, method, data = null) {
 
 async function initiatePayment({ invoiceAmount, orderId, customerName, customerPhone, customerEmail }) {
   const data = {
-    NotificationOption: 'ALL',
+    NotificationOption: 'LNK',
     InvoiceValue: invoiceAmount,
     CustomerName: customerName,
     DisplayCurrencyIso: 'KWD',
-    CustomerMobile: customerPhone,
-    CustomerEmail: customerEmail || 'test@example.com',
-    CallBackUrl: process.env.MYFATOORAH_SUCCESS_URL,
-    ErrorUrl: process.env.MYFATOORAH_FAILURE_URL,
+    MobileCountryCode: '+965',
+    CustomerMobile: customerPhone.replace(/^\+965/,''),
+    ...(customerEmail ? { CustomerEmail: customerEmail } : {}),
+    CallBackUrl: process.env.MYFATOORAH_SUCCESS_URL || `${process.env.FRONTEND_URL || 'https://mikyajkw.com'}/api/payment/callback`,
+    ErrorUrl: process.env.MYFATOORAH_FAILURE_URL || `${process.env.FRONTEND_URL || 'https://mikyajkw.com'}/checkout-result.html?error=true`,
     Language: 'en',
     CustomerReference: orderId.toString(),
   };
@@ -73,43 +78,18 @@ async function getPaymentStatus(keyId, keyType = 'PaymentId') {
 }
 
 function verifyWebhookSignature(payload, signature, secret) {
-  if (!signature || !secret) return false;
-  
-  // Flatten and order payload according to MyFatoorah Webhook V2 rules
-  // 1. Order alphabetically
-  // 2. exclude null, empty, or array values
-  // 3. format: Key=Value,Key=Value
-  
-  function flattenObj(obj, prefix = '') {
-    let result = {};
-    for (const key in obj) {
-      const val = obj[key];
-      const newKey = prefix ? `${prefix}.${key}` : key;
-      
-      if (val === '' || Array.isArray(val)) {
-        continue;
-      }
-      
-      if (val === null) {
-        result[newKey] = '';
-        continue;
-      }
-      
-      if (typeof val === 'object') {
-        result = { ...result, ...flattenObj(val, newKey) };
-      } else {
-        result[newKey] = val;
-      }
-    }
-    return result;
-  }
-  
-  const flat = flattenObj(payload);
-  const sortedKeys = Object.keys(flat).sort();
-  const stringToSign = sortedKeys.map(k => `${k}=${flat[k]}`).join(',');
-  
-  const hash = crypto.createHmac('sha256', secret).update(stringToSign).digest('base64');
-  return hash === signature;
+ if(typeof signature!=='string'||!secret||!payload?.Data)return false;
+ const data=payload.Data;let keys;
+ if(typeof payload.Event==='object'){
+  if(payload.Event.Code===1&&payload.Event.Name==='PAYMENT_STATUS_CHANGED')keys=['Invoice.Id','Invoice.Status','Transaction.Status','Transaction.PaymentId','Invoice.ExternalIdentifier'];
+  else if(payload.Event.Code===2&&payload.Event.Name==='REFUND_STATUS_CHANGED')keys=['Refund.Id','Refund.Status','Amount.ValueInBaseCurrency','ReferencedInvoice.Id'];
+  else return false;
+ }else if(payload.Event==='TransactionsStatusChanged')keys=['AuthorizationId','BaseCurrency','CreatedDate','CustomerEmail','CustomerMobile','CustomerName','CustomerReference','DisplayCurrency','InvoiceId','InvoiceReference','InvoiceValueInBaseCurrency','InvoiceValueInDisplayCurreny','InvoiceValueInPayCurrency','PayCurrency','PaymentId','PaymentMethod','ReferenceId','TrackId','TransactionStatus','UserDefinedField'];
+ else if(payload.Event==='RefundStatusChanged')keys=['Amount','Comments','CreatedDate','InvoiceId','RefundId','RefundReference','RefundStatus'];
+ else return false;
+ const stringToSign=keys.map(k=>k+'='+String(k.split('.').reduce((v,key)=>v?.[key],data)??'')).join(',');
+ const expected=crypto.createHmac('sha256',secret).update(stringToSign,'utf8').digest('base64');
+ const a=Buffer.from(expected),b=Buffer.from(signature);return a.length===b.length&&crypto.timingSafeEqual(a,b);
 }
 
 async function makeRefund({ paymentId, amount, currency, comment }) {

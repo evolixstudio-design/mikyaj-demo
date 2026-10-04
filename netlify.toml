@@ -1,6 +1,7 @@
 [build]
-  base = "frontend"
-  publish = "mikyaj-demo"
+  base = "."
+  command = "npm run build"
+  publish = "dist"
 
 [[redirects]]
   from = "/api/*"
@@ -8,9 +9,103 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/ar/"
+  to = "/home-ar.html"
+  status = 200
+
+[[redirects]]
+  from = "/en/"
+  to = "/home-en.html"
+  status = 200
+
+[[redirects]]
+  from = "/ar/*"
+  to = "https://mikyaj-backend.onrender.com/ar/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/en/*"
+  to = "https://mikyaj-backend.onrender.com/en/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "https://mikyaj-backend.onrender.com/sitemap.xml"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/login.html"
+  status = 302
+
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/login.html"
+  status = 302
+
+[[redirects]]
+  from = "/shop.html"
+  to = "https://mikyaj-backend.onrender.com/shop.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/blog.html"
+  to = "https://mikyaj-backend.onrender.com/blog.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/product.html"
+  to = "https://mikyaj-backend.onrender.com/product.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/terms.html"
+  to = "https://mikyaj-backend.onrender.com/terms.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/privacy.html"
+  to = "https://mikyaj-backend.onrender.com/privacy.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/delivery.html"
+  to = "https://mikyaj-backend.onrender.com/delivery.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/returns.html"
+  to = "https://mikyaj-backend.onrender.com/returns.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/contact.html"
+  to = "https://mikyaj-backend.onrender.com/contact.html"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

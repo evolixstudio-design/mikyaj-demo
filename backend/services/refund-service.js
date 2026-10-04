@@ -8,7 +8,7 @@ const myfatoorah = require('./myfatoorah');
 async function requestRefund({ orderId, paymentId, amount, reason, adminId, idempotencyKey }) {
   // Validate input
   const refundAmount = parseFloat(amount);
-  if (isNaN(refundAmount) || refundAmount <= 0) {
+  if (!Number.isFinite(refundAmount) || refundAmount <= 0) {
     throw new Error('INVALID_AMOUNT');
   }
 
@@ -23,6 +23,10 @@ async function requestRefund({ orderId, paymentId, amount, reason, adminId, idem
 
   try {
     await client.query('BEGIN');
+    if(!idempotencyKey||!/^[a-zA-Z0-9-]{20,100}$/.test(idempotencyKey))throw new Error('IDEMPOTENCY_KEY_REQUIRED');
+    await client.query('SELECT pg_advisory_xact_lock(hashtext($1))',[idempotencyKey]);
+    const prior=(await client.query('SELECT * FROM refunds WHERE idempotency_key=$1',[idempotencyKey])).rows[0];
+    if(prior){if(prior.order_id!==orderId||prior.payment_id!==Number(paymentId)||Number(prior.amount)!==refundAmount)throw new Error('IDEMPOTENCY_CONFLICT');await client.query('COMMIT');return prior;}
 
     // 1. Lock payment row
     const { rows: paymentRows } = await client.query(
@@ -46,7 +50,7 @@ async function requestRefund({ orderId, paymentId, amount, reason, adminId, idem
 
     // 3. Check existing refunds
     const { rows: refundRows } = await client.query(
-      "SELECT COALESCE(SUM(amount), 0) AS total_refunded FROM refunds WHERE payment_id = $1 AND status IN ('PENDING', 'REFUNDED', 'PROCESSING')",
+      "SELECT COALESCE(SUM(amount), 0) AS total_refunded FROM refunds WHERE payment_id = $1 AND status IN ('PENDING', 'REFUNDED', 'PROCESSING', 'UNKNOWN', 'PROVIDER_ERROR')",
       [payment.id]
     );
 
@@ -116,7 +120,7 @@ async function requestRefund({ orderId, paymentId, amount, reason, adminId, idem
   } catch (err) {
     console.error('Provider Refund Error:', err.message);
     // Provider rejected or network failure.
-    finalStatus = 'PROVIDER_ERROR';
+    finalStatus = err.definitive ? 'FAILED' : 'UNKNOWN';
     // If we're strictly not sure, we could use UNKNOWN. We'll use FAILED or PROVIDER_ERROR
   }
 

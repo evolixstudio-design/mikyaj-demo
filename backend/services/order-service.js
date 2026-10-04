@@ -2,8 +2,8 @@ const { pool } = require('../db');
 
 const VALID_TRANSITIONS = {
   PENDING_PAYMENT: ['CONFIRMED', 'CANCELLED'],
-  CONFIRMED: ['PROCESSING', 'CANCELLED'],
-  PROCESSING: ['READY_FOR_DELIVERY', 'CANCELLED'],
+  CONFIRMED: ['PROCESSING', 'OUT_FOR_DELIVERY', 'CANCELLED'],
+  PROCESSING: ['READY_FOR_DELIVERY', 'OUT_FOR_DELIVERY', 'CANCELLED'],
   READY_FOR_DELIVERY: ['OUT_FOR_DELIVERY'],
   OUT_FOR_DELIVERY: ['DELIVERED'],
   DELIVERED: [],
@@ -22,7 +22,7 @@ async function changeOrderStatus(orderNumber, newStatus, reason, adminId) {
 
     // Lock the row for update to prevent concurrent status changes
     const { rows } = await client.query(
-      'SELECT id, status FROM orders WHERE order_number = $1 FOR UPDATE',
+      'SELECT id, status, payment_method FROM orders WHERE order_number = $1 FOR UPDATE',
       [orderNumber]
     );
 
@@ -41,6 +41,11 @@ async function changeOrderStatus(orderNumber, newStatus, reason, adminId) {
 
     if (!isValidTransition(currentStatus, newStatus)) {
       throw new Error('INVALID_TRANSITION');
+    }
+
+    if (currentStatus === 'PENDING_PAYMENT' && newStatus === 'CONFIRMED') {
+      const paid = await client.query("SELECT id FROM payments WHERE order_id=$1 AND status='SUCCESS' LIMIT 1", [order.id]);
+      if (!paid.rows.length) throw new Error('INVALID_TRANSITION');
     }
 
     // Update order status

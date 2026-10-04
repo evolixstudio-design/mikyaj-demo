@@ -2,9 +2,21 @@ services:
   - type: web
     name: mikyaj-backend
     env: node
-    buildCommand: npm install
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: node backend/server.js
     envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SERVE_DIST
+        value: '1'
+      - key: TRUST_PROXY
+        value: '1'
+      - key: SETTINGS_ENCRYPTION_KEY
+        sync: false
+      - key: CUSTOMER_JWT_SECRET
+        sync: false
+      - key: ORDER_TRACKING_SECRET
+        sync: false
       - key: NODE_VERSION
         value: 24.11.1
       - key: FRONTEND_URL
@@ -17,8 +29,6 @@ services:
         sync: false
       - key: MYFATOORAH_API_KEY
         sync: false
-      - key: MYFATOORAH_BASE_URL
-        value: https://apitest.myfatoorah.com
       - key: MYFATOORAH_WEBHOOK_SECRET
         sync: false
       - key: MYFATOORAH_SUCCESS_URL

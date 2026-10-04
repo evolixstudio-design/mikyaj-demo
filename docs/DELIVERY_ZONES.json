@@ -1,0 +1,414 @@
+{
+  "basis": "Owner-authorized provisional flat area rates from Souk Al-Mubarakiyah. These are editable rates, not measured road distances. Owner supplied postal code is unverified.",
+  "free_threshold": 10,
+  "fee": 3,
+  "enabled": true,
+  "require_area_match": true,
+  "areas": [
+    {
+      "name_en": "Kuwait City",
+      "name_ar": "مدينة الكويت",
+      "fee": 1
+    },
+    {
+      "name_en": "Souk Al-Mubarakiyah",
+      "name_ar": "سوق المباركية",
+      "fee": 1
+    },
+    {
+      "name_en": "Qibla",
+      "name_ar": "القبلة",
+      "fee": 1
+    },
+    {
+      "name_en": "Sharq",
+      "name_ar": "شرق",
+      "fee": 1
+    },
+    {
+      "name_en": "Mirqab",
+      "name_ar": "المرقاب",
+      "fee": 1
+    },
+    {
+      "name_en": "Salhiya",
+      "name_ar": "الصالحية",
+      "fee": 1
+    },
+    {
+      "name_en": "Dasman",
+      "name_ar": "دسمان",
+      "fee": 1
+    },
+    {
+      "name_en": "Bneid Al Gar",
+      "name_ar": "بنيد القار",
+      "fee": 1
+    },
+    {
+      "name_en": "Dasma",
+      "name_ar": "الدسمة",
+      "fee": 1
+    },
+    {
+      "name_en": "Mansouriya",
+      "name_ar": "المنصورية",
+      "fee": 1
+    },
+    {
+      "name_en": "Daiya",
+      "name_ar": "الدعية",
+      "fee": 1
+    },
+    {
+      "name_en": "Nuzha",
+      "name_ar": "النزهة",
+      "fee": 1
+    },
+    {
+      "name_en": "Qadsiya",
+      "name_ar": "القادسية",
+      "fee": 1
+    },
+    {
+      "name_en": "Shamiya",
+      "name_ar": "الشامية",
+      "fee": 1
+    },
+    {
+      "name_en": "Kaifan",
+      "name_ar": "كيفان",
+      "fee": 1
+    },
+    {
+      "name_en": "Hawalli",
+      "name_ar": "حولي",
+      "fee": 2
+    },
+    {
+      "name_en": "Salmiya",
+      "name_ar": "السالمية",
+      "fee": 2
+    },
+    {
+      "name_en": "Salwa",
+      "name_ar": "سلوى",
+      "fee": 2
+    },
+    {
+      "name_en": "Jabriya",
+      "name_ar": "الجابرية",
+      "fee": 2
+    },
+    {
+      "name_en": "Rumaithiya",
+      "name_ar": "الرميثية",
+      "fee": 2
+    },
+    {
+      "name_en": "Bayan",
+      "name_ar": "بيان",
+      "fee": 2
+    },
+    {
+      "name_en": "Mishref",
+      "name_ar": "مشرف",
+      "fee": 2
+    },
+    {
+      "name_en": "Shaab",
+      "name_ar": "الشعب",
+      "fee": 2
+    },
+    {
+      "name_en": "Surra",
+      "name_ar": "السرة",
+      "fee": 2
+    },
+    {
+      "name_en": "Rawda",
+      "name_ar": "الروضة",
+      "fee": 2
+    },
+    {
+      "name_en": "Adailiya",
+      "name_ar": "العديلية",
+      "fee": 2
+    },
+    {
+      "name_en": "Khaldiya",
+      "name_ar": "الخالدية",
+      "fee": 2
+    },
+    {
+      "name_en": "Yarmouk",
+      "name_ar": "اليرموك",
+      "fee": 2
+    },
+    {
+      "name_en": "Qurtuba",
+      "name_ar": "قرطبة",
+      "fee": 2
+    },
+    {
+      "name_en": "Shuwaikh",
+      "name_ar": "الشويخ",
+      "fee": 2
+    },
+    {
+      "name_en": "Sulaibikhat",
+      "name_ar": "الصليبيخات",
+      "fee": 2
+    },
+    {
+      "name_en": "Doha",
+      "name_ar": "الدوحة",
+      "fee": 2
+    },
+    {
+      "name_en": "Ghornata",
+      "name_ar": "غرناطة",
+      "fee": 2
+    },
+    {
+      "name_en": "Farwaniya",
+      "name_ar": "الفروانية",
+      "fee": 2
+    },
+    {
+      "name_en": "Khaitan",
+      "name_ar": "خيطان",
+      "fee": 2
+    },
+    {
+      "name_en": "Omariya",
+      "name_ar": "العمرية",
+      "fee": 2
+    },
+    {
+      "name_en": "Rabiya",
+      "name_ar": "الرابية",
+      "fee": 2
+    },
+    {
+      "name_en": "Riggae",
+      "name_ar": "الرقعي",
+      "fee": 2
+    },
+    {
+      "name_en": "Ardiya",
+      "name_ar": "العارضية",
+      "fee": 2
+    },
+    {
+      "name_en": "Andalus",
+      "name_ar": "الأندلس",
+      "fee": 2
+    },
+    {
+      "name_en": "Firdous",
+      "name_ar": "الفردوس",
+      "fee": 2
+    },
+    {
+      "name_en": "Rehab",
+      "name_ar": "الرحاب",
+      "fee": 2
+    },
+    {
+      "name_en": "Ishbiliya",
+      "name_ar": "إشبيلية",
+      "fee": 2
+    },
+    {
+      "name_en": "Rai",
+      "name_ar": "الري",
+      "fee": 2
+    },
+    {
+      "name_en": "Abdullah Al-Mubarak",
+      "name_ar": "عبدالله المبارك",
+      "fee": 2
+    },
+    {
+      "name_en": "Sabah Al-Nasser",
+      "name_ar": "صباح الناصر",
+      "fee": 2
+    },
+    {
+      "name_en": "Jahra",
+      "name_ar": "الجهراء",
+      "fee": 3
+    },
+    {
+      "name_en": "Saad Al-Abdullah",
+      "name_ar": "سعد العبدالله",
+      "fee": 3
+    },
+    {
+      "name_en": "Sulaibiya",
+      "name_ar": "الصليبية",
+      "fee": 3
+    },
+    {
+      "name_en": "Naseem",
+      "name_ar": "النسيم",
+      "fee": 3
+    },
+    {
+      "name_en": "Qasr",
+      "name_ar": "القصر",
+      "fee": 3
+    },
+    {
+      "name_en": "Waha",
+      "name_ar": "الواحة",
+      "fee": 3
+    },
+    {
+      "name_en": "Oyoun",
+      "name_ar": "العيون",
+      "fee": 3
+    },
+    {
+      "name_en": "Naeem",
+      "name_ar": "النعيم",
+      "fee": 3
+    },
+    {
+      "name_en": "Taima",
+      "name_ar": "تيماء",
+      "fee": 3
+    },
+    {
+      "name_en": "Mubarak Al-Kabeer",
+      "name_ar": "مبارك الكبير",
+      "fee": 3
+    },
+    {
+      "name_en": "Sabah Al-Salem",
+      "name_ar": "صباح السالم",
+      "fee": 3
+    },
+    {
+      "name_en": "Adan",
+      "name_ar": "العدان",
+      "fee": 3
+    },
+    {
+      "name_en": "Qurain",
+      "name_ar": "القرين",
+      "fee": 3
+    },
+    {
+      "name_en": "Qusour",
+      "name_ar": "القصور",
+      "fee": 3
+    },
+    {
+      "name_en": "Messila",
+      "name_ar": "المسيلة",
+      "fee": 3
+    },
+    {
+      "name_en": "Abu Al Hasaniya",
+      "name_ar": "أبو الحصانية",
+      "fee": 3
+    },
+    {
+      "name_en": "Funaitees",
+      "name_ar": "الفنيطيس",
+      "fee": 3
+    },
+    {
+      "name_en": "Abu Fatira",
+      "name_ar": "أبو فطيرة",
+      "fee": 3
+    },
+    {
+      "name_en": "Masayel",
+      "name_ar": "المسايل",
+      "fee": 3
+    },
+    {
+      "name_en": "Ahmadi",
+      "name_ar": "الأحمدي",
+      "fee": 3
+    },
+    {
+      "name_en": "Fahaheel",
+      "name_ar": "الفحيحيل",
+      "fee": 3
+    },
+    {
+      "name_en": "Mangaf",
+      "name_ar": "المنقف",
+      "fee": 3
+    },
+    {
+      "name_en": "Mahboula",
+      "name_ar": "المهبولة",
+      "fee": 3
+    },
+    {
+      "name_en": "Abu Halifa",
+      "name_ar": "أبو حليفة",
+      "fee": 3
+    },
+    {
+      "name_en": "Fintas",
+      "name_ar": "الفنطاس",
+      "fee": 3
+    },
+    {
+      "name_en": "Egaila",
+      "name_ar": "العقيلة",
+      "fee": 3
+    },
+    {
+      "name_en": "Hadiya",
+      "name_ar": "هدية",
+      "fee": 3
+    },
+    {
+      "name_en": "Riqqa",
+      "name_ar": "الرقة",
+      "fee": 3
+    },
+    {
+      "name_en": "Sabahiya",
+      "name_ar": "الصباحية",
+      "fee": 3
+    },
+    {
+      "name_en": "Ali Sabah Al-Salem",
+      "name_ar": "علي صباح السالم",
+      "fee": 3
+    },
+    {
+      "name_en": "Sabah Al-Ahmad",
+      "name_ar": "صباح الأحمد",
+      "fee": 3
+    },
+    {
+      "name_en": "Wafra",
+      "name_ar": "الوفرة",
+      "fee": 3
+    },
+    {
+      "name_en": "Khiran",
+      "name_ar": "الخيران",
+      "fee": 3
+    },
+    {
+      "name_en": "Zour",
+      "name_ar": "الزور",
+      "fee": 3
+    },
+    {
+      "name_en": "Abdali",
+      "name_ar": "العبدلي",
+      "fee": 3
+    }
+  ]
+}

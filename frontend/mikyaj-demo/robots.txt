@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /driver/
+Disallow: /checkout
+Disallow: /account
+Disallow: /track
+Disallow: /cart
+Disallow: /wishlist
+Sitemap: https://mikyajkw.com/sitemap.xml

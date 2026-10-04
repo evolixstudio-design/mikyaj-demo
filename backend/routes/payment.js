@@ -1,133 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const { pool } = require('../db');
-const myfatoorah = require('../services/myfatoorah');
-
-// Generic helper to process payment status securely
-async function processPaymentResult(client, paymentId) {
-  // Call MyFatoorah to get the definitive payment details
-  const details = await myfatoorah.getPaymentStatus(paymentId, 'PaymentId');
-  
-  if (!details || !details.InvoiceId) {
-    throw new Error('Invalid payment details returned from MyFatoorah');
-  }
-
-  const invoiceId = details.InvoiceId.toString();
-  const mfStatus = details.InvoiceStatus; // e.g., 'Paid', 'Failed', 'Pending'
-  const mfReference = details.InvoiceReference;
-  
-  // A single Invoice might have multiple "InvoiceTransactions". 
-  // For simplicity, we just use the top-level InvoiceStatus and total InvoiceValue.
-  const mfTotal = parseFloat(details.InvoiceValue);
-
-  // Retrieve the payment row
-  const { rows: paymentRows } = await client.query(
-    'SELECT * FROM payments WHERE provider_invoice_id = $1',
-    [invoiceId]
-  );
-
-  if (paymentRows.length === 0) {
-    throw new Error(`Payment record not found for invoice ID: ${invoiceId}`);
-  }
-
-  const payment = paymentRows[0];
-
-  // Retrieve the order
-  const { rows: orderRows } = await client.query(
-    'SELECT * FROM orders WHERE id = $1 FOR UPDATE', // lock order for update
-    [payment.order_id]
-  );
-  
-  if (orderRows.length === 0) {
-    throw new Error(`Order not found for payment ID: ${payment.id}`);
-  }
-  
-  const order = orderRows[0];
-
-  let newPaymentStatus = 'PENDING';
-  let newOrderStatus = order.status;
-
-  if (mfStatus === 'Paid') {
-    // Crucial check: verify amount matches exactly what we expect
-    const expectedAmount = parseFloat(order.total_amount);
-    if (Math.abs(expectedAmount - mfTotal) > 0.001) {
-      newPaymentStatus = 'AMOUNT_MISMATCH';
-      newOrderStatus = 'PENDING_PAYMENT'; // Do NOT mark paid
-      console.warn(`Amount mismatch on order ${order.order_number}: Expected ${expectedAmount}, Gateway reported ${mfTotal}`);
-    } else {
-      newPaymentStatus = 'SUCCESS';
-      newOrderStatus = 'CONFIRMED';
-    }
-  } else if (mfStatus === 'Failed' || mfStatus === 'Canceled') {
-    newPaymentStatus = mfStatus.toUpperCase(); // FAILED or CANCELED
-    // Order remains in whatever state it was (e.g. PENDING_PAYMENT)
-  }
-
-  // Update payment record
-  await client.query(`
-    UPDATE payments 
-    SET status = $1, provider_payment_id = $2, provider_reference = $3, updated_at = CURRENT_TIMESTAMP
-    WHERE id = $4
-  `, [newPaymentStatus, paymentId, mfReference, payment.id]);
-
-  // Update order status if necessary
-  if (newOrderStatus !== order.status) {
-    await client.query(`
-      UPDATE orders 
-      SET status = $1, updated_at = CURRENT_TIMESTAMP
-      WHERE id = $2
-    `, [newOrderStatus, order.id]);
-  }
-
-  return {
-    order_number: order.order_number,
-    payment_status: newPaymentStatus,
-    order_status: newOrderStatus
-  };
+const router=require('express').Router(),{pool}=require('../db'),gateway=require('../services/myfatoorah');
+async function applyPaymentDetails(client,details,paymentId){
+ if(!details?.InvoiceId)throw new Error('INVALID_PROVIDER_RESPONSE');
+ const p=(await client.query('SELECT * FROM payments WHERE provider_invoice_id=$1 FOR UPDATE',[String(details.InvoiceId)])).rows[0];if(!p)throw new Error('PAYMENT_NOT_FOUND');
+ const o=(await client.query('SELECT * FROM orders WHERE id=$1 FOR UPDATE',[p.order_id])).rows[0];if(!o)throw new Error('ORDER_NOT_FOUND');
+ if(details.CustomerReference&&String(details.CustomerReference)!==o.order_number)throw new Error('PAYMENT_REFERENCE_MISMATCH');
+ let status=p.status,next=o.status;const amount=Number(details.InvoiceValue);
+ if(details.InvoiceStatus==='Paid'){
+  if(!Number.isFinite(amount)||Math.round(amount*1000)!==Math.round(Number(o.total_amount)*1000))status='AMOUNT_MISMATCH';
+  else{status='SUCCESS';if(o.status==='PENDING_PAYMENT')next='CONFIRMED'}
+ }else if(p.status!=='SUCCESS'&&['Failed','Canceled'].includes(details.InvoiceStatus))status=details.InvoiceStatus.toUpperCase();
+ // Once verified successful, a repeated or older event cannot undo payment or fulfilment.
+ if(p.status==='SUCCESS')status='SUCCESS';
+ await client.query('UPDATE payments SET status=$1,provider_payment_id=COALESCE($2,provider_payment_id),provider_reference=$3,updated_at=NOW() WHERE id=$4',[status,paymentId||null,details.InvoiceReference||null,p.id]);
+ if(next!==o.status){await client.query('UPDATE orders SET status=$1,updated_at=NOW() WHERE id=$2',[next,o.id]);await client.query('INSERT INTO order_status_history(order_id,old_status,new_status,reason) VALUES($1,$2,$3,$4)',[o.id,o.status,next,'Payment verified by provider']);}
+ return {order_number:o.order_number,payment_status:status,order_status:next};
 }
-
-// GET /api/payment/callback
-// Typically MyFatoorah redirects back with ?paymentId=12345
-router.get('/callback', async (req, res) => {
-  const { paymentId } = req.query;
-  if (!paymentId) {
-    return res.status(400).send('Missing paymentId parameter');
-  }
-
-  const client = await pool.connect();
-  try {
-    await client.query('BEGIN');
-    const result = await processPaymentResult(client, paymentId);
-    await client.query('COMMIT');
-    
-    // Redirect to a frontend page with query params so frontend can display
-    res.redirect(`/checkout-result.html?order=${result.order_number}&status=${result.payment_status}`);
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('Payment callback error:', error);
-    res.redirect(`/checkout-result.html?error=true`);
-  } finally {
-    client.release();
-  }
-});
-
-// GET /api/payment/status/:orderNumber
-// Expose public safe status to the frontend
-router.get('/status/:orderNumber', async (req, res) => {
-  try {
-    const { orderNumber } = req.params;
-    const { rows } = await pool.query('SELECT status, total_amount FROM orders WHERE order_number = $1', [orderNumber]);
-    if (rows.length === 0) return res.status(404).json({ error: 'Order not found' });
-    
-    res.json({
-      order_number: orderNumber,
-      status: rows[0].status,
-      total_amount: rows[0].total_amount
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to retrieve order status' });
-  }
-});
-
-router.processPaymentResult = processPaymentResult;
-module.exports = router;
+async function processPaymentResult(client,paymentId){return applyPaymentDetails(client,await gateway.getPaymentStatus(paymentId,'PaymentId'),paymentId)}
+router.get('/callback',require('../middleware/rate-limit')(30,60000),async(req,res)=>{const id=String(req.query.paymentId||'');if(!/^[a-zA-Z0-9-]{1,100}$/.test(id))return res.status(400).send('Invalid payment reference');let client;try{const details=await gateway.getPaymentStatus(id,'PaymentId');client=await pool.connect();await client.query('BEGIN');const result=await applyPaymentDetails(client,details,id);await client.query('COMMIT');res.redirect('/checkout-result.html?order='+encodeURIComponent(result.order_number));}catch(e){if(client)await client.query('ROLLBACK');console.error('Payment callback failed:',e.code||e.name);res.redirect('/checkout-result.html?error=true')}finally{client?.release()}});
+router.processPaymentResult=processPaymentResult;router.applyPaymentDetails=applyPaymentDetails;module.exports=router;

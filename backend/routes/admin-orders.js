@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
     let query = `
       SELECT o.id, o.order_number, o.customer_name, o.customer_phone, o.customer_email, 
-             o.total_amount, o.currency, o.status, o.created_at, o.updated_at,
+             o.total_amount, o.payment_method, o.currency, o.status, o.created_at, o.updated_at,
              (
                 SELECT p.status 
                 FROM payments p 
@@ -96,7 +96,7 @@ router.get('/', async (req, res) => {
 
     let nextCursor = null;
     if (rows.length > parsedLimit) {
-      nextCursor = rows[parsedLimit].id.toString();
+      nextCursor = rows[parsedLimit - 1].id.toString();
       rows.pop(); // remove the extra item
     }
 
@@ -133,7 +133,7 @@ router.get('/:orderNumber', async (req, res) => {
     const order = orderRows[0];
 
     const { rows: itemRows } = await pool.query(`
-      SELECT oi.product_id, p.sku, p.name_en AS product_name, oi.quantity, oi.price_at_purchase,
+      SELECT oi.product_name_ar, oi.product_name_en, oi.product_id, p.sku, p.name_en AS product_name, oi.quantity, oi.price_at_purchase,
              (oi.quantity * oi.price_at_purchase) AS line_total,
              (SELECT cloudinary_url FROM product_images pi WHERE pi.product_id = p.id ORDER BY image_order ASC LIMIT 1) as image_url
       FROM order_items oi
@@ -142,7 +142,7 @@ router.get('/:orderNumber', async (req, res) => {
     `, [order.id]);
 
     const { rows: paymentRows } = await pool.query(`
-      SELECT provider, provider_invoice_id, provider_payment_id, provider_reference, status, amount, currency, created_at
+      SELECT id, provider, provider_invoice_id, provider_payment_id, provider_reference, status, amount, currency, created_at
       FROM payments
       WHERE order_id = $1
       ORDER BY created_at DESC
@@ -156,7 +156,7 @@ router.get('/:orderNumber', async (req, res) => {
 
     // Consistency check
     let consistency = null;
-    if (order.status !== 'PENDING_PAYMENT' && order.status !== 'CANCELLED' && paymentStatus !== 'SUCCESS' && paymentStatus !== 'PAID') {
+    if (order.payment_method !== 'COD' && order.status !== 'PENDING_PAYMENT' && order.status !== 'CANCELLED' && paymentStatus !== 'SUCCESS' && paymentStatus !== 'PAID') {
       consistency = {
         status: 'WARNING',
         code: 'ORDER_PAYMENT_STATE_REQUIRES_REVIEW',
@@ -183,6 +183,7 @@ router.get('/:orderNumber', async (req, res) => {
       order: {
         order_number: order.order_number,
         status: order.status,
+        payment_method: order.payment_method,
         customer_name: order.customer_name,
         customer_phone: order.customer_phone,
         customer_email: order.customer_email,
