@@ -1,8 +1,8 @@
 const express=require('express'),compression=require('compression'),path=require('node:path');
 const {optionalCustomer}=require('./middleware/customer-auth');
 const {requireAdminAuth}=require('./middleware/admin-auth');
-function createApp(){const app=express();app.disable('x-powered-by');if(process.env.TRUST_PROXY==='1')app.set('trust proxy',1);app.use(compression({threshold:1024}));
-app.use((req,res,next)=>{res.set({'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','Permissions-Policy':'camera=(), microphone=(), geolocation=()'});next()});
+function createApp({localPreview=false}={}){const preview=localPreview&&process.env.NODE_ENV==='test';const app=express();app.disable('x-powered-by');if(process.env.TRUST_PROXY==='1')app.set('trust proxy',1);app.use(compression({threshold:1024}));
+app.use((req,res,next)=>{res.set({'X-Content-Type-Options':'nosniff','X-Frame-Options':preview?'SAMEORIGIN':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','Permissions-Policy':'camera=(), microphone=(), geolocation=()'});next()});
 app.use('/api',(req,res,next)=>{res.set('Cache-Control','no-store');if(['GET','HEAD','OPTIONS'].includes(req.method)||req.path.startsWith('/webhook'))return next();const origin=req.headers.origin;const allowed=[process.env.FRONTEND_URL||'https://mikyajkw.com','https://mikyajkw.com',...(process.env.NODE_ENV==='production'?[]:['http://localhost:3000','http://127.0.0.1:3000','http://127.0.0.1:3100'])];if(origin&&!allowed.includes(origin))return res.status(403).json({error:'Request origin is not allowed.'});if(req.headers['sec-fetch-site']==='cross-site')return res.status(403).json({error:'Cross-site request rejected.'});if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))return res.status(415).json({error:'Use JSON for this request.'});next()});
 app.use(express.json({limit:'6mb'}));app.use('/api',optionalCustomer);
 for(const [route,file]of Object.entries({health:'health',products:'products',categories:'categories',brands:'brands',checkout:'checkout',webhook:'webhook',store:'store',customer:'customer',manage:'manage'}))app.use('/api/'+route,require('./routes/'+file));
@@ -11,6 +11,7 @@ app.use('/api/admin/orders',requireAdminAuth,require('./routes/admin-orders'));a
 // Order details are available only through an authenticated account or private tracking token.
 app.get('/api/payment/status/:number',(req,res)=>res.status(410).json({error:'Use the private order tracking page.'}));app.use('/api/payment',require('./routes/payment'));
 app.use('/api',(req,res)=>res.status(404).json({error:'API route not found.'}));
+if(preview)app.get('/__preview/mobile',(req,res)=>res.sendFile(path.resolve(__dirname,'../tests/preview-mobile.html')));
 app.use(require('./routes/seo'));
 const root=path.resolve(__dirname,'../',process.env.SERVE_DIST==='1'?'dist':'frontend/mikyaj-demo');
 app.get(['/admin','/admin/','/admin/login'],(req,res)=>res.redirect('/admin/login.html'));
