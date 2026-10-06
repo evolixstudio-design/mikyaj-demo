@@ -1,0 +1,23 @@
+BEGIN;
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS image_alt_ar TEXT;
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS image_alt_en TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS name_ar TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS name_en TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS image_url TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS image_alt_ar TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS image_alt_en TEXT;
+ALTER TABLE brands ADD COLUMN IF NOT EXISTS priority INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS inventory_quantity INTEGER CHECK(inventory_quantity>=0);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS low_stock_threshold INTEGER NOT NULL DEFAULT 5 CHECK(low_stock_threshold>=0);
+CREATE INDEX IF NOT EXISTS idx_products_inventory ON products(inventory_quantity) WHERE deleted_at IS NULL;
+CREATE TABLE IF NOT EXISTS admin_saved_views (
+ id SERIAL PRIMARY KEY, admin_id INTEGER NOT NULL REFERENCES admin_users(id) ON DELETE CASCADE,
+ name TEXT NOT NULL, filters JSONB NOT NULL, UNIQUE(admin_id,name)
+);
+CREATE TABLE IF NOT EXISTS media_assets (
+ id UUID PRIMARY KEY, url TEXT NOT NULL UNIQUE, original_reference TEXT,
+ purpose TEXT NOT NULL, width INTEGER NOT NULL, height INTEGER NOT NULL,
+ bytes INTEGER NOT NULL, admin_id INTEGER REFERENCES admin_users(id), created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+COMMIT;

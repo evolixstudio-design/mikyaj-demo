@@ -1,0 +1,5 @@
+const router=require('express').Router();
+const {getSettings,setSettings,audit}=require('../services/commerce-settings'),{fail}=require('../services/commerce-quote');
+router.get('/product-fields',async(req,res,next)=>{try{res.json((await getSettings('product_fields')).definitions||[])}catch(e){next(e)}});
+router.put('/settings/product-fields',async(req,res,next)=>{try{const rows=req.body.definitions;if(!Array.isArray(rows)||rows.length>30)fail('Use up to 30 product fields');const keys=new Set();const definitions=rows.map(d=>{if(!/^[a-z][a-z0-9_]{0,39}$/.test(d.key)||keys.has(d.key)||!['text','number','boolean'].includes(d.type)||!String(d.label_en||'').trim())fail('Each field needs a unique key, label and valid type');keys.add(d.key);return {key:d.key,type:d.type,label_en:String(d.label_en).slice(0,100),label_ar:String(d.label_ar||'').slice(0,100),visible:d.visible===true}});await setSettings('product_fields',{definitions});await audit(req.admin.id,'settings.product_fields','definitions');res.json({success:true})}catch(e){next(e)}});
+module.exports=router;

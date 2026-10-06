@@ -3,7 +3,7 @@ export const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 export const params=new URLSearchParams(location.search);
 const routeLang=location.pathname.match(/^\/(ar|en)(?:\/|$)/)?.[1];
 export let lang=routeLang||params.get('lang')||localStorage.getItem('mikyaj_lang')||'ar';if(!['en','ar'].includes(lang))lang='ar';
-document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';localStorage.setItem('mikyaj_lang',lang);
+document.documentElement.lang=lang;document.documentElement.dir='ltr';localStorage.setItem('mikyaj_lang',lang);
 export const t=(en,ar)=>lang==='ar'?ar:en;
 export const name=p=>p?.['name_'+lang]||p?.name_ar||p?.name_en||t('Product','منتج');
 export const kwd=v=>Number(v||0).toFixed(3)+' '+t('KWD','د.ك');

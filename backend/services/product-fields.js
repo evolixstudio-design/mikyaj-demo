@@ -1,0 +1,5 @@
+const {getSettings}=require('./commerce-settings');
+const {fail}=require('./commerce-quote');
+async function validate(values){const definitions=(await getSettings('product_fields')).definitions||[],output={};if(!values||typeof values!=='object'||Array.isArray(values))fail('Invalid custom fields');for(const key of Object.keys(values)){const field=definitions.find(d=>d.key===key);if(!field)fail('Unknown custom field: '+key);const value=values[key];if(value===''||value==null)continue;if(field.type==='number'){if(!Number.isFinite(Number(value)))fail('Invalid number for '+field.label_en);output[key]=Number(value)}else if(field.type==='boolean'){if(typeof value!=='boolean')fail('Invalid checkbox value');output[key]=value}else output[key]=String(value).slice(0,2000)}return output}
+async function display(values){const definitions=(await getSettings('product_fields')).definitions||[];return definitions.filter(d=>d.visible&&Object.hasOwn(values||{},d.key)).map(d=>({label_en:d.label_en,label_ar:d.label_ar,value:values[d.key]}))}
+module.exports={validate,display};

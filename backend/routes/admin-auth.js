@@ -15,8 +15,8 @@ router.post('/login', async (req, res) => {
 
     // Lookup user
     const { rows } = await pool.query(
-      'SELECT id, email, password_hash, role, status FROM admin_users WHERE email = $1',
-      [email]
+      'SELECT id, email, password_hash, role, status, session_version FROM admin_users WHERE email = $1',
+      [String(email).trim().toLowerCase()]
     );
 
     if (rows.length === 0) {
@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: admin.id, email: admin.email, role: admin.role },
+      { id: admin.id, email: admin.email, role: admin.role, session_version: admin.session_version },
       secret,
       { expiresIn: '12h' } // Typical admin session duration
     );

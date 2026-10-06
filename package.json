@@ -12,7 +12,12 @@
     "db:migrate": "node scripts/migrate-commerce.cjs",
     "test:catalog": "node --test tests/scraper.test.cjs tests/enrichment-import.test.cjs",
     "test:review": "node tests/catalog-review-browser.cjs",
-    "scrape:details": "node scripts/scrape-catalog-details.cjs"
+    "scrape:details": "node scripts/scrape-catalog-details.cjs",
+    "test:admin": "node --test tests/admin-upgrade.test.cjs",
+    "test:admin:browser": "node tests/admin-upgrade-browser.cjs",
+    "preview:catalog": "node tests/preview-server.cjs --catalog --persistent",
+    "test:media:browser": "node tests/catalog-media-browser.cjs",
+    "test:translation": "node --test tests/translation-completion.test.cjs"
   },
   "repository": {
     "type": "git",

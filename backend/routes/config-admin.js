@@ -1,0 +1,7 @@
+const router=require('express').Router();
+const {getSettings,setSettings,audit}=require('../services/commerce-settings');
+const {fail}=require('../services/commerce-quote');
+const schemas={tax:{enabled:'boolean',rate:'rate',shipping_taxable:'boolean',label:'string'},general:{store_name:'string',email:'email',phone:'string'},location:{name:'string',address_en:'string',address_ar:'string',postal_code:'string'},events:{enabled:'boolean'},checkout:{guest_enabled:'boolean',order_note_enabled:'boolean'},accounts:{registration_enabled:'boolean'},notifications:{admin_email:'email'},market:{country:'string'}};
+router.get('/settings/sections',async(req,res,next)=>{try{const output={};for(const key of Object.keys(schemas))output[key]=await getSettings(key);res.json(output)}catch(e){next(e)}});
+router.put('/settings/:key',async(req,res,next)=>{const schema=schemas[req.params.key];if(!schema)return next();try{const value={};for(const[key,type]of Object.entries(schema)){const v=req.body[key];if(type==='rate'){const n=Number(v);if(!Number.isFinite(n)||n<0||n>100)fail('Tax rate must be between 0 and 100');value[key]=n}else if(type==='boolean'){if(typeof v!=='boolean')fail('Invalid setting: '+key);value[key]=v}else{value[key]=String(v||'').trim().slice(0,1000);if(type==='email'&&value[key]&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value[key]))fail('Invalid email')}}await setSettings(req.params.key,value);await audit(req.admin.id,'settings.save',req.params.key);res.json({success:true})}catch(e){next(e)}});
+module.exports=router;

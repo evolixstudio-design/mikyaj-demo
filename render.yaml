@@ -3,7 +3,7 @@ services:
     name: mikyaj-backend
     env: node
     buildCommand: npm ci --include=dev && npm run build
-    startCommand: node backend/server.js
+    startCommand: node scripts/migrate-commerce.cjs && node backend/server.js
     envVars:
       - key: NODE_ENV
         value: production

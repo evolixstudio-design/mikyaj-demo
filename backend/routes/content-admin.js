@@ -1,0 +1,10 @@
+const router=require('express').Router();
+const {getSettings,setSettings,audit}=require('../services/commerce-settings');
+const {validateUrl}=require('../services/media');
+const {fail}=require('../services/commerce-quote');
+const safeLink=v=>{const link=String(v||'/shop.html');if(!/^\/(?!\/)[A-Za-z0-9_/.?=&%\-]*$/.test(link))fail('Use a storefront-relative link, such as /shop.html');return link};
+router.get('/content/home',async(req,res,next)=>{try{res.json(await getSettings('homepage'))}catch(e){next(e)}});
+router.put('/content/home',async(req,res,next)=>{try{const b=req.body,value={};for(const key of ['title_en','title_ar','description_en','description_ar','button_en','button_ar','eyebrow_en','eyebrow_ar','image_alt_en','image_alt_ar'])value[key]=String(b[key]||'').trim().slice(0,1000);value.image_url=validateUrl(b.image_url);value.button_url=safeLink(b.button_url);for(const key of ['show_categories','show_brands','show_featured','show_recommendations'])value[key]=b[key]!==false;await setSettings('homepage',value);await audit(req.admin.id,'content.home','homepage');res.json({success:true})}catch(e){next(e)}});
+router.get('/content/navigation',async(req,res,next)=>{try{res.json(await getSettings('navigation'))}catch(e){next(e)}});
+router.put('/content/navigation',async(req,res,next)=>{try{if(!Array.isArray(req.body.links)||req.body.links.length>12)fail('Use up to 12 navigation links');const links=req.body.links.map(l=>({label_en:String(l.label_en||'').trim().slice(0,80),label_ar:String(l.label_ar||'').trim().slice(0,80),url:safeLink(l.url)}));if(links.some(l=>!l.label_en||!l.label_ar))fail('Both link labels are required');await setSettings('navigation',{links});await audit(req.admin.id,'content.navigation','navigation');res.json({success:true})}catch(e){next(e)}});
+module.exports=router;

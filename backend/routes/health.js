@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
   try {
     // Verify DB connectivity
     await db.query('SELECT 1');
-    res.json({ status: 'ok' });
+    res.json({ status: 'ok', assets: require('../services/asset-version'), release: process.env.RENDER_GIT_COMMIT || process.env.COMMIT_REF || null });
   } catch (error) {
     console.error('[Health Check] Database unavailable:', error.message);
     res.status(503).json({ status: 'error', message: 'Database unavailable' });

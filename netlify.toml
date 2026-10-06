@@ -104,6 +104,7 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Cache-Control = "no-cache"
 
 [[headers]]
   for = "/admin/*"
@@ -115,3 +116,13 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

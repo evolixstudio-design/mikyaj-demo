@@ -1,0 +1,3 @@
+const crypto=require('node:crypto'),db=require('../db');
+async function ownedOrder(req){const o=(await db.query('SELECT * FROM orders WHERE order_number=$1',[req.params.number])).rows[0];const missing=()=>{throw Object.assign(new Error('Order not found'),{status:404})};if(!o)missing();if(req.customer?.id===o.customer_id)return o;const token=String(req.headers['x-order-token']||''),hash=crypto.createHash('sha256').update(token).digest('hex');if(!o.tracking_token_hash||!token||!crypto.timingSafeEqual(Buffer.from(hash),Buffer.from(o.tracking_token_hash)))missing();return o;}
+module.exports={ownedOrder};

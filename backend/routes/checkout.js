@@ -11,24 +11,30 @@ router.post('/',require('../middleware/rate-limit')(15,60000),async(req,res,next
  try{
  res.set('Cache-Control','no-store');const b=req.body;
  if(typeof b.idempotencyKey!=='string'||!/^[a-zA-Z0-9-]{20,100}$/.test(b.idempotencyKey))fail('Invalid checkout key.');
+ const checkoutSettings=await getSettings('checkout');
+ if(checkoutSettings.guest_enabled===false&&!req.customer)fail('Please sign in before checkout.',401);
  const customer=b.customer||{},name=String(customer.name||'').trim().slice(0,150);if(!name)fail('Your name is required.');
  const customerPhone=phone(customer.phone),deliveryAddress=address(customer.address);
+ if(checkoutSettings.order_note_enabled===false)deliveryAddress.notes='';
  const email=String(customer.email||'').trim().toLowerCase();if(email&&(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254))fail('Invalid email.');
  const items=normalizeItems(b.items),method=b.payment_method;
  const payments=await getSettings('payments');
  if(method==='COD'){if(!payments.cod_enabled)fail('Cash on delivery is unavailable.',409);}
  else if(method!=='MYFATOORAH'||!payments.enabled||payments.provider!=='myfatoorah')fail('This payment method is not connected.',409);
- const fingerprint=sha(JSON.stringify({items,name,phone:customerPhone,address:deliveryAddress,email,method,customer_id:req.customer?.id||null}));
+ const fingerprint=sha(JSON.stringify({items,name,phone:customerPhone,address:deliveryAddress,email,method,code:String(b.discount_code||'').trim().toUpperCase(),customer_id:req.customer?.id||null}));
  client=await db.pool.connect();await client.query('BEGIN');
  await client.query('SELECT pg_advisory_xact_lock(hashtext($1))',[b.idempotencyKey]);
  order=(await client.query('SELECT * FROM orders WHERE idempotency_key=$1 FOR UPDATE',[b.idempotencyKey])).rows[0];
  if(order&&order.checkout_fingerprint!==fingerprint)fail('Your bag or details changed. Refresh checkout and try again.',409);
  if(!order){
- await client.query('SELECT id FROM products WHERE id=ANY($1::int[]) ORDER BY id FOR SHARE',[items.map(i=>i.productId)]);
- const totals=await quote(items,client,deliveryAddress.area);if(!totals.delivery_available)fail('Delivery to this area needs confirmation. Please contact the store or choose a configured area.',409);
+ await client.query('SELECT id FROM products WHERE id=ANY($1::int[]) ORDER BY id FOR UPDATE',[items.map(i=>i.productId)]);
+ const totals=await quote(items,client,deliveryAddress.area,{code:b.discount_code,customer_key:require('../services/discounts').customerKey(req.customer?.id,customerPhone),lock:true});if(!totals.delivery_available)fail('Delivery to this area needs confirmation. Please contact the store or choose a configured area.',409);
  const number='MKJ-'+crypto.randomBytes(8).toString('hex').toUpperCase();token=trackingToken(number,b.idempotencyKey);
  order=(await client.query('INSERT INTO orders(order_number,customer_name,customer_phone,customer_address,customer_email,total_amount,subtotal,delivery_fee,status,payment_method,idempotency_key,customer_id,tracking_token_hash,checkout_fingerprint) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *',[number,name,customerPhone,JSON.stringify(deliveryAddress),email||null,totals.total,totals.subtotal,totals.delivery_fee,method==='COD'?'CONFIRMED':'PENDING_PAYMENT',method,b.idempotencyKey,req.customer?.id||null,sha(token),fingerprint])).rows[0];
- for(const item of totals.items)await client.query('INSERT INTO order_items(order_id,product_id,quantity,price_at_purchase,product_name_ar,product_name_en) VALUES($1,$2,$3,$4,$5,$6)',[order.id,item.productId,item.qty,item.price,item.name_ar,item.name_en]);
+ await client.query('UPDATE orders SET inventory_reserved=true,discount_amount=$2,discount_details=$3,tax_amount=$4,tax_details=$5 WHERE id=$1',[order.id,totals.discount_amount,JSON.stringify(totals.discounts),totals.tax_amount,JSON.stringify(totals.tax_details)]);
+ for(const discount of totals.discounts)await client.query('INSERT INTO discount_redemptions(discount_id,order_id,customer_key,amount) VALUES($1,$2,$3,$4)',[discount.id,order.id,require('../services/discounts').customerKey(req.customer?.id,customerPhone),discount.amount]);
+ if(req.customer&&b.save_address===true){const exists=await client.query('SELECT id FROM customer_addresses WHERE customer_id=$1 AND area=$2 AND block=$3 AND street=$4 AND building=$5 AND apartment=$6',[req.customer.id,deliveryAddress.area,deliveryAddress.block,deliveryAddress.street,deliveryAddress.building,deliveryAddress.apartment]);if(!exists.rows.length)await client.query('INSERT INTO customer_addresses(customer_id,label,governorate,area,block,street,building,floor,apartment,notes) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[req.customer.id,'Checkout',...Object.values(deliveryAddress)]);}
+ for(const item of totals.items){const reservation=await client.query("UPDATE products SET inventory_quantity=inventory_quantity-$1,stock_status=CASE WHEN inventory_quantity-$1=0 THEN 'OUT_OF_STOCK' ELSE stock_status END WHERE id=$2 AND inventory_quantity IS NOT NULL RETURNING id",[item.qty,item.productId]);await client.query('INSERT INTO order_items(order_id,product_id,quantity,price_at_purchase,product_name_ar,product_name_en,inventory_reserved_quantity) VALUES($1,$2,$3,$4,$5,$6,$7)',[order.id,item.productId,item.qty,item.price,item.name_ar,item.name_en,reservation.rows.length?item.qty:0]);}
  await client.query('INSERT INTO order_status_history(order_id,new_status,reason) VALUES($1,$2,$3)',[order.id,order.status,method==='COD'?'Cash on delivery order received':'Awaiting verified payment']);
  }
  token=token||trackingToken(order.order_number,b.idempotencyKey);

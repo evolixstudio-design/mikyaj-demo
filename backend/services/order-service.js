@@ -22,7 +22,7 @@ async function changeOrderStatus(orderNumber, newStatus, reason, adminId) {
 
     // Lock the row for update to prevent concurrent status changes
     const { rows } = await client.query(
-      'SELECT id, status, payment_method FROM orders WHERE order_number = $1 FOR UPDATE',
+      'SELECT id, status, payment_method, inventory_reserved FROM orders WHERE order_number = $1 FOR UPDATE',
       [orderNumber]
     );
 
@@ -54,6 +54,11 @@ async function changeOrderStatus(orderNumber, newStatus, reason, adminId) {
       [newStatus, order.id]
     );
 
+    if(newStatus==='CANCELLED')await client.query('UPDATE discount_redemptions SET released=true WHERE order_id=$1',[order.id]);
+    if(newStatus==='CANCELLED'&&order.inventory_reserved){
+      await client.query("UPDATE products p SET inventory_quantity=p.inventory_quantity+oi.inventory_reserved_quantity,stock_status=CASE WHEN p.inventory_quantity=0 THEN 'IN_STOCK' ELSE p.stock_status END FROM order_items oi WHERE oi.order_id=$1 AND p.id=oi.product_id AND oi.inventory_reserved_quantity>0 AND p.inventory_quantity IS NOT NULL",[order.id]);
+      await client.query('UPDATE orders SET inventory_reserved=false WHERE id=$1',[order.id]);
+    }
     // Insert history record
     await client.query(`
       INSERT INTO order_status_history (order_id, old_status, new_status, reason, changed_by_admin_id)

@@ -15,13 +15,7 @@ router.get('/', async (req, res) => {
     let query = `
       SELECT o.id, o.order_number, o.customer_name, o.customer_phone, o.customer_email, 
              o.total_amount, o.payment_method, o.currency, o.status, o.created_at, o.updated_at,
-             (
-                SELECT p.status 
-                FROM payments p 
-                WHERE p.order_id = o.id 
-                ORDER BY p.created_at DESC 
-                LIMIT 1
-             ) as payment_status
+             CASE WHEN o.payment_method='COD' THEN CASE WHEN EXISTS(SELECT 1 FROM cash_transactions ct WHERE ct.order_id=o.id AND ct.kind='COLLECTION') THEN 'COLLECTED' ELSE 'UNPAID' END ELSE (SELECT p.status FROM payments p WHERE p.order_id=o.id ORDER BY p.id DESC LIMIT 1) END as payment_status
       FROM orders o
       WHERE 1=1
     `;
@@ -35,13 +29,7 @@ router.get('/', async (req, res) => {
 
     if (payment_status) {
       // payment status is determined by the most recent payment attempt
-      query += ` AND (
-        SELECT p.status 
-        FROM payments p 
-        WHERE p.order_id = o.id 
-        ORDER BY p.created_at DESC 
-        LIMIT 1
-      ) = $${paramIndex++}`;
+      query += ` AND CASE WHEN o.payment_method='COD' THEN CASE WHEN EXISTS(SELECT 1 FROM cash_transactions ct WHERE ct.order_id=o.id AND ct.kind='COLLECTION') THEN 'COLLECTED' ELSE 'UNPAID' END ELSE (SELECT p.status FROM payments p WHERE p.order_id=o.id ORDER BY p.id DESC LIMIT 1) END = $${paramIndex++}`;
       params.push(payment_status);
     }
 
@@ -63,7 +51,7 @@ router.get('/', async (req, res) => {
 
     if (date_to) {
       query += ` AND o.created_at <= $${paramIndex++}`;
-      params.push(new Date(date_to).toISOString());
+      const endDate=new Date(date_to);if(/^\d{4}-\d{2}-\d{2}$/.test(date_to))endDate.setUTCHours(23,59,59,999);params.push(endDate.toISOString());
     }
 
     if (min_total) {
@@ -121,7 +109,7 @@ router.get('/:orderNumber', async (req, res) => {
 
     const { rows: orderRows } = await pool.query(`
       SELECT o.id, o.order_number, o.customer_name, o.customer_phone, o.customer_address, o.customer_email,
-             o.total_amount, o.currency, o.status, o.created_at, o.updated_at
+             o.total_amount, o.subtotal, o.delivery_fee, o.discount_amount, o.discount_details, o.tax_amount, o.tax_details, o.payment_method, o.currency, o.status, o.created_at, o.updated_at
       FROM orders o
       WHERE o.order_number = $1
     `, [orderNumber]);
@@ -188,7 +176,7 @@ router.get('/:orderNumber', async (req, res) => {
         customer_phone: order.customer_phone,
         customer_email: order.customer_email,
         customer_address: order.customer_address,
-        total_amount: order.total_amount,
+        total_amount: order.total_amount,subtotal:order.subtotal,delivery_fee:order.delivery_fee,discount_amount:order.discount_amount,discounts:order.discount_details,tax_amount:order.tax_amount,tax_details:order.tax_details,
         currency: order.currency,
         created_at: order.created_at,
         updated_at: order.updated_at
