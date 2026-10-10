@@ -5,7 +5,7 @@ const reasons=['DAMAGED','WRONG_ITEM','MISSING_ITEM','QUALITY','CHANGED_MIND','O
 router.post('/orders/:number/return',require('../middleware/rate-limit')(8,600000),wrap(async(req,res)=>{
  const order=await ownedOrder(req);if(order.status!=='DELIVERED')fail('A return can be requested after delivery.',409);
  const reason=String(req.body.reason||'').trim(),code=req.body.reason_code||'OTHER';if(reason.length<5||reason.length>2000||!reasons.includes(code))fail('Describe the reason for your return.');
- const orderItems=(await db.query('SELECT product_id,quantity FROM order_items WHERE order_id=$1',[order.id])).rows;
+ const orderItems=(await db.query('SELECT product_id,SUM(quantity)::int quantity FROM order_items WHERE order_id=$1 GROUP BY product_id',[order.id])).rows;
  const items=req.body.items||orderItems;if(!Array.isArray(items)||!items.length||items.length>100)fail('Choose the items to return');const seen=new Set();for(const item of items){const original=orderItems.find(i=>i.product_id===item.product_id);if(!original||!Number.isInteger(item.quantity)||item.quantity<1||item.quantity>original.quantity||seen.has(item.product_id))fail('Invalid return quantity');seen.add(item.product_id)}
  const photos=req.body.photos||[];if(!Array.isArray(photos)||photos.length>3||photos.some(p=>typeof p!=='string'||p.length>1500000))fail('Attach up to three photos, each smaller than 1 MB.');
  const processed=[];for(const photo of photos){const result=await require('../services/media').processImage(photo,'content');if(result.buffer.length>1500000)fail('Please use a smaller evidence photo');processed.push(result.buffer)}

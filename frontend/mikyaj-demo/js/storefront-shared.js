@@ -1,0 +1,7 @@
+import {$,api,t,esc,url,kwd,card} from './ui.js';
+export const productCache=new Map();
+export const configPromise=api('/store/config');
+configPromise.catch(()=>{});
+export function intro(title,sub=''){return `<div class="page-intro"><div class="breadcrumb"><a href="${url('index.html')}">${t('Home','الرئيسية')}</a><span>/</span><span>${esc(title)}</span></div><h1>${esc(title)}</h1>${sub?`<p class="muted small" style="margin-top:10px">${esc(sub)}</p>`:''}</div>`}
+export const progress=total=>{const remaining=Math.max(0,10-total);return `<div class="shipping-progress">${remaining?t(`Only ${kwd(remaining)} left for free delivery to your area.`,`باقي ${kwd(remaining)} فقط للتوصيل المجاني إلى منطقتك.`):t('Your order qualifies for free delivery.','طلبك مؤهل للتوصيل المجاني.')}<progress max="10" value="${Math.min(total,10)}" aria-label="${t('Progress toward free delivery','التقدم نحو التوصيل المجاني')}"></progress></div>`};
+export async function showRecommendations(target,ids=[],title=t('A little something to go with it','اختيارات تكمل روتينك')){if(!target)return;try{const data=await api('/store/recommendations?ids='+ids.join(',')),products=data.products.slice(0,4);if(!products.length)return;products.forEach(p=>productCache.set(p.id,p));target.innerHTML=`<div class="section-head"><h2>${esc(title)}</h2></div><div class="product-grid">${products.map(p=>card(p)).join('')}</div>`;}catch{target.innerHTML=''}}

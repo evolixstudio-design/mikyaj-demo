@@ -17,7 +17,10 @@
     "test:admin:browser": "node tests/admin-upgrade-browser.cjs",
     "preview:catalog": "node tests/preview-server.cjs --catalog --persistent",
     "test:media:browser": "node tests/catalog-media-browser.cjs",
-    "test:translation": "node --test tests/translation-completion.test.cjs"
+    "test:translation": "node --test tests/translation-completion.test.cjs",
+    "seo:verify": "node scripts/configure-search-console.cjs",
+    "test:seo": "node --test tests/search-discovery.test.cjs",
+    "test:banners": "node --test tests/banners.test.cjs"
   },
   "repository": {
     "type": "git",

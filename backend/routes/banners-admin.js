@@ -1,0 +1,13 @@
+const router=require('express').Router();
+const banners=require('../services/storefront-banners');
+const media=require('../services/media');
+const {fail}=require('../services/commerce-quote');
+const wrap=fn=>(req,res,next)=>Promise.resolve(fn(req,res)).catch(next);
+router.get('/content/banners',wrap(async(req,res)=>res.json(await banners.state())));
+router.post('/content/images',require('../middleware/rate-limit')(30,60000),wrap(async(req,res)=>res.json(await media.upload(req.body.data,'content',req.admin.id))));
+router.post('/content/banners',wrap(async(req,res)=>{req.bannerAction='create';res.status(201).json(await banners.mutate(req,current=>banners.create(current,req.body)))}));
+router.put('/content/banners/:id',wrap(async(req,res)=>{req.bannerAction='draft';res.json(await banners.mutate(req,current=>{const item=banners.find(current,req.params.id);item.draft=banners.clean(req.body);item.updated_at=new Date().toISOString();return item}))}));
+router.post('/content/banners/:id/publish',wrap(async(req,res)=>{req.bannerAction='publish';res.json(await banners.mutate(req,current=>{const item=banners.find(current,req.params.id);if(!item.draft)fail('Save a draft before publishing.');const value=banners.clean(item.draft,true);if(value.placement==='hero')for(const other of current.items)if(other.id!==item.id&&other.published?.placement==='hero')other.published=null;item.published={...value,published_at:new Date().toISOString()};item.updated_at=item.published.published_at;return item}))}));
+router.post('/content/banners/:id/unpublish',wrap(async(req,res)=>{req.bannerAction='unpublish';res.json(await banners.mutate(req,current=>{const item=banners.find(current,req.params.id);item.published=null;return item}))}));
+router.delete('/content/banners/:id',wrap(async(req,res)=>{req.bannerAction='delete';res.json(await banners.mutate(req,current=>{const item=banners.find(current,req.params.id);current.items=current.items.filter(row=>row.id!==item.id);return item}))}));
+module.exports=router;

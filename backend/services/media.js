@@ -22,7 +22,7 @@ async function processImage(data, purpose='product') {
   try {
     metadata=await sharp(original,{limitInputPixels:40000000,animated:false}).metadata();
     if (!['jpeg','png','webp'].includes(metadata.format) || (metadata.pages||1)>1) throw Error();
-    buffer=await sharp(original,{limitInputPixels:40000000}).rotate().resize({width:1600,height:1600,fit:'inside',withoutEnlargement:true}).webp({quality:84}).toBuffer();
+    buffer=await sharp(original,{limitInputPixels:40000000}).rotate().resize({width:1600,height:1600,fit:'inside',withoutEnlargement:true}).webp({quality:purpose==='category'||purpose==='brand'?95:88,effort:5}).toBuffer();
   } catch { throw error('This image could not be decoded. Choose a valid, non-animated image under 40 megapixels.'); }
   const output=await sharp(buffer).metadata();
   if (purpose==='product' && output.width>=120 && output.height>=120) {

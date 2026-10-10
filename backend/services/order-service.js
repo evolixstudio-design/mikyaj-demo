@@ -56,7 +56,8 @@ async function changeOrderStatus(orderNumber, newStatus, reason, adminId) {
 
     if(newStatus==='CANCELLED')await client.query('UPDATE discount_redemptions SET released=true WHERE order_id=$1',[order.id]);
     if(newStatus==='CANCELLED'&&order.inventory_reserved){
-      await client.query("UPDATE products p SET inventory_quantity=p.inventory_quantity+oi.inventory_reserved_quantity,stock_status=CASE WHEN p.inventory_quantity=0 THEN 'IN_STOCK' ELSE p.stock_status END FROM order_items oi WHERE oi.order_id=$1 AND p.id=oi.product_id AND oi.inventory_reserved_quantity>0 AND p.inventory_quantity IS NOT NULL",[order.id]);
+      await client.query("UPDATE products p SET inventory_quantity=p.inventory_quantity+oi.inventory_reserved_quantity,stock_status=CASE WHEN p.inventory_quantity=0 THEN 'IN_STOCK' ELSE p.stock_status END FROM order_items oi WHERE oi.order_id=$1 AND p.id=oi.product_id AND oi.variant_id IS NULL AND oi.inventory_reserved_quantity>0 AND p.inventory_quantity IS NOT NULL",[order.id]);
+      await client.query("UPDATE product_variants v SET inventory_quantity=v.inventory_quantity+oi.inventory_reserved_quantity,stock_status=CASE WHEN v.inventory_quantity=0 THEN 'IN_STOCK' ELSE v.stock_status END FROM order_items oi WHERE oi.order_id=$1 AND v.id=oi.variant_id AND oi.inventory_reserved_quantity>0 AND v.inventory_quantity IS NOT NULL",[order.id]);
       await client.query('UPDATE orders SET inventory_reserved=false WHERE id=$1',[order.id]);
     }
     // Insert history record

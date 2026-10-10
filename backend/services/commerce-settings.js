@@ -8,7 +8,7 @@ const DEFAULTS = {
 };
 async function getSettings(key, connection=db) {
  const {rows}=await connection.query('SELECT value FROM store_settings WHERE key=$1',[key]);
- return {...(DEFAULTS[key]||{}),...(rows[0]?.value||{})};
+ const result={...(DEFAULTS[key]||{}),...(rows[0]?.value||{})};return key==='delivery'?require('./delivery-directory').completeDelivery(result):result;
 }
 async function setSettings(key,value,connection=db){
  await connection.query('INSERT INTO store_settings(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=EXCLUDED.value,updated_at=NOW()',[key,JSON.stringify(value)]);

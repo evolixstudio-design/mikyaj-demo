@@ -88,8 +88,10 @@ test('automatic discounts compare valid combinations instead of incompatible raw
 test('content, private product fields, tax and analytics are backed by real settings and data',async()=>{
  assert.equal((await request(app).get('/api/manage/analytics').set(admin)).status,200);
  assert.equal((await request(app).get('/api/manage/products?search=lip').set(admin)).status,200);
- await request(app).put('/api/manage/content/home').set(admin).send({title_en:'A <safe> headline',button_url:'/shop.html'});
- const html=await request(app).get('/en/');assert.match(html.text,/A &lt;safe&gt; headline/);
+ const homeSaved=await request(app).put('/api/manage/content/home').set(admin).send({title_en:'A <safe> headline',button_url:'/shop.html',show_categories:false});assert.equal(homeSaved.status,200);
+ const home=(await request(app).get('/api/manage/content/home').set(admin)).body;assert.equal(home.show_categories,false);assert.equal(home.title_en,'A <safe> headline');
+ // Legacy text settings stay editable through the API; the image-only hero is now managed in Banners.
+ const html=await request(app).get('/en/');assert.match(html.text,/hero-welcome-1600\.webp/);assert.doesNotMatch(html.text,/class="hero-copy"|A &lt;safe&gt; headline/);
  assert.equal((await request(app).put('/api/manage/content/home').set(admin).send({title_en:'Bad link',button_url:'javascript:alert(1)'})).status,400);
  await request(app).put('/api/manage/settings/product-fields').set(admin).send({definitions:[{key:'finish',type:'text',label_en:'Finish',label_ar:'اللمسة',visible:true},{key:'internal',type:'text',label_en:'Internal',visible:false}]});
  await fixture.db.query('UPDATE products SET custom_fields=$1 WHERE id=1',[{finish:'Matte',internal:'Private note'}]);const p=(await request(app).get('/api/products/rose-lipstick')).body.product;assert.equal(p.custom_fields,undefined);assert.deepEqual(p.custom_field_display.map(f=>f.value),['Matte']);
@@ -97,6 +99,7 @@ test('content, private product fields, tax and analytics are backed by real sett
  const quote=await request(app).post('/api/store/quote').send({items:[{productId:1,qty:1}],area:'Kuwait City'});assert.equal(quote.body.tax_amount,'0.150');assert.equal(quote.body.total,'4.150');
  await request(app).put('/api/manage/settings/tax').set(admin).send({enabled:false,rate:0,shipping_taxable:false,label:'Tax'});
  assert.equal((await request(app).post('/api/store/quote').send({items:[{productId:3,qty:2}],area:'Unconfigured area'})).body.delivery_available,false);
+ await request(app).put('/api/manage/settings/events').set(admin).send({enabled:false});
  const event={session_id:crypto.randomUUID(),event:'page_view',path:'/en/',device:'mobile'};await request(app).post('/api/events').send(event);assert.equal((await fixture.db.query('SELECT COUNT(*)::int n FROM commerce_events')).rows[0].n,0);
  await request(app).put('/api/manage/settings/events').set(admin).send({enabled:true});await request(app).post('/api/events').set('DNT','1').send(event);assert.equal((await fixture.db.query('SELECT COUNT(*)::int n FROM commerce_events')).rows[0].n,0);await request(app).post('/api/events').send(event);const report=(await request(app).get('/api/manage/analytics').set(admin)).body;assert.equal(report.traffic.sessions,1);assert.equal(report.devices[0].device,'mobile');
 });

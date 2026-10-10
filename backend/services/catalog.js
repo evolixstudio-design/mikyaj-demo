@@ -6,7 +6,7 @@ const OFFER_JOIN=`LEFT JOIN LATERAL (
  ORDER BY priority DESC,discount_percent DESC,id DESC LIMIT 1
 ) offer ON true`;
 const PRICE=`ROUND(p.selling_price*(1-COALESCE(offer.discount_percent,0)/100),3)`;
-const SELECT=`SELECT p.id,p.sku,p.slug,p.name_ar,p.name_en,p.short_description_ar,p.short_description_en,
+const SELECT=`SELECT p.id,p.sku,p.slug,p.name_ar,p.name_en,p.variants_enabled,(p.variants_enabled AND EXISTS(SELECT 1 FROM product_variants v WHERE v.product_id=p.id AND v.status='ACTIVE')) AS has_shades,p.short_description_ar,p.short_description_en,
  p.details_ar,p.details_en,p.how_to_use_ar,p.how_to_use_en,p.custom_fields,p.status,p.stock_status,p.priority,p.routine_step,p.translation_status,
  p.seo_title_ar,p.seo_title_en,p.seo_description_ar,p.seo_description_en,
  p.selling_price AS base_price,${PRICE} AS selling_price,
@@ -48,9 +48,9 @@ async function product(slug,admin=false,connection=db){
  const {rows}=await connection.query(`${SELECT} WHERE ${admin?'p.deleted_at IS NULL':VISIBLE} AND p.slug=$1`,[slug]);
  if(!rows[0])return null;
  const images=await connection.query('SELECT cloudinary_url AS url,image_order AS "order",width,height,alt_ar,alt_en FROM product_images WHERE product_id=$1 AND cloudinary_url IS NOT NULL ORDER BY image_order,id',[rows[0].id]);
- const result={...rows[0],images:images.rows,content_sections:require('./product-content').contentSections(rows[0])};if(!admin){result.custom_field_display=await require('./product-fields').display(result.custom_fields);delete result.custom_fields;}return result;
+ const result={...rows[0],images:images.rows,content_sections:require('./product-content').contentSections(rows[0])};result.variants=admin||result.variants_enabled?(await connection.query("SELECT id,name_en,name_ar,color_hex,sku,image_url,stock_status,inventory_quantity,status,priority FROM product_variants WHERE product_id=$1 AND ($2::boolean OR status='ACTIVE') ORDER BY priority DESC,id",[result.id,admin])).rows:[];if(!admin){result.custom_field_display=await require('./product-fields').display(result.custom_fields);delete result.custom_fields;}return result;
 }
-async function byIds(ids,connection=db){if(!ids.length)return [];return (await connection.query(`${SELECT} WHERE ${VISIBLE} AND p.id=ANY($1::int[])`,[ids])).rows.map(({custom_fields,...p})=>p);}
+async function byIds(ids,connection=db){if(!ids.length)return [];const products=(await connection.query(`${SELECT} WHERE ${VISIBLE} AND p.id=ANY($1::int[])`,[ids])).rows.map(({custom_fields,...p})=>p);const variants=(await connection.query("SELECT id,product_id,name_en,name_ar,color_hex,image_url,stock_status,inventory_quantity FROM product_variants WHERE product_id=ANY($1::int[]) AND status='ACTIVE'",[products.filter(p=>p.variants_enabled).map(p=>p.id)])).rows;return products.map(p=>({...p,variants:variants.filter(v=>v.product_id===p.id)}));}
 async function recommendations(ids,customerId,limit=8){
  const safeIds=[...new Set(ids.map(Number).filter(n=>Number.isInteger(n)&&n>0))].slice(0,20);
  // Complementary routine steps first, then same category, followed by merchandised makeup.

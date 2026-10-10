@@ -121,7 +121,7 @@ router.get('/:orderNumber', async (req, res) => {
     const order = orderRows[0];
 
     const { rows: itemRows } = await pool.query(`
-      SELECT oi.product_name_ar, oi.product_name_en, oi.product_id, p.sku, p.name_en AS product_name, oi.quantity, oi.price_at_purchase,
+      SELECT oi.product_name_ar, oi.product_name_en, oi.variant_id, oi.variant_name_en, oi.variant_name_ar, oi.product_id, p.sku, p.name_en AS product_name, oi.quantity, oi.price_at_purchase,
              (oi.quantity * oi.price_at_purchase) AS line_total,
              (SELECT cloudinary_url FROM product_images pi WHERE pi.product_id = p.id ORDER BY image_order ASC LIMIT 1) as image_url
       FROM order_items oi

@@ -3,9 +3,13 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /driver/
+Disallow: /__preview/
 Disallow: /checkout
 Disallow: /account
 Disallow: /track
 Disallow: /cart
 Disallow: /wishlist
+Disallow: /*?*admin=1
+Disallow: /*?*content_admin=1
+
 Sitemap: https://mikyajkw.com/sitemap.xml

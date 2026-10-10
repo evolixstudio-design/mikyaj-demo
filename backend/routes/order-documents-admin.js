@@ -1,0 +1,2 @@
+const router=require('express').Router(),db=require('../db');
+router.get('/orders/:number/document',async(req,res,next)=>{try{const o=(await db.query('SELECT * FROM orders WHERE order_number=$1',[req.params.number])).rows[0];if(!o)return res.status(404).json({error:'Order not found'});res.set('Cache-Control','no-store').json(await require('../services/order-documents').document(o,req.query.kind==='label'?'label':'receipt',req.query.lang==='ar'?'ar':'en'))}catch(e){next(e)}});module.exports=router;

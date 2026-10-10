@@ -8,12 +8,13 @@ function resource(req){
  if(/\/refunds(?:\/|$)|\/cash(?:\/|$)/.test(path))return 'refunds';
  if(/\/orders(?:\/|$)/.test(path))return 'orders';
  if(/\/returns(?:\/|$)/.test(path))return 'returns';
+ if(/\/content(?:\/|$)/.test(path))return 'content';
  if(/\/(products|categories|brands|images|product-views|product-fields)(?:\/|$)/.test(path))return 'products';
  if(/\/(offers|discounts)(?:\/|$)/.test(path))return 'discounts';
  if(/\/(translations|translate)(?:\/|$)/.test(path))return 'translations';
  if(/\/customers(?:\/|$)/.test(path))return 'customers';
  if(/\/posts(?:\/|$)|\/content(?:\/|$)/.test(path))return 'content';
- if(/\/(dashboard|analytics)(?:\/|$)/.test(path))return 'analytics';
+ if(/\/(dashboard|analytics|page-visits)(?:\/|$)/.test(path))return 'analytics';
  if(/\/settings(?:\/|$)/.test(path))return 'settings';
  return null;
 }
