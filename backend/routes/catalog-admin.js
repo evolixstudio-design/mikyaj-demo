@@ -16,6 +16,15 @@ router.post('/product-views',wrap(async(req,res)=>{if(!text(req.body.name,100)||
 router.delete('/product-views/:id',wrap(async(req,res)=>{await db.query('DELETE FROM admin_saved_views WHERE id=$1 AND admin_id=$2',[id(req.params.id),req.admin.id]);res.json({success:true})}));
 router.post('/products/bulk',wrap(async(req,res)=>{
  const ids=[...new Set((Array.isArray(req.body.ids)?req.body.ids:[]).map(id))];if(!ids.length||ids.length>100)fail('Choose 1–100 products');
+ if(['add_category','remove_category'].includes(req.body.action)){
+  const categoryId=id(req.body.value),client=await db.pool.connect();
+  try{await client.query('BEGIN');if(!(await client.query('SELECT id FROM categories WHERE id=$1',[categoryId])).rows.length)fail('Category not found',404);
+   const selected=(await client.query('SELECT id FROM products WHERE id=ANY($1::int[]) AND deleted_at IS NULL FOR UPDATE',[ids])).rows.map(p=>p.id);
+   if(req.body.action==='add_category')await client.query('INSERT INTO product_category_memberships(product_id,category_id) SELECT unnest($1::int[]),$2 ON CONFLICT DO NOTHING',[selected,categoryId]);
+   else await client.query('DELETE FROM product_category_memberships WHERE product_id=ANY($1::int[]) AND category_id=$2',[selected,categoryId]);
+   await audit(req.admin.id,'products.bulk.'+req.body.action,'batch',{ids:selected,category_id:categoryId},client);await client.query('COMMIT');return res.json({updated:selected.length});
+  }catch(error){await client.query('ROLLBACK');throw error}finally{client.release()}
+ }
  const b=req.body,changes={publish:"status='ACTIVE'",unpublish:"status='INACTIVE'",archive:"status='ARCHIVED'",delete:"status='INACTIVE',deleted_at=NOW()",in_stock:"stock_status='IN_STOCK'",out_of_stock:"stock_status='OUT_OF_STOCK'",category:'category_id=$2',brand:'brand_id=$2',inventory:"inventory_quantity=$2,stock_status=CASE WHEN $2=0 THEN 'OUT_OF_STOCK' ELSE 'IN_STOCK' END"};
  if(!changes[b.action])fail('Unknown bulk action');
  const values=[ids];if(b.action==='category')values.push(id(b.value));if(b.action==='brand')values.push(b.value?id(b.value):null);if(b.action==='inventory')values.push(integer(b.value));
@@ -43,6 +52,7 @@ async function saveProduct(req,res){
  if(customFields!==undefined)fields.custom_fields=customFields;
  if(productId){const values=Object.values(fields);values.push(productId);saved=(await client.query(`UPDATE products SET ${Object.keys(fields).map((k,i)=>k+'=$'+(i+1)).join(',')},translation_status='REVIEWED',updated_at=NOW() WHERE id=$${values.length} AND deleted_at IS NULL RETURNING id`,values)).rows[0];if(!saved)fail('Product not found',404)}
  else {const source='manual:'+crypto.randomUUID();Object.assign(fields,{source_url:source,source_identity_hash:crypto.createHash('sha256').update(source).digest('hex'),source_price:price,currency:'KWD',translation_status:nameAr&&nameEn?'REVIEWED':'PENDING'});saved=(await client.query(`INSERT INTO products(${Object.keys(fields).join(',')}) VALUES(${Object.keys(fields).map((_,i)=>'$'+(i+1)).join(',')}) RETURNING id`,Object.values(fields))).rows[0]}
+ if(b.additional_category_ids!==undefined)await require('../services/product-categories').replace(saved.id,b.additional_category_ids,client);
  await client.query('DELETE FROM product_images WHERE product_id=$1',[saved.id]);
  for(let i=0;i<images.length;i++){const image=images[i],asset=(await client.query('SELECT width,height FROM media_assets WHERE url=$1',[image.url])).rows[0];await client.query('INSERT INTO product_images(product_id,cloudinary_url,image_order,width,height,source_filename,alt_ar,alt_en) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[saved.id,image.url,i+1,asset?.width||800,asset?.height||800,'admin-'+i,image.alt_ar,image.alt_en])}
  await audit(req.admin.id,'product.save',saved.id,{},client);await client.query('COMMIT');res.json({success:true,id:saved.id,slug:productSlug});
@@ -52,6 +62,7 @@ router.post('/products',wrap(saveProduct));router.put('/products/:id',wrap(saveP
 for(const kind of ['categories','brands']){
  const brand=kind==='brands';
  async function save(req,res){const b=req.body,nameAr=text(b.name_ar,255),nameEn=text(b.name_en||b.name,255);if(!nameAr&&!nameEn)fail('A name is required');const state=b.status||'ACTIVE';if(!['ACTIVE','INACTIVE'].includes(state))fail('Invalid status');const fields={name_ar:nameAr,name_en:nameEn,status:state,priority:integer(b.priority||0,-100000,100000),image_url:media.validateUrl(b.image_url),image_alt_ar:text(b.image_alt_ar||nameAr,500),image_alt_en:text(b.image_alt_en||nameEn,500)};if(brand)fields.name=nameEn||nameAr;let result;
+ if(!brand)for(const language of ['en','ar'])if(b['badge_'+language]!==undefined)fields['badge_'+language]=text(b['badge_'+language],60);
  if(req.params.id){const values=Object.values(fields);values.push(id(req.params.id));result=await db.query(`UPDATE ${kind} SET ${Object.keys(fields).map((k,i)=>k+'=$'+(i+1)).join(',')},updated_at=NOW() WHERE id=$${values.length} RETURNING *`,values);if(!result.rows.length)fail('Not found',404)}
  else{fields.slug=newSlug(b);if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(fields.slug))fail('Invalid URL');result=await db.query(`INSERT INTO ${kind}(${Object.keys(fields).join(',')}) VALUES(${Object.keys(fields).map((_,i)=>'$'+(i+1)).join(',')}) RETURNING *`,Object.values(fields))}
  await audit(req.admin.id,kind+'.save',result.rows[0].id);res.json(result.rows[0]);}
