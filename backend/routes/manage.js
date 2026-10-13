@@ -17,6 +17,7 @@ router.use(require('./catalog-admin'));
 router.use(require('./variants-admin'));
 router.use(require('./order-documents-admin'));
 router.use(require('./page-visits-admin'));
+router.use(require('./listing-billing-admin'));
 const wrap=fn=>(req,res,next)=>Promise.resolve(fn(req,res)).catch(next);
 const id=v=>{const n=Number(v);if(!Number.isSafeInteger(n)||n<1)fail('Invalid ID');return n;};
 const text=(v,max=10000)=>String(v??'').trim().slice(0,max);

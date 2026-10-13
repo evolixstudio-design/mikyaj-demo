@@ -9,7 +9,7 @@ function resource(req){
  if(/\/orders(?:\/|$)/.test(path))return 'orders';
  if(/\/returns(?:\/|$)/.test(path))return 'returns';
  if(/\/content(?:\/|$)/.test(path))return 'content';
- if(/\/(products|categories|brands|images|product-views|product-fields)(?:\/|$)/.test(path))return 'products';
+ if(/\/(products|categories|brands|images|product-views|product-fields|listing-count)(?:\/|$)/.test(path))return 'products';
  if(/\/(offers|discounts)(?:\/|$)/.test(path))return 'discounts';
  if(/\/(translations|translate)(?:\/|$)/.test(path))return 'translations';
  if(/\/customers(?:\/|$)/.test(path))return 'customers';
