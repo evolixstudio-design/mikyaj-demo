@@ -1,7 +1,9 @@
 const router=require('express').Router(),db=require('../db');
 const {getSettings}=require('../services/commerce-settings');
+const tracking=require('../services/traffic-tracking');
 router.post('/',require('../middleware/rate-limit')(120,60000),async(req,res,next)=>{try{
- if(!(await getSettings('events')).enabled||req.headers.dnt==='1'||req.headers['sec-gpc']==='1')return res.sendStatus(204);
+ if(!(await getSettings('events')).enabled||tracking.excluded(req)||await tracking.adminPreview(req))return res.sendStatus(204);
+ if(req.body.tracking_version===2){const b=req.body;if(!['page_view','page_dwell','product_view','search','add_to_cart','cart_view','checkout_started'].includes(b.event)||!tracking.UUID.test(b.view_id||'')||!tracking.UUID.test(b.event_id||'')||typeof b.path!=='string'||!/^\/[a-zA-Z0-9_/.%\-]*$/.test(b.path)||b.path.length>250||tracking.privatePath(b.path)||!['mobile','tablet','desktop'].includes(b.device)||b.product_id!==undefined&&(!Number.isSafeInteger(b.product_id)||b.product_id<1)||b.event==='page_dwell'&&(!Number.isInteger(b.duration_ms)||b.duration_ms<0||b.duration_ms>86400000))return res.status(400).json({error:'Invalid event'});await tracking.ingest(req,res,b);return res.sendStatus(204)}
  const b=req.body;if(!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(b.session_id||'')||!['page_view','page_dwell','product_view','search','add_to_cart','checkout_started'].includes(b.event)||typeof b.path!=='string'||!/^\/[a-zA-Z0-9_/.%\-]*$/.test(b.path)||b.path.length>250||/^\/(admin|api|driver)(?:\/|$)/.test(b.path)||!['mobile','tablet','desktop'].includes(b.device))return res.status(400).json({error:'Invalid event'});
  const productId=Number.isSafeInteger(b.product_id)&&b.product_id>0?b.product_id:null;
  const view=b.view_id||null;if(view&&!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(view))return res.status(400).json({error:'Invalid view'});

@@ -49,7 +49,7 @@ async function listProducts(q={},admin=false,connection=db){
  if(admin&&q.inventory==='low')clauses.push('p.inventory_quantity>0 AND p.inventory_quantity<=p.low_stock_threshold');
  if(admin&&q.inventory==='tracked')clauses.push('p.inventory_quantity IS NOT NULL');
  if(admin&&q.inventory==='untracked')clauses.push('p.inventory_quantity IS NULL');
- if(q.offers==='true')clauses.push('offer.id IS NOT NULL');
+ if(q.offers==='true')clauses.push("(offer.id IS NOT NULL OR EXISTS (SELECT 1 FROM product_category_memberships promotion JOIN categories promotion_category ON promotion_category.id=promotion.category_id WHERE promotion.product_id=p.id AND promotion_category.slug='special-offers' AND promotion_category.status='ACTIVE'))");
  const order=SORT[q.sort]||SORT.featured;params.push(limit+1,offset);
  const {rows}=await connection.query(`${admin?SELECT:GRID_SELECT} WHERE ${clauses.join(' AND ')} ORDER BY ${order} LIMIT $${params.length-1} OFFSET $${params.length}`,params);
  const total=admin?Number((await connection.query(`SELECT COUNT(*)::int AS count FROM products p JOIN categories c ON c.id=p.category_id LEFT JOIN brands b ON b.id=p.brand_id ${OFFER_JOIN} WHERE ${clauses.join(' AND ')}`,params.slice(0,-2))).rows[0].count):undefined;
