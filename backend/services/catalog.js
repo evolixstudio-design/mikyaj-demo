@@ -16,7 +16,7 @@ const MEMBERSHIP_JOIN=`LEFT JOIN LATERAL (
  ORDER BY extra.priority DESC,extra.id ASC LIMIT 1
 ) featured_category ON true`;
 const FEATURED_PRIORITY='GREATEST(c.priority,COALESCE(featured_category.priority,c.priority))';
-const SELECT=`SELECT p.id,p.sku,p.slug,p.name_ar,p.name_en,p.variants_enabled,(p.variants_enabled AND EXISTS(SELECT 1 FROM product_variants v WHERE v.product_id=p.id AND v.status='ACTIVE')) AS has_shades,p.short_description_ar,p.short_description_en,
+const SELECT=`SELECT p.id,p.sku,p.slug,p.name_ar,p.name_en,p.variants_enabled,CASE WHEN p.custom_fields->>'variant_type'='fragrance' THEN 'fragrance' ELSE 'shade' END AS variant_type,(p.variants_enabled AND EXISTS(SELECT 1 FROM product_variants v WHERE v.product_id=p.id AND v.status='ACTIVE')) AS has_shades,p.short_description_ar,p.short_description_en,
  p.details_ar,p.details_en,p.how_to_use_ar,p.how_to_use_en,p.custom_fields,p.status,p.stock_status,p.priority,p.routine_step,p.translation_status,
  p.seo_title_ar,p.seo_title_en,p.seo_description_ar,p.seo_description_en,
  p.selling_price AS base_price,${PRICE} AS selling_price,
