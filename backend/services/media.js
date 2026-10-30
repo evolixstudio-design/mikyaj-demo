@@ -9,8 +9,10 @@ function validateUrl(value) {
   if (!value) return null;
   if (/^\/assets\/images\/taxonomy\/(?:category|brand)-[a-z0-9-]+\.webp$/.test(value) && require('node:fs').existsSync(path.resolve(__dirname,'../../frontend/mikyaj-demo'+value))) return value;
   if (process.env.NODE_ENV === 'test' && /^\/__preview\/media\/[a-f0-9-]{36}\.webp$/.test(value)) return value;
-  let url; try { url=new URL(value); } catch { throw error('Upload an image or use a valid Cloudinary HTTPS image URL.'); }
-  if (url.protocol!=='https:' || url.hostname!=='res.cloudinary.com') throw error('Use an uploaded image or a Cloudinary HTTPS image URL.');
+  let url; try { url=new URL(value); } catch { throw error('Upload an image or use a valid image storage URL.'); }
+  const imageOrigin=require('./media-storage').publicBase();
+  if (url.protocol!=='https:' || url.username || url.password || (url.hostname!=='res.cloudinary.com' && (!imageOrigin || url.origin!==imageOrigin))) throw error('Use an uploaded image from the configured image storage.');
+  if(url.hostname!=='res.cloudinary.com'&&!/^\/mikyaj\/v1\/(?:product|category|brand|content|migration)\/[a-z0-9-]{1,80}\/image(?:-w(?:240|480|800))?\.webp$/.test(url.pathname))throw error('Use an uploaded image from the configured image storage.');
   return url.href;
 }
 async function processImage(data, purpose='product') {
@@ -41,6 +43,10 @@ async function upload(data,purpose,adminId) {
     await fs.mkdir(previewDirectory,{recursive:true});
     await fs.writeFile(path.join(previewDirectory,id+'.webp'),image.buffer);
     url='/__preview/media/'+id+'.webp';
+  } else if (process.env.MEDIA_STORAGE_PROVIDER==='r2') {
+    const saved=await require('./media-storage').uploadImage(image.buffer,{id,purpose});
+    url=saved.url;
+    originalReference=null;
   } else {
     if(!process.env.CLOUDINARY_API_SECRET) throw error('Image storage is not configured. Set the Cloudinary credentials before uploading.',503);
     const cloud=require('cloudinary').v2;

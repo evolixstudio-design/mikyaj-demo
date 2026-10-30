@@ -7,6 +7,12 @@
   NODE_VERSION = "24.11.1"
 
 [[redirects]]
+  from = "/mikyaj/v1/*"
+  to = "https://mikyaj-backend.onrender.com/mikyaj/v1/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/api/*"
   to = "https://mikyaj-backend.onrender.com/api/:splat"
   status = 200
