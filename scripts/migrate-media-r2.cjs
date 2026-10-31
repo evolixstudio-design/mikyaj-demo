@@ -48,22 +48,44 @@ async function apply(rollback=false){
   if(inventory.urls.some(url=>!uploads.has(url)))throw Error('Migration manifest is incomplete.');
   const db=require('../backend/db'),client=await db.pool.connect();let changed=0,skipped=0;
   try{await client.query('BEGIN');await client.query("SELECT pg_advisory_xact_lock(79821340)");
-    for(const record of inventory.records){
-      const replacement=uploads.get(record.url).url;
-      const old=rollback?replacement:record.url,next=rollback?record.url:replacement;
-      let r;
-      if(record.table==='store_settings'&&record.column==='value'&&typeof record.key==='string'&&Array.isArray(record.json_path)){
-        r=await client.query('UPDATE store_settings SET value=jsonb_set(value,$1::text[],to_jsonb($2::text),false),updated_at=NOW() WHERE key=$3 AND value #>> $1::text[]=$4 RETURNING key',[record.json_path.map(String),next,record.key,old]);
-      }else{
-        if(targets[record.table]!==record.column||!record.id)throw Error('Unexpected migration table or column.');
-        r=await client.query(`UPDATE ${record.table} SET ${record.column}=$1 WHERE id=$2 AND ${record.column}=$3 RETURNING id`,[next,record.id,old]);
-      }
-      if(r.rows.length)changed++;else skipped++;
-    }
+    ({changed,skipped}=await applyReferences(client,inventory.records,uploads,rollback));
     await client.query('COMMIT');write(rollback?'rollback-result.json':'database-switch-result.json',{completed_at:new Date().toISOString(),changed,skipped,cloudinary_assets_deleted:false});
     console.log(JSON.stringify({changed,skipped,rollback}));
   }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();await db.pool.end();}
 }
+async function applyReferences(client,records,uploads,rollback=false){
+    const groups=new Map(),settings=[];let changed=0,skipped=0;
+    for(const record of records){
+      if(!uploads.get(record.url)?.url)throw Error('Migration manifest is incomplete.');
+      const replacement=uploads.get(record.url).url;
+      const old=rollback?replacement:record.url,next=rollback?record.url:replacement;
+      if(record.table==='store_settings'&&record.column==='value'&&typeof record.key==='string'&&Array.isArray(record.json_path)){
+        settings.push({record,old,next});
+      }else{
+        if(targets[record.table]!==record.column||!record.id)throw Error('Unexpected migration table or column.');
+        if(!groups.has(record.table))groups.set(record.table,[]);
+        groups.get(record.table).push({id:String(record.id),old,next});
+      }
+    }
+    // Bounded batches keep the atomic switch short despite remote database latency.
+    for(const [table,items] of groups){
+      if(new Set(items.map(r=>r.id)).size!==items.length)throw Error('Duplicate migration record.');
+      const type=table==='media_assets'?'uuid':table==='product_variants'?'bigint':'integer',column=targets[table];
+      for(let offset=0;offset<items.length;offset+=500){
+        const batch=items.slice(offset,offset+500);
+        const r=await client.query(`UPDATE ${table} AS target SET ${column}=mapping.next FROM jsonb_to_recordset($1::jsonb) AS mapping(id ${type},old text,next text) WHERE target.id=mapping.id AND target.${column}=mapping.old RETURNING target.id`,[JSON.stringify(batch)]);
+        changed+=r.rows.length;skipped+=batch.length-r.rows.length;
+      }
+    }
+    for(const {record,old,next} of settings){
+      const r=await client.query('UPDATE store_settings SET value=jsonb_set(value,$1::text[],to_jsonb($2::text),false),updated_at=NOW() WHERE key=$3 AND value #>> $1::text[]=$4 RETURNING key',[record.json_path.map(String),next,record.key,old]);
+      changed+=r.rows.length;skipped+=1-r.rows.length;
+    }
+    return {changed,skipped};
+}
 const mode=process.argv[2];
-if(!['upload','apply','rollback'].includes(mode)){console.error('Usage: node scripts/migrate-media-r2.cjs upload|apply|rollback');process.exitCode=1;}
-else (mode==='upload'?upload():apply(mode==='rollback')).catch(e=>{console.error('Migration stopped:',e.message);process.exitCode=1;});
+if(require.main===module){
+  if(!['upload','apply','rollback'].includes(mode)){console.error('Usage: node scripts/migrate-media-r2.cjs upload|apply|rollback');process.exitCode=1;}
+  else (mode==='upload'?upload():apply(mode==='rollback')).catch(e=>{console.error('Migration stopped:',e.message);process.exitCode=1;});
+}
+module.exports={applyReferences};
