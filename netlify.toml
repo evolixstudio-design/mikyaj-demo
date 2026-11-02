@@ -115,6 +115,12 @@
   force = true
 
 [[redirects]]
+  from = "/about.html"
+  to = "https://mikyaj-backend.onrender.com/about.html"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/contact.html"
   to = "https://mikyaj-backend.onrender.com/contact.html"
   status = 200

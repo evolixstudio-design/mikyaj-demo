@@ -2,7 +2,7 @@
 const origin = 'https://mikyajkw.com';
 const xml = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
 const sitemapFiles = ['sitemap-pages.xml', 'sitemap-products.xml', 'sitemap-categories.xml', 'sitemap-journal.xml'];
-const publicPages = ['shop', 'brands', 'blog', 'terms', 'privacy', 'returns', 'delivery', 'contact'];
+const publicPages = ['shop', 'brands', 'blog', 'terms', 'privacy', 'returns', 'delivery', 'contact', 'about'];
 const localized = (kind, slug) => Object.fromEntries(['ar', 'en'].map(lang => [lang, `${origin}/${lang}/${kind}/${encodeURIComponent(slug)}`]));
 
 function urlset(entries) {
