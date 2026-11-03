@@ -6,6 +6,7 @@ const catalog=require('../services/catalog');
 const settings=require('../services/commerce-settings');
 const {fail}=require('../services/commerce-quote');
 router.use(requireAdminAuth,(req,res,next)=>{res.set('Cache-Control','no-store');next()});
+router.use(require('./order-alerts-admin'));
 router.use(require('./product-fields'));
 router.use(require('./content-admin'));
 router.use(require('./banners-admin'));

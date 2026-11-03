@@ -12,7 +12,7 @@ async function applyPaymentDetails(client,details,paymentId){
  // Once verified successful, a repeated or older event cannot undo payment or fulfilment.
  if(p.status==='SUCCESS')status='SUCCESS';
  await client.query('UPDATE payments SET status=$1,provider_payment_id=COALESCE($2,provider_payment_id),provider_reference=$3,updated_at=NOW() WHERE id=$4',[status,paymentId||null,details.InvoiceReference||null,p.id]);
- if(next!==o.status){await client.query('UPDATE orders SET status=$1,updated_at=NOW() WHERE id=$2',[next,o.id]);await client.query('INSERT INTO order_status_history(order_id,old_status,new_status,reason) VALUES($1,$2,$3,$4)',[o.id,o.status,next,'Payment verified by provider']);}
+ if(next!==o.status){if(next==='CONFIRMED')await require('../services/order-alerts').enqueue(o.id,'CONFIRMED',client);await client.query('UPDATE orders SET status=$1,updated_at=NOW() WHERE id=$2',[next,o.id]);await client.query('INSERT INTO order_status_history(order_id,old_status,new_status,reason) VALUES($1,$2,$3,$4)',[o.id,o.status,next,'Payment verified by provider']);}
  return {order_number:o.order_number,payment_status:status,order_status:next};
 }
 async function processPaymentResult(client,paymentId){return applyPaymentDetails(client,await gateway.getPaymentStatus(paymentId,'PaymentId'),paymentId)}

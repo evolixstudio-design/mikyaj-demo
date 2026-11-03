@@ -77,7 +77,7 @@ test('real-logo ICO, PNG sizes, Apple icon and manifest are available without st
     assert.deepEqual(JSON.parse(manifest.text).icons.map(i => i.sizes), ['192x192', '512x512']);
     for (const url of ['/', '/ar/', '/en/', '/en/products/rose-lipstick', '/shop.html?lang=en', '/admin/login.html', '/admin/manage.html', '/cart.html']) {
         const result = await request(app).get(url); assert.equal(result.status, 200, url);
-        const html = cheerio.load(result.text); assert.equal(html('link[href="/favicon.ico"]').length, 1); assert.equal(html('link[rel="manifest"]').attr('href'), '/site.webmanifest');
+        const html = cheerio.load(result.text); assert.equal(html('link[href="/favicon.ico"]').length, 1); assert.equal(html('link[rel="manifest"]').attr('href'), url.startsWith('/admin/')?'/admin/site.webmanifest':'/site.webmanifest');
     }
 });
 

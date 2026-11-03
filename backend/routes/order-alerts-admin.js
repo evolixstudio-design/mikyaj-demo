@@ -1,0 +1,23 @@
+const router=require('express').Router(),crypto=require('node:crypto'),db=require('../db');
+const alerts=require('../services/order-alerts'),{getSettings,setSettings,audit}=require('../services/commerce-settings');
+const wrap=fn=>(req,res,next)=>Promise.resolve(fn(req,res)).catch(next);
+router.get('/orders/alerts',wrap(async(req,res)=>{
+ const cursor=String(req.query.after||'');if(cursor&&!/^\d{1,18}$/.test(cursor))return res.status(400).json({error:'Invalid cursor.'});
+ const latest=(await db.query('SELECT COALESCE(MAX(id),0)::text AS cursor FROM order_alert_events')).rows[0].cursor;
+ const rows=cursor?(await db.query('SELECT e.id::text,e.kind,e.created_at,o.order_number,o.total_amount,o.status FROM order_alert_events e JOIN orders o ON o.id=e.order_id WHERE e.id>$1 ORDER BY e.id LIMIT 100',[cursor])).rows:[];
+ res.json({cursor:rows.length?rows.at(-1).id:latest,events:rows,unread_count:Number((await db.query("SELECT COUNT(*)::int AS n FROM orders o WHERE o.status='CONFIRMED' AND NOT EXISTS(SELECT 1 FROM admin_notification_reads r WHERE r.admin_id=$1 AND r.key='order:'||o.id)",[req.admin.id])).rows[0].n)});
+}));
+router.get('/orders/alerts/config',wrap(async(req,res)=>res.json({push_configured:alerts.pushReady(),public_key:alerts.pushReady()?process.env.VAPID_PUBLIC_KEY:null,subscriptions:Number((await db.query('SELECT COUNT(*)::int AS n FROM admin_push_subscriptions WHERE admin_id=$1',[req.admin.id])).rows[0].n),email_configured:!!(process.env.RESEND_API_KEY&&process.env.EMAIL_FROM)})));
+router.post('/orders/alerts/subscriptions',require('../middleware/rate-limit')(10,60000),wrap(async(req,res)=>{
+ if(!alerts.pushReady())return res.status(503).json({error:'Phone notifications are not configured yet.'});const s=alerts.subscription(req.body),hash=alerts.hash(s.endpoint);
+ const prior=(await db.query('SELECT admin_id FROM admin_push_subscriptions WHERE endpoint_hash=$1',[hash])).rows[0];
+ if(prior&&prior.admin_id!==req.admin.id)return res.status(409).json({error:'Turn off notifications in the previous staff account first.'});
+ if(!prior&&Number((await db.query('SELECT COUNT(*)::int AS n FROM admin_push_subscriptions WHERE admin_id=$1',[req.admin.id])).rows[0].n)>=10)return res.status(400).json({error:'The device limit is reached. Disable an old device before adding another.'});
+ await db.query('INSERT INTO admin_push_subscriptions(id,admin_id,endpoint_hash,subscription) VALUES($1,$2,$3,$4) ON CONFLICT(endpoint_hash) DO UPDATE SET subscription=EXCLUDED.subscription,updated_at=NOW()',[crypto.randomUUID(),req.admin.id,hash,JSON.stringify(s)]);res.json({success:true});
+}));
+router.post('/orders/alerts/unsubscribe',wrap(async(req,res)=>{await db.query('DELETE FROM admin_push_subscriptions WHERE admin_id=$1 AND endpoint_hash=$2',[req.admin.id,alerts.hash(String(req.body.endpoint||''))]);res.json({success:true})}));
+router.post('/orders/alerts/test',require('../middleware/rate-limit')(3,60000),wrap(async(req,res)=>{const s=(await db.query('SELECT subscription FROM admin_push_subscriptions WHERE admin_id=$1 AND endpoint_hash=$2',[req.admin.id,alerts.hash(String(req.body.endpoint||''))])).rows[0];if(!s)return res.status(404).json({error:'Enable phone notifications on this device first.'});try{await alerts.sendPush(s.subscription,{title:'Mikyaj test notification',body:'Order notifications are connected on this device.',tag:'mikyaj-test',url:'/admin/manage.html?view=orders'});res.json({success:true})}catch{return res.status(503).json({error:'Test notification could not be sent. Re-enable notifications and try again.'})}}));
+// Settings changes remain restricted to staff with the existing settings permission.
+router.get('/settings/order-alerts',wrap(async(req,res)=>{const settings=await getSettings('notifications');res.json({...settings,push_configured:alerts.pushReady(),email_configured:!!(process.env.RESEND_API_KEY&&process.env.EMAIL_FROM),delivery_counts:(await db.query('SELECT status,COUNT(*)::int AS count FROM order_alert_deliveries GROUP BY status')).rows})}));
+router.put('/settings/order-alerts',wrap(async(req,res)=>{const email=String(req.body.admin_email||'').trim().toLowerCase();if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254)return res.status(400).json({error:'Enter a valid alert email.'});if(req.body.email_enabled===true&&(!email||!process.env.RESEND_API_KEY||!process.env.EMAIL_FROM))return res.status(400).json({error:'Configure the email sending service and recipient before enabling email alerts.'});await setSettings('notifications',{...(await getSettings('notifications')),admin_email:email,email_enabled:req.body.email_enabled===true});await audit(req.admin.id,'settings.order-alerts','notifications');res.json({success:true})}));
+module.exports=router;

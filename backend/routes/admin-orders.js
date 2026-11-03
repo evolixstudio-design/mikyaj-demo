@@ -15,6 +15,9 @@ router.get('/', async (req, res) => {
     let query = `
       SELECT o.id, o.order_number, o.customer_name, o.customer_phone, o.customer_email, 
              o.total_amount, o.payment_method, o.currency, o.status, o.created_at, o.updated_at,
+             o.delivery_estimated_from,o.delivery_estimated_to,
+             (SELECT COUNT(*)::int FROM order_items oi WHERE oi.order_id=o.id) AS item_count,
+             (SELECT COALESCE(json_agg(preview),'[]'::json) FROM (SELECT oi.product_id,oi.quantity,COALESCE(NULLIF(oi.product_name_en,''),p.name_en) AS product_name_en,oi.product_name_ar,oi.variant_name_en,oi.variant_name_ar,p.slug AS product_slug,(p.status='ACTIVE' AND p.deleted_at IS NULL) AS product_live,COALESCE(v.image_url,(SELECT pi.cloudinary_url FROM product_images pi WHERE pi.product_id=p.id AND pi.cloudinary_url IS NOT NULL ORDER BY image_order,pi.id LIMIT 1)) AS image_url FROM order_items oi JOIN products p ON p.id=oi.product_id LEFT JOIN product_variants v ON v.id=oi.variant_id WHERE oi.order_id=o.id ORDER BY oi.id LIMIT 3) preview) AS items,
              CASE WHEN o.payment_method='COD' THEN CASE WHEN EXISTS(SELECT 1 FROM cash_transactions ct WHERE ct.order_id=o.id AND ct.kind='COLLECTION') THEN 'COLLECTED' ELSE 'UNPAID' END ELSE (SELECT p.status FROM payments p WHERE p.order_id=o.id ORDER BY p.id DESC LIMIT 1) END as payment_status
       FROM orders o
       WHERE 1=1
@@ -109,7 +112,7 @@ router.get('/:orderNumber', async (req, res) => {
 
     const { rows: orderRows } = await pool.query(`
       SELECT o.id, o.order_number, o.customer_name, o.customer_phone, o.customer_address, o.customer_email,
-             o.total_amount, o.subtotal, o.delivery_fee, o.discount_amount, o.discount_details, o.tax_amount, o.tax_details, o.payment_method, o.currency, o.status, o.created_at, o.updated_at
+             o.total_amount, o.subtotal, o.delivery_fee, o.discount_amount, o.discount_details, o.tax_amount, o.tax_details, o.delivery_estimated_from,o.delivery_estimated_to, o.payment_method, o.currency, o.status, o.created_at, o.updated_at
       FROM orders o
       WHERE o.order_number = $1
     `, [orderNumber]);
@@ -121,9 +124,9 @@ router.get('/:orderNumber', async (req, res) => {
     const order = orderRows[0];
 
     const { rows: itemRows } = await pool.query(`
-      SELECT oi.product_name_ar, oi.product_name_en, oi.variant_id, oi.variant_name_en, oi.variant_name_ar, oi.product_id, p.sku, p.name_en AS product_name, oi.quantity, oi.price_at_purchase,
+      SELECT oi.product_name_ar, oi.product_name_en, oi.variant_id, oi.variant_name_en, oi.variant_name_ar, oi.product_id, p.sku,p.slug AS product_slug,(p.status='ACTIVE' AND p.deleted_at IS NULL) AS product_live,p.name_en AS product_name, oi.quantity, oi.price_at_purchase,
              (oi.quantity * oi.price_at_purchase) AS line_total,
-             (SELECT cloudinary_url FROM product_images pi WHERE pi.product_id = p.id ORDER BY image_order ASC LIMIT 1) as image_url
+             COALESCE((SELECT image_url FROM product_variants WHERE id=oi.variant_id),(SELECT cloudinary_url FROM product_images pi WHERE pi.product_id = p.id AND cloudinary_url IS NOT NULL ORDER BY image_order,pi.id LIMIT 1)) as image_url
       FROM order_items oi
       JOIN products p ON oi.product_id = p.id
       WHERE oi.order_id = $1
@@ -178,6 +181,7 @@ router.get('/:orderNumber', async (req, res) => {
         customer_address: order.customer_address,
         total_amount: order.total_amount,subtotal:order.subtotal,delivery_fee:order.delivery_fee,discount_amount:order.discount_amount,discounts:order.discount_details,tax_amount:order.tax_amount,tax_details:order.tax_details,
         currency: order.currency,
+        delivery_estimated_from:order.delivery_estimated_from,delivery_estimated_to:order.delivery_estimated_to,
         created_at: order.created_at,
         updated_at: order.updated_at
       },

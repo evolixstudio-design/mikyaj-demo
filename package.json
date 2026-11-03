@@ -44,11 +44,13 @@
     "csv-parse": "^7.0.3",
     "dotenv": "^18.0.4",
     "express": "^5.2.1",
+    "google-auth-library": "^11.3.2",
     "jsonwebtoken": "^9.0.3",
     "mime-types": "^3.0.2",
     "pg": "^8.23.0",
     "sharp": "^0.35.5",
-    "slugify": "^1.6.9"
+    "slugify": "^1.6.9",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
