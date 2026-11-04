@@ -44,3 +44,34 @@ test('future insert sources are counted and reporting is private and paginated w
  assert.equal((await request(app).get('/api/manage/listing-count').set('Authorization','Bearer '+token)).status,403);
  for(const row of total.rows)for(const key of ['source_price','selling_price','source_url','custom_fields'])assert.equal(row[key],undefined);
 });
+
+test('billing presets follow Kuwait calendar days and clamp calendar-month subtraction',()=>{
+ const {billingWindow}=require('../backend/services/listing-billing');
+ const now=new Date('2026-11-04T12:00:00Z');
+ assert.deepEqual(billingWindow({period:'7d'},now),{period:'7d',from:'2026-10-29',to:'2026-11-04',start:'2026-10-28T21:00:00.000Z',end:'2026-11-04T21:00:00.000Z',time_zone:'Asia/Kuwait'});
+ assert.equal(billingWindow({period:'14d'},now).from,'2026-10-22');
+ assert.equal(billingWindow({period:'1m'},now).from,'2026-10-04');
+ assert.equal(billingWindow({period:'3m'},now).from,'2026-08-04');
+ assert.equal(billingWindow({period:'this-month'},now).from,'2026-11-01');
+ assert.equal(billingWindow({period:'last-month'},now).to,'2026-10-31');
+ assert.equal(billingWindow({period:'1m'},new Date('2026-03-31T12:00:00Z')).from,'2026-02-28');
+ assert.equal(billingWindow({period:'this-month'},new Date('2026-10-31T21:00:00Z')).from,'2026-11-01');
+});
+
+test('date-filtered counts, charges and pagination use the same inclusive billing window and preserve history',async()=>{
+ const rows=(await fixture.db.query('SELECT id FROM product_listing_ledger ORDER BY id')).rows;
+ assert.equal(rows.length,3);
+ for(const [i,date]of ['2026-10-31T20:59:59.999Z','2026-10-31T21:00:00.000Z','2026-11-04T20:59:59.999Z'].entries())await fixture.db.query('UPDATE product_listing_ledger SET listed_at=$1 WHERE id=$2',[date,rows[i].id]);
+ const first=await request(app).get('/api/manage/listing-count?period=custom&from=2026-11-01&to=2026-11-04&limit=1').set(admin);
+ assert.equal(first.status,200,JSON.stringify(first.body));
+ assert.equal(first.body.summary.billable_listings,2);assert.equal(first.body.summary.amount_paise,2200);
+ assert.equal(first.body.all_time_summary.billable_listings,3);assert.equal(first.body.rows.length,1);assert.equal(first.body.next_offset,1);
+ const second=(await request(app).get('/api/manage/listing-count?period=custom&from=2026-11-01&to=2026-11-04&limit=1&offset=1').set(admin)).body;
+ assert.notEqual(first.body.rows[0].id,second.rows[0].id);assert.equal(second.next_offset,null);
+ const exported=(await request(app).get('/api/manage/listing-count?period=custom&from=2026-11-01&to=2026-11-04&limit=500').set(admin)).body;
+ assert.equal(exported.rows.length,2);assert.equal(exported.rows.reduce((sum,r)=>sum+r.rate_paise,0),exported.summary.amount_paise);
+ const empty=(await request(app).get('/api/manage/listing-count?period=custom&from=2027-01-01&to=2027-01-31').set(admin)).body;
+ assert.equal(empty.summary.billable_listings,0);assert.equal(empty.summary.amount_paise,0);assert.equal(empty.all_time_summary.billable_listings,3);
+ assert.equal((await report()).summary.billable_listings,3);
+ for(const query of ['period=bad','period=custom&from=2026-02-30&to=2026-03-01','period=custom&from=2026-11-04&to=2026-11-01','period=custom&from=2026-11-01','period=all&from=2026-11-01'])assert.equal((await request(app).get('/api/manage/listing-count?'+query).set(admin)).status,400,query);
+});
