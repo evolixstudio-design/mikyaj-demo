@@ -2,6 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "mikyaj-storefront",
   "main": "cloudflare/worker.mjs",
+  "account_id": "d59d159b2a137c0dfcef8294c86b2a9c",
   "compatibility_date": "2026-11-09",
   "assets": {
     "directory": "./dist",

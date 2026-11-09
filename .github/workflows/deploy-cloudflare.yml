@@ -1,0 +1,54 @@
+name: Deploy Mikyaj storefront to Cloudflare
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mikyaj-cloudflare-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Cloudflare deploy credential
+        id: auth
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$CF_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Explain one-time GitHub setup
+        if: steps.auth.outputs.available != 'true'
+        run: echo "::notice::Add the CLOUDFLARE_API_TOKEN repository secret to enable automatic Cloudflare deploys. The live Worker is already deployed."
+
+      - name: Check out source
+        if: steps.auth.outputs.available == 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        if: steps.auth.outputs.available == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        if: steps.auth.outputs.available == 'true'
+        run: npm ci
+
+      - name: Build and deploy
+        if: steps.auth.outputs.available == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npm run deploy:cloudflare
